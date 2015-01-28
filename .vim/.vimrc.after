@@ -1,4 +1,5 @@
 nore ; :
+nore \ ;
 
 set backspace=indent,eol,start
 set textwidth=80
