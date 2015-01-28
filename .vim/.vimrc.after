@@ -1,0 +1,5 @@
+nore ; :
+
+set backspace=indent,eol,start
+set textwidth=80
+set cc=+1
