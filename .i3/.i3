@@ -1,0 +1,1 @@
+/home/ducnx/.myconfig/.i3
