@@ -189,6 +189,7 @@ client.urgent #2f343a $red #eff1f5 #900000
 # Startup programs
 exec --no-startup-id nm-applet
 exec --no-startup-id naturalscrolling
+exec --no-startup-id rescuetime
 exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
 exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird"
 exec --no-startup-id i3-msg "workspace $tag2; exec firefox www.facebook.com"
