@@ -191,6 +191,7 @@ exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
 exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird"
 exec --no-startup-id i3-msg "workspace $tag2; exec firefox www.facebook.com"
 exec --no-startup-id i3-msg "workspace $tag1; exec i3-sensible-terminal"
+exec --no-Startup-id i3-msg "workspace $tag1"
 
 # Custom KeyBinds
 bindsym Control+$mod+l exec i3lock -i /home/ducnx/Pictures/yukinon.png && echo mem > /sys/power/state
