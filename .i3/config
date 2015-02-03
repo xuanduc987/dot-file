@@ -201,9 +201,8 @@ bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+
 bindsym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
 bindsym Print exec scrot '%Y-%m-%d-%T_$wx$h_scrot.png' -e 'mv $f ~/Pictures/screenshots/'
 
-# super + f = firefox
 bindsym $sup+f exec firefox
-
-# super + a = anki
 bindsym $sup+a exec anki
+bindsym $sup+g exec gvim
+bindsym $sup+c exec google-chrome
 
