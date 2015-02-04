@@ -6,8 +6,8 @@ curl -Lo- https://bit.ly/janus-bootstrap | bash
 For more information go to janus [repo](http://github.com/carlhuda/janus)
 
 ## Additional plugins
-[Vim-ruby](https://github.com/vim-ruby/vim-ruby.git)
-[Lightline](https://github.com/itchyny/lightline.vim)
+ - [Vim-ruby](https://github.com/vim-ruby/vim-ruby.git)
+ - [Lightline](https://github.com/itchyny/lightline.vim)
 
 ## Notice when use base16 theme
 Have to install
