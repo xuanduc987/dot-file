@@ -18,3 +18,5 @@ set splitright
 
 color base16-brewer
 set background=dark
+
+inoremap jj <ESC>
