@@ -27,6 +27,10 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# Focus follows mouse
+focus_follows_mouse no
+
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -184,6 +188,7 @@ client.unfocused #333333 #2b303b #888888 #292d2e
 client.urgent #2f343a $red #eff1f5 #900000
 
 # Startup programs
+exec xrdb -merge ~/.Xresources
 exec --no-startup-id nm-applet
 exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
