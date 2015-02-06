@@ -27,6 +27,10 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# Focus follows mouse
+focus_follows_mouse no
+
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
