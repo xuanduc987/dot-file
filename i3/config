@@ -21,6 +21,11 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
 
+new_window 1pixel
+new_float normal
+
+bindsym $sup+Shift+b border toggle
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -187,9 +192,13 @@ client.focused_inactive #333333 $violet #eff1f5 #484e50
 client.unfocused #333333 #2b303b #888888 #292d2e
 client.urgent #2f343a $red #eff1f5 #900000
 
+# app setting
+for_window [class="feh"] floating enable
+
 # Startup programs
 exec xrdb -merge ~/.Xresources
 exec --no-startup-id nm-applet
+exec --no-startup-id urxvtd
 exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
 exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
