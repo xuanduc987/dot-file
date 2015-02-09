@@ -197,14 +197,13 @@ for_window [class="feh"] floating enable
 
 # Startup programs
 exec xrdb -merge ~/.Xresources
-exec --no-startup-id nm-applet
 exec --no-startup-id urxvtd
+exec --no-startup-id nm-applet
 exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
 exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
 exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird"
 exec --no-startup-id i3-msg "workspace $tag2; exec firefox www.facebook.com"
-exec --no-startup-id i3-msg "workspace $tag1; exec i3-sensible-terminal"
 exec --no-Startup-id i3-msg "workspace $tag1"
 
 # Custom KeyBinds
