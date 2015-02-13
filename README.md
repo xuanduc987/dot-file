@@ -32,4 +32,4 @@ Install urxvt: package rxvt-unicode-256color
 [base16-color-xresources](https://github.com/chriskempson/base16-xresources)
 
 ## Font
-Open Source Code
+Source Code Pro
