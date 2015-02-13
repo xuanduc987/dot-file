@@ -30,7 +30,8 @@ bindsym $sup+Shift+b border toggle
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Shift+Return exec i3-sensible-terminal
 
 # Focus follows mouse
 focus_follows_mouse no
@@ -197,7 +198,7 @@ for_window [class="feh"] floating enable
 
 # Startup programs
 exec xrdb -merge ~/.Xresources
-exec --no-startup-id urxvtd
+#exec --no-startup-id urxvtd
 exec --no-startup-id nm-applet
 exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
