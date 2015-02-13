@@ -6,9 +6,16 @@ curl -Lo- https://bit.ly/janus-bootstrap | bash
 For more information go to janus [repo](http://github.com/carlhuda/janus)
 
 ## Additional plugins
- - [Vim-ruby](https://github.com/vim-ruby/vim-ruby.git)
+ - [Vim-rails](https://github.com/tpope/vim-rails.git)
  - [Lightline](https://github.com/itchyny/lightline.vim)
+ - [Neocomplete](https://github.com/Shougo/neocomplete.vim.git)
 
+## Mapping:
+ - ; to :
+ - \ to ;
+ - <Space> to <Leader>
+ - <Leader>p to :CtrlP
+ - <Leader>c to toogle NeoComplete
 ## Notice when use base16 theme
 Have to install
 [base16-shell](https://github.com/chriskempson/base16-shell) if use
