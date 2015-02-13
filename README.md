@@ -30,3 +30,6 @@ BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 ## For ubuntu
 Install urxvt: package rxvt-unicode-256color
 [base16-color-xresources](https://github.com/chriskempson/base16-xresources)
+
+## Font
+Open Source Code
