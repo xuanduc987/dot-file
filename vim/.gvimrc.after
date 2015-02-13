@@ -1,4 +1,4 @@
-set guifont=Source\ Code\ Pro\ Medium\ 10
+set guifont=Source\ Code\ Pro\ Medium\ 9
 :set guioptions-=m  "remove menu bar
 :set guioptions-=T  "remove toolbar
 :set guioptions-=r  "remove right-hand scroll bar

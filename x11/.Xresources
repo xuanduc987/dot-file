@@ -2,8 +2,8 @@ Xcursor.theme:    Vanilla-DMZ-AA
 
 !urxvt fonts:
 
-URxvt*font: xft:Source Code Pro:size=10
-URxvt*boldFont: xft:Source Code Pro:bold:size=10
+URxvt*font: xft:Source Code Pro:size=9
+URxvt*boldFont: xft:Source Code Pro:bold:size=9
 
 
 !urxvt extensions:
