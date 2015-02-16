@@ -1,17 +1,26 @@
 [core]
 	editor = vim
 [push]
-	default = matching
+  config = default
+	default = tracking
+[rebase]
+  autosquash = true
 [alias]
 	co = checkout
 	br = branch
 	st = status
+  s = status -s -b
 	lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
 	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  lg = !"git lg1"
+  l = log --pretty='format:%C(yellow)%h %C(blue)%ad %C(reset)%s%C(red)%d %C(green)%an%C(reset), %C(cyan)%ar' --date=short
 [color]
   ui = true
+  pager = true
   branch = auto
   diff = auto
+  status = auto
+  interactive = auto
   grep = auto
 [diff]
   tool = vimdiff
