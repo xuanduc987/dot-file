@@ -16,7 +16,6 @@ For more information go to janus [repo](http://github.com/carlhuda/janus)
  - \ to ;
  - \<Space\> to \<Leader\>
  - \<Leader\>p to :CtrlP
- - \<Leader\>c to toogle NeoComplete
 
 ## Notice when use base16 theme
 Have to install

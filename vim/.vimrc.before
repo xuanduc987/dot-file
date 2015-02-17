@@ -2,3 +2,5 @@ let mapleader = " "
 let base16colorspace=256
 
 call janus#disable_plugin('vim-snipmate')
+call janus#disable_plugin('supertab')
+let g:neocomplete#enable_at_startup = 1
