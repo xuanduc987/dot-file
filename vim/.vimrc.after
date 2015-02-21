@@ -50,14 +50,19 @@ if exists(':NeoCompleteToggle')
 
   " Recommended key-mappings.
   " <CR>: close popup and save indent.
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  function! s:my_cr_function()
-    return neocomplete#close_popup() . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-  endfunction
+  "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  "function! s:my_cr_function()
+    "return neocomplete#close_popup() . "\<CR>"
+    "" For no inserting <CR> key.
+    ""return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  "endfunction
+
+  imap <silent><expr><CR> pumvisible() ?
+        \ (len(keys(UltiSnips#SnippetsInCurrentScope())) > 0 ?
+        \ neocomplete#close_popup()."\<s-tab>" :
+        \ neocomplete#close_popup()) : "\<CR>"
   " <TAB>: completion.
-  inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+  imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<S-TAB>"
   " <C-h>, <BS>: close popup and delete backword char.
   inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
   inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
