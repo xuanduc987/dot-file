@@ -4,6 +4,14 @@ nore \ ;
 nmap n nzz
 nmap N Nzz
 
+" Need more context
+set scrolloff=2
+set nonumber
+set relativenumber
+
+" Enable mouse support
+set mouse=a
+
 set backspace=indent,eol,start
 set textwidth=80
 
@@ -60,7 +68,7 @@ if exists(':NeoCompleteToggle')
   imap <silent><expr><CR> pumvisible() ?
         \ (len(keys(UltiSnips#SnippetsInCurrentScope())) > 0 ?
         \ neocomplete#close_popup()."\<s-tab>" :
-        \ neocomplete#close_popup()) : "\<CR>"
+        \ neocomplete#close_popup()."\<CR>") : "\<CR>"
   " <TAB>: completion.
   imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<S-TAB>"
   " <C-h>, <BS>: close popup and delete backword char.
