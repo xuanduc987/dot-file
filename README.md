@@ -8,7 +8,6 @@ For more information go to janus [repo](http://github.com/carlhuda/janus)
 ## Additional plugins
  - [Vim-rails](https://github.com/tpope/vim-rails.git)
  - [Lightline](https://github.com/itchyny/lightline.vim)
- - [Neocomplete](https://github.com/Shougo/neocomplete.vim.git)
  - [Ultisnip](https://github.com/SirVer/ultisnips.git)
 
 ## Mapping:
