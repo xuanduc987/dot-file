@@ -8,6 +8,7 @@ For more information go to janus [repo](http://github.com/carlhuda/janus)
 ## Additional plugins
  - [Vim-rails](https://github.com/tpope/vim-rails.git)
  - [Lightline](https://github.com/itchyny/lightline.vim)
+ - [Vim-gitgutter](https://github.com/airblade/vim-gitgutter.git)
 
 ## Mapping:
  - ; to :
