@@ -7,8 +7,10 @@ For more information go to janus [repo](http://github.com/carlhuda/janus)
 
 ## Additional plugins
  - [Vim-rails](https://github.com/tpope/vim-rails.git)
- - [Lightline](https://github.com/itchyny/lightline.vim)
+ - [Lightline](https://github.com/itchyny/lightline.git)
  - [Vim-gitgutter](https://github.com/airblade/vim-gitgutter.git)
+ - [Vim-bufferline](https://github.com/bling/vim-bufferline.git)
+ - [clever-f.vim](https://github.com/rhysd/clever-f.vim.git)
 
 ## Mapping:
  - ; to :
