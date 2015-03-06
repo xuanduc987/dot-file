@@ -1,2 +1,4 @@
 tags
 gems.tags
+.idea/*
+*.iml
