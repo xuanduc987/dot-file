@@ -11,6 +11,7 @@ For more information go to janus [repo](http://github.com/carlhuda/janus)
  - [Vim-gitgutter](https://github.com/airblade/vim-gitgutter.git)
  - [Vim-bufferline](https://github.com/bling/vim-bufferline.git)
  - [clever-f.vim](https://github.com/rhysd/clever-f.vim.git)
+ - [vim-abolish](https://github.com/tpope/vim-abolish.git)
 
 ## Mapping:
  - ; to :
