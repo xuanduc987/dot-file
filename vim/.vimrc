@@ -99,6 +99,8 @@ set mouse=a
 
 set textwidth=80
 
+map <Leader>p :CtrlP<CR>
+
 set wmh=0 " no current line on minimized windows
 nmap <silent> <C-K> :wincmd k<CR>
 nmap <silent> <C-J> :wincmd j<CR>
