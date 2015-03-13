@@ -3,3 +3,8 @@ set guifont=Source\ Code\ Pro\ Medium\ 9
 :set guioptions-=T  "remove toolbar
 :set guioptions-=r  "remove right-hand scroll bar
 :set guioptions-=L  "remove left-hand scroll bar
+
+if has("win32") || has("win16")
+  set guifont=Consolas:h9
+  set lines=30 columns=120
+endif
