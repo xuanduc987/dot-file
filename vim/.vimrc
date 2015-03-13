@@ -398,7 +398,7 @@ let g:syntastic_auto_loc_list=2
 " }
 
 " Tagbar mappings.
-map <Leader>rt :TagbarToggle<CR>
+map <Leader>rtt :TagbarToggle<CR>
 
 " unimpaired {
 " Normal Mode: Bubble single lines
