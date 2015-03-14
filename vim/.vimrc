@@ -99,6 +99,8 @@ set mouse=a
 
 set textwidth=80
 
+set cc=+1
+
 map <Leader>p :CtrlP<CR>
 
 set wmh=0 " no current line on minimized windows
@@ -398,7 +400,7 @@ let g:syntastic_auto_loc_list=2
 " }
 
 " Tagbar mappings.
-map <Leader>rtt :TagbarToggle<CR>
+map <Leader>rc :TagbarToggle<CR>
 
 " unimpaired {
 " Normal Mode: Bubble single lines
