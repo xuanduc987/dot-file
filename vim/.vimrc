@@ -53,6 +53,7 @@ Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
 Plugin 'Raimondi/delimitMate'
+Plugin 'Yggdroot/indentLine'
 
 Plugin 'chrisbra/csv.vim'
 Plugin 'tpope/vim-git'
