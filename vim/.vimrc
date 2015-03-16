@@ -50,6 +50,8 @@ Plugin 'skalnik/vim-vroom'
 Plugin 'mattn/webapi-vim'
 Plugin 'itspriddle/ZoomWin'
 Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'xolox/vim-easytags'
+Plugin 'xolox/vim-misc'
 
 Plugin 'chrisbra/csv.vim'
 Plugin 'tpope/vim-git'
