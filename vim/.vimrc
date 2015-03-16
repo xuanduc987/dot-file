@@ -52,6 +52,7 @@ Plugin 'itspriddle/ZoomWin'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'xolox/vim-easytags'
 Plugin 'xolox/vim-misc'
+Plugin 'Raimondi/delimitMate'
 
 Plugin 'chrisbra/csv.vim'
 Plugin 'tpope/vim-git'
@@ -284,9 +285,12 @@ map <Leader>= <C-w>=
 cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 
 
-"" 
+""
 "" Plugin settings
 ""
+
+" prevents delimitMate from loading for md
+au FileType markdown let b:loaded_delimitMate = 1
 
 " ack setting {
 " Define <C-F> to a dummy value to see if it would set <C-f> as well.
@@ -348,7 +352,7 @@ map <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
 augroup AuNERDTreeCmd
 autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
 autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
-	
+
 " If the parameter is a directory, cd into it
 function s:CdIfDirectory(directory)
 	let explicitDirectory = isdirectory(a:directory)
