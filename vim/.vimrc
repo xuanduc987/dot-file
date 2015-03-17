@@ -12,7 +12,9 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'rorymckinley/vim-rubyhash'
+if !(has("win32") || has("win16"))
+  Plugin 'rorymckinley/vim-rubyhash'
+endif
 Plugin 'tpope/vim-ragtag'
 Plugin 'tpope/vim-speeddating'
 Plugin 'junegunn/vim-easy-align'
