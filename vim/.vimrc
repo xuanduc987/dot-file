@@ -344,6 +344,10 @@ nmap <F5> :GundoToggle<CR>
 imap <F5> <ESC>:GundoToggle<CR>
 " }
 
+" NEARDcommenter {
+ map <leader>/ <plug>NERDCommenterToggle<CR>
+" }
+
 " NEARDTree {
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
 
