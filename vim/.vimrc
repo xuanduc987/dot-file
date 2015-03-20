@@ -12,7 +12,9 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'rorymckinley/vim-rubyhash'
+if !(has("win32") || has("win16"))
+  Plugin 'rorymckinley/vim-rubyhash'
+endif
 Plugin 'tpope/vim-ragtag'
 Plugin 'tpope/vim-speeddating'
 Plugin 'junegunn/vim-easy-align'
@@ -50,8 +52,6 @@ Plugin 'skalnik/vim-vroom'
 Plugin 'mattn/webapi-vim'
 Plugin 'itspriddle/ZoomWin'
 Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'xolox/vim-easytags'
-Plugin 'xolox/vim-misc'
 Plugin 'Raimondi/delimitMate'
 Plugin 'Yggdroot/indentLine'
 
@@ -77,9 +77,6 @@ let mapleader = " "
 
 nore ; :
 nore \ ;
-
-" remove search highlighting
-nnoremap <leader>h :noh<cr>
 
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
@@ -297,11 +294,11 @@ au FileType markdown let b:loaded_delimitMate = 1
 " Define <C-F> to a dummy value to see if it would set <C-f> as well.
 map <C-F> :dummy
 if maparg("<C-f>") == ":dummy"
-	" <leader>f on systems where <C-f> == <C-F>
-	map <leader>f :Ack<space>
+" <leader>f on systems where <C-f> == <C-F>
+map <leader>f :Ack<space>
 else
-	" <C-F> if we can still map <C-f> to <S-Down>
-	map <C-F> :Ack<space>
+" <C-F> if we can still map <C-f> to <S-Down>
+map <C-F> :Ack<space>
 endif
 map <C-f> <S-Down>
 " }
@@ -309,9 +306,9 @@ map <C-f> <S-Down>
 " ctrlp setting {
 let g:ctrlp_map = ''
 let g:ctrlp_custom_ignore = {
-			\ 'dir': '\v[\/]\.(git|hg|svn)$',
-			\ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
-			\ }
+    \ 'dir': '\v[\/]\.(git|hg|svn)$',
+    \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
+    \ }
 " }
 
 " git fugitive {
@@ -325,14 +322,14 @@ nmap <leader>gp :Git push<CR>
 
 " gist {
 if executable("pbcopy")
-	" The copy command
-	let g:gist_clip_command = 'pbcopy'
+" The copy command
+let g:gist_clip_command = 'pbcopy'
 elseif executable("xclip")
-	" The copy command
-	let g:gist_clip_command = 'xclip -selection clipboard'
+" The copy command
+let g:gist_clip_command = 'xclip -selection clipboard'
 elseif executable("putclip")
-	" The copy command
-	let g:gist_clip_command = 'putclip'
+" The copy command
+let g:gist_clip_command = 'putclip'
 end
 
 " detect filetype if vim failed auto-detection.
@@ -360,48 +357,48 @@ autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
 
 " If the parameter is a directory, cd into it
 function s:CdIfDirectory(directory)
-	let explicitDirectory = isdirectory(a:directory)
-	let directory = explicitDirectory || empty(a:directory)
+let explicitDirectory = isdirectory(a:directory)
+let directory = explicitDirectory || empty(a:directory)
 
-	if explicitDirectory
-		exe "cd " . fnameescape(a:directory)
-	endif
+if explicitDirectory
+  exe "cd " . fnameescape(a:directory)
+endif
 
-	" Allows reading from stdin
-	" ex: git diff | mvim -R -
-	if strlen(a:directory) == 0
-		return
-	endif
+" Allows reading from stdin
+" ex: git diff | mvim -R -
+if strlen(a:directory) == 0
+  return
+endif
 
-	if directory
-		NERDTree
-		wincmd p
-		bd
-	endif
+if directory
+  NERDTree
+  wincmd p
+  bd
+endif
 
-	if explicitDirectory
-		wincmd p
-	endif
+if explicitDirectory
+  wincmd p
+endif
 endfunction
 
 " NERDTree utility function
 function s:UpdateNERDTree(...)
-	let stay = 0
+let stay = 0
 
-	if(exists("a:1"))
-		let stay = a:1
-	end
+if(exists("a:1"))
+  let stay = a:1
+end
 
-	if exists("t:NERDTreeBufName")
-		let nr = bufwinnr(t:NERDTreeBufName)
-		if nr != -1
-			exe nr . "wincmd w"
-			exe substitute(mapcheck("R"), "<CR>", "", "")
-			if !stay
-				wincmd p
-			end
-		endif
-	endif
+if exists("t:NERDTreeBufName")
+  let nr = bufwinnr(t:NERDTreeBufName)
+  if nr != -1
+    exe nr . "wincmd w"
+    exe substitute(mapcheck("R"), "<CR>", "", "")
+    if !stay
+      wincmd p
+    end
+  endif
+endif
 endfunction
 " }
 
@@ -428,160 +425,160 @@ map <leader>zw :ZoomWin<CR>
 
 " Lightline setting {
 let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly' ], ['ctrlpmark', 'bufferline'] ],
-      \   'right': [ ['lineinfo'], ['percent'], [ 'fileformat', 'fileencoding', 'filetype', 'syntastic' ] ]
-      \ },
-      \ 'component_function': {
-      \   'fugitive': 'MyFugitive',
-      \   'readonly': 'MyReadonly',
-      \   'bufferline': 'MyBufferline',
-      \   'fileformat': 'MyFileformat',
-      \   'filetype': 'MyFiletype',
-      \   'fileencoding': 'MyFileencoding',
-      \   'mode': 'MyMode',
-      \   'ctrlpmark': 'CtrlPMark',
-      \ },
-      \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'middle',
-      \ },
-      \ 'subseparator': { 'left': '|', 'right': '|' }
-      \ }
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly' ], ['ctrlpmark', 'bufferline'] ],
+    \   'right': [ ['lineinfo'], ['percent'], [ 'fileformat', 'fileencoding', 'filetype', 'syntastic' ] ]
+    \ },
+    \ 'component_function': {
+    \   'fugitive': 'MyFugitive',
+    \   'readonly': 'MyReadonly',
+    \   'bufferline': 'MyBufferline',
+    \   'fileformat': 'MyFileformat',
+    \   'filetype': 'MyFiletype',
+    \   'fileencoding': 'MyFileencoding',
+    \   'mode': 'MyMode',
+    \   'ctrlpmark': 'CtrlPMark',
+    \ },
+    \ 'component_expand': {
+    \   'syntastic': 'SyntasticStatuslineFlag',
+    \ },
+    \ 'component_type': {
+    \   'syntastic': 'middle',
+    \ },
+    \ 'subseparator': { 'left': '|', 'right': '|' }
+    \ }
 
 let g:lightline.mode_map = {
-      \ 'n' : ' N ',
-      \ 'i' : ' I ',
-      \ 'R' : ' R ',
-      \ 'v' : ' V ',
-      \ 'V' : 'V-L',
-      \ 'c' : ' C ',
-      \ "\<C-v>" : 'V-B',
-      \ 's' : ' S ',
-      \ 'S' : 'S-L',
-      \ "\<C-s>" : 'S-B',
-      \ '?' : ' ' }
+    \ 'n' : ' N ',
+    \ 'i' : ' I ',
+    \ 'R' : ' R ',
+    \ 'v' : ' V ',
+    \ 'V' : 'V-L',
+    \ 'c' : ' C ',
+    \ "\<C-v>" : 'V-B',
+    \ 's' : ' S ',
+    \ 'S' : 'S-L',
+    \ "\<C-s>" : 'S-B',
+    \ '?' : ' ' }
 
 function! MyModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
 function! MyReadonly()
-  return &ft !~? 'help' && &readonly ? 'RO' : ''
+return &ft !~? 'help' && &readonly ? 'RO' : ''
 endfunction
 
 function! MyFilename()
-  let fname = expand('%:t')
-  return fname == 'ControlP' ? g:lightline.ctrlp_item :
-        \ fname == '__Tagbar__' ? g:lightline.fname :
-        \ fname =~ '__Gundo\|NERD_tree' ? '' :
-        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \ &ft == 'unite' ? unite#get_status_string() :
-        \ &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : '[No Name]') .
-        \ ('' != MyModified() ? ' ' . MyModified() : '')
+let fname = expand('%:t')
+return fname == 'ControlP' ? g:lightline.ctrlp_item :
+      \ fname == '__Tagbar__' ? g:lightline.fname :
+      \ fname =~ '__Gundo\|NERD_tree' ? '' :
+      \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+      \ &ft == 'unite' ? unite#get_status_string() :
+      \ &ft == 'vimshell' ? vimshell#get_status_string() :
+      \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+      \ ('' != fname ? fname : '[No Name]') .
+      \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
 function! MyFugitive()
-  try
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = ''  " edit here for cool mark
-      let _ = fugitive#head()
-      return strlen(_) ? mark._ : ''
-    endif
-  catch
-  endtry
-  return ''
+try
+  if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+    let mark = ''  " edit here for cool mark
+    let _ = fugitive#head()
+    return strlen(_) ? mark._ : ''
+  endif
+catch
+endtry
+return ''
 endfunction
 
 function! MyFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
+return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! MyFiletype()
-  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! MyFileencoding()
-  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! MyMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__' ? 'Tagbar' :
-        \ fname == 'ControlP' ? 'CtrlP' :
-        \ fname == '__Gundo__' ? 'Gundo' :
-        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-        \ fname =~ 'NERD_tree' ? 'NERDTree' :
-        \ &ft == 'unite' ? 'Unite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
+let fname = expand('%:t')
+return fname == '__Tagbar__' ? 'Tagbar' :
+      \ fname == 'ControlP' ? 'CtrlP' :
+      \ fname == '__Gundo__' ? 'Gundo' :
+      \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+      \ fname =~ 'NERD_tree' ? 'NERDTree' :
+      \ &ft == 'unite' ? 'Unite' :
+      \ &ft == 'vimfiler' ? 'VimFiler' :
+      \ &ft == 'vimshell' ? 'VimShell' :
+      \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 function! CtrlPMark()
-  if expand('%:t') =~ 'ControlP'
-    call lightline#link('iR'[g:lightline.ctrlp_regex])
-    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-          \ , g:lightline.ctrlp_next], 0)
-  else
-    return ''
-  endif
+if expand('%:t') =~ 'ControlP'
+  call lightline#link('iR'[g:lightline.ctrlp_regex])
+  return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+        \ , g:lightline.ctrlp_next], 0)
+else
+  return ''
+endif
 endfunction
 
 function! MyBufferline()
-  call bufferline#refresh_status()
-  let b = g:bufferline_status_info.before
-  let c = g:bufferline_status_info.current
-  let a = g:bufferline_status_info.after
-  let alen = strlen(a)
-  let blen = strlen(b)
-  let clen = strlen(c)
-  let w = winwidth(0) * 4 / 11
-  if w < alen+blen+clen
-    let whalf = (w - strlen(c)) / 2
-    let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
-    let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
-    return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
-  else
-    return b . c . a
-  endif
+call bufferline#refresh_status()
+let b = g:bufferline_status_info.before
+let c = g:bufferline_status_info.current
+let a = g:bufferline_status_info.after
+let alen = strlen(a)
+let blen = strlen(b)
+let clen = strlen(c)
+let w = winwidth(0) * 4 / 11
+if w < alen+blen+clen
+  let whalf = (w - strlen(c)) / 2
+  let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
+  let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
+  return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
+else
+  return b . c . a
+endif
 endfunction
 
 let g:ctrlp_status_func = {
-      \ 'main': 'CtrlPStatusFunc_1',
-      \ 'prog': 'CtrlPStatusFunc_2',
-      \ }
+    \ 'main': 'CtrlPStatusFunc_1',
+    \ 'prog': 'CtrlPStatusFunc_2',
+    \ }
 
 function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-  let g:lightline.ctrlp_regex = a:regex
-  let g:lightline.ctrlp_prev = a:prev
-  let g:lightline.ctrlp_item = a:item
-  let g:lightline.ctrlp_next = a:next
-  return lightline#statusline(0)
+let g:lightline.ctrlp_regex = a:regex
+let g:lightline.ctrlp_prev = a:prev
+let g:lightline.ctrlp_item = a:item
+let g:lightline.ctrlp_next = a:next
+return lightline#statusline(0)
 endfunction
 
 function! CtrlPStatusFunc_2(str)
-  return lightline#statusline(0)
+return lightline#statusline(0)
 endfunction
 
 let g:tagbar_status_func = 'TagbarStatusFunc'
 
 function! TagbarStatusFunc(current, sort, fname, ...) abort
-  let g:lightline.fname = a:fname
-  return lightline#statusline(0)
+let g:lightline.fname = a:fname
+return lightline#statusline(0)
 endfunction
 
 augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+autocmd!
+autocmd BufWritePost *.c,*.cpp,*.rb,*.py call s:syntastic()
 augroup END
 function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
+SyntasticCheck
+call lightline#update()
 endfunction
 
 "Changing background color on the fly
