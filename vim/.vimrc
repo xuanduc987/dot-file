@@ -1,78 +1,75 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+let g:windows_os = has("win32") || has("win16") || has("win8")
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rails'
-Plugin 'ecomba/vim-ruby-refactoring'
-if !(has("win32") || has("win16"))
-  Plugin 'rorymckinley/vim-rubyhash'
+" Load vim-plug
+if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
-Plugin 'tpope/vim-ragtag'
-Plugin 'tpope/vim-speeddating'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'itchyny/lightline.vim'
-Plugin 'bling/vim-bufferline'
-Plugin 'tpope/vim-abolish'
-Plugin 'mileszs/ack.vim'
-Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'ap/vim-css-color'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tpope/vim-dispatch'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-eunuch'
-Plugin 'mattn/gist-vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'edsono/vim-matchit'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/syntastic'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-repeat'
-Plugin 'garbas/vim-snipmate'
-Plugin 'ervandew/supertab'
-Plugin 'tomtom/tlib_vim'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'honza/vim-snippets'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'thinca/vim-visualstar'
-Plugin 'skalnik/vim-vroom'
-Plugin 'mattn/webapi-vim'
-Plugin 'itspriddle/ZoomWin'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'Raimondi/delimitMate'
-Plugin 'Yggdroot/indentLine'
 
-Plugin 'chrisbra/csv.vim'
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-haml'
-Plugin 'pangloss/vim-javascript'
-Plugin 'elzr/vim-json'
-Plugin 'tpope/vim-liquid'
-Plugin 'tpope/vim-markdown'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'skwp/vim-rspec'
-Plugin 'depuracao/vim-rdoc'
-Plugin 'cakebaker/scss-syntax.vim'
+call plug#begin('~/.vim/plugged')
 
-Plugin 'chriskempson/base16-vim'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails'
+Plug 'ecomba/vim-ruby-refactoring'
+if !g:windows_os
+  Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
+endif
+Plug 'tpope/vim-ragtag'
+Plug 'tpope/vim-speeddating'
+Plug 'junegunn/vim-easy-align'
+Plug 'itchyny/lightline.vim'
+Plug 'bling/vim-bufferline'
+Plug 'tpope/vim-abolish'
+Plug 'mileszs/ack.vim'
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'ap/vim-css-color'
+Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-eunuch'
+Plug 'mattn/gist-vim'
+Plug 'sjl/gundo.vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'edsono/vim-matchit'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/syntastic'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'tpope/vim-repeat'
+Plug 'garbas/vim-snipmate'
+Plug 'ervandew/supertab'
+Plug 'tomtom/tlib_vim'
+Plug 'tpope/vim-unimpaired'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'honza/vim-snippets'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'thinca/vim-visualstar'
+Plug 'skalnik/vim-vroom'
+Plug 'mattn/webapi-vim'
+Plug 'itspriddle/ZoomWin'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'Yggdroot/indentLine'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+Plug 'chrisbra/csv.vim'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-haml'
+Plug 'pangloss/vim-javascript'
+Plug 'elzr/vim-json'
+Plug 'tpope/vim-liquid'
+Plug 'tpope/vim-markdown'
+Plug 'vim-ruby/vim-ruby'
+Plug 'skwp/vim-rspec'
+Plug 'depuracao/vim-rdoc'
+Plug 'cakebaker/scss-syntax.vim'
 
+Plug 'chriskempson/base16-vim'
+
+call plug#end()
+
+set nocompatible
 let mapleader = " "
 
 nore ; :
