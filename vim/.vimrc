@@ -20,7 +20,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
 Plug 'tpope/vim-abolish'
-Plug 'mileszs/ack.vim', {'on': 'Ack'}
+Plug 'mileszs/ack.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'ap/vim-css-color'
 Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
@@ -36,7 +36,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'scrooloose/nerdcommenter', {'on': 'NERDCommenterToggle'}
+Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-repeat'
 Plug 'garbas/vim-snipmate'
