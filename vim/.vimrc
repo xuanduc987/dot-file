@@ -2,6 +2,7 @@ let g:windows_os = has("win32") || has("win16") || has("win8")
 
 " Load vim-plug
 if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
+    execute '!mkdir ~/.vim/autoload'
     execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
 
@@ -19,23 +20,23 @@ Plug 'junegunn/vim-easy-align'
 Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
 Plug 'tpope/vim-abolish'
-Plug 'mileszs/ack.vim'
+Plug 'mileszs/ack.vim', {'on': 'Ack'}
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'ap/vim-css-color'
-Plug 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
 Plug 'tpope/vim-dispatch'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-eunuch'
-Plug 'mattn/gist-vim'
-Plug 'sjl/gundo.vim'
+Plug 'mattn/gist-vim', {'on': 'Gist'}
+Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'edsono/vim-matchit'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/syntastic'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdcommenter'
+Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
+Plug 'scrooloose/nerdcommenter', {'on': 'NERDCommenterToggle'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'tpope/vim-repeat'
 Plug 'garbas/vim-snipmate'
@@ -55,14 +56,15 @@ Plug 'Yggdroot/indentLine'
 
 Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-git'
-Plug 'tpope/vim-haml'
+"Plug 'tpope/vim-haml'
 Plug 'pangloss/vim-javascript'
-Plug 'elzr/vim-json'
-Plug 'tpope/vim-liquid'
+"Plug 'elzr/vim-json'
+Plug 'kchmck/vim-coffee-script'
+"Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
 Plug 'vim-ruby/vim-ruby'
-Plug 'skwp/vim-rspec'
-Plug 'depuracao/vim-rdoc'
+"Plug 'skwp/vim-rspec'
+"Plug 'depuracao/vim-rdoc'
 Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'chriskempson/base16-vim'
