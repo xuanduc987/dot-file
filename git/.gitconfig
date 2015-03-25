@@ -25,3 +25,5 @@
   grep = auto
 [diff]
   tool = vimdiff
+[github]
+	user = xuanduc987

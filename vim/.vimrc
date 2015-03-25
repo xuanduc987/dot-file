@@ -8,21 +8,15 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
-Plug 'ecomba/vim-ruby-refactoring'
-if !g:windows_os
-  Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
-endif
-Plug 'tpope/vim-ragtag'
-Plug 'tpope/vim-speeddating'
-Plug 'junegunn/vim-easy-align'
 Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
+Plug 'Yggdroot/indentLine'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-abolish'
-Plug 'mileszs/ack.vim'
+"Plug 'mileszs/ack.vim'
 Plug 'jeetsukumaran/vim-buffergator'
-Plug 'ap/vim-css-color'
 Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
 Plug 'tpope/vim-dispatch'
 Plug 'Lokaltog/vim-easymotion'
@@ -46,26 +40,34 @@ Plug 'tpope/vim-unimpaired'
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'honza/vim-snippets'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'thinca/vim-visualstar'
-Plug 'skalnik/vim-vroom'
+"Plug 'thinca/vim-visualstar'
 Plug 'mattn/webapi-vim'
 Plug 'itspriddle/ZoomWin'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'Yggdroot/indentLine'
 
+Plug 'sheerun/vim-polyglot'
+Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
+if !g:windows_os
+  Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
+endif
+Plug 'tpope/vim-rails'
+Plug 'skalnik/vim-vroom'
 Plug 'chrisbra/csv.vim'
-Plug 'tpope/vim-git'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'tpope/vim-ragtag'
+" Included in vim-polyglot
+"Plug 'ap/vim-css-color'
+"Plug 'tpope/vim-git'
 "Plug 'tpope/vim-haml'
-Plug 'pangloss/vim-javascript'
+"Plug 'pangloss/vim-javascript'
 "Plug 'elzr/vim-json'
-Plug 'kchmck/vim-coffee-script'
+"Plug 'kchmck/vim-coffee-script'
 "Plug 'tpope/vim-liquid'
-Plug 'tpope/vim-markdown'
-Plug 'vim-ruby/vim-ruby'
+"Plug 'tpope/vim-markdown'
+"Plug 'vim-ruby/vim-ruby'
 "Plug 'skwp/vim-rspec'
 "Plug 'depuracao/vim-rdoc'
-Plug 'cakebaker/scss-syntax.vim'
 
 Plug 'chriskempson/base16-vim'
 
