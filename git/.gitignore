@@ -3,3 +3,4 @@ gems.tags
 .idea/*
 *.iml
 .rubocop*.yml
+.versions.conf

@@ -2,7 +2,7 @@ let g:windows_os = has("win32") || has("win16") || has("win8")
 
 " Load vim-plug
 if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
-    execute '!mkdir ~/.vim/autoload'
+    execute '!mkdir -p ~/.vim/autoload'
     execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
 
