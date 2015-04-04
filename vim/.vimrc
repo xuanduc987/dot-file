@@ -2,16 +2,14 @@ let g:windows_os = has("win32") || has("win16") || has("win8")
 
 " Load vim-plug
 if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
-    execute '!mkdir -p ~/.vim/autoload'
-    execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+  execute '!mkdir -p ~/.vim/autoload'
+  execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
-
 call plug#begin('~/.vim/plugged')
-
 Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
 Plug 'Yggdroot/indentLine'
-Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-abolish'
@@ -70,160 +68,98 @@ Plug 'tpope/vim-ragtag'
 "Plug 'depuracao/vim-rdoc'
 
 Plug 'chriskempson/base16-vim'
-
 call plug#end()
-
-set nocompatible
-let mapleader = " "
-
-nore ; :
-nore \ ;
-
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Enter> <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
-" Wrapped line treated as normal line
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
-
-" Need more context
-set scrolloff=2
-set nonumber
-set relativenumber
-
-" Enable mouse support
-set mouse=a
-
-set textwidth=80
-
-set cc=+1
-
-map <Leader>p :CtrlP<CR>
-
-set wmh=0 " no current line on minimized windows
-nmap <silent> <C-K> :wincmd k<CR>
-nmap <silent> <C-J> :wincmd j<CR>
-nmap <silent> <C-H> :wincmd h<CR>
-nmap <silent> <C-L> :wincmd l<CR>
-
-set splitbelow
-set splitright
-
-""
-"" Basic Setup
-""
 
 set nocompatible " Use vim, no vi defaults
 set ruler " Show line and column number
 syntax enable " Turn on syntax highlighting allowing local overrides
 set encoding=utf-8 " Set default encoding to UTF-8
-
-""
-"" Whitespace
-""
-
 set nowrap " don't wrap lines
 set tabstop=2 " a tab is two spaces
 set shiftwidth=2 " an autoindent (with <<) is two spaces
 set expandtab " use spaces, not tabs
 set list " Show invisible characters
 set backspace=indent,eol,start " backspace through everything in insert mode
-
-" List chars
 set listchars="" " Reset the listchars
 set listchars=tab:\ \ " a tab should display as " ", trailing whitespace as "."
 set listchars+=trail:. " show trailing spaces as dots
-set listchars+=extends:> " The character to show in the last column when wrap is
-			 " off and the line continues beyond the right of the screen
-set listchars+=precedes:< " The character to show in the last column when wrap is
-			  " off and the line continues beyond the left of the screen
-
-
-""
-"" Searching
-""
+set listchars+=extends:> " The character to show in the last column when wrap is off and the line continues beyond the right of the screen
+set listchars+=precedes:< " The character to show in the last column when wrap is off and the line continues beyond the left of the screen
 set hlsearch " highlight matches
 set incsearch " incremental searching
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-""
-"" Wild settings
-""
-
-" TODO: Investigate the precise meaning of these settings
-" set wildmode=list:longest,list:full
+let mapleader = " "
+nore ; :
+nore \ ;
+set laststatus=2 " always show the status bar
+" Wrapped line treated as normal line
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+noremap  <buffer> <silent> 0 g0
+noremap  <buffer> <silent> $ g$
+" Need more context
+set scrolloff=2
+set nonumber
+set relativenumber
+" Enable mouse support
+set mouse=a
+set textwidth=80
+" color column textwidth+1
+set cc=+1
+set wmh=0 " no current line on minimized windows
+" easy move between windows
+nmap <silent> <C-K> :wincmd k<CR>
+nmap <silent> <C-J> :wincmd j<CR>
+nmap <silent> <C-H> :wincmd h<CR>
+nmap <silent> <C-L> :wincmd l<CR>
+" Natural split
+set splitbelow
+set splitright
+" clear highlight
+nmap <leader>hl :noh<CR>
 
 " Disable output and VCS files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
-
 " Disable archive files
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-
 " Ignore bundler and sass cache
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-
 " Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
 set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
-
 " Ignore rails temporary asset caches
 set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
-
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
-
-""
-"" Backup and swap files
-""
 
 set backupdir^=~/.vim/_backup// " where to put backup files.
 set directory^=~/.vim/_temp// " where to put swap files.
 
-if has("statusline") && !&cp
-	set laststatus=2 " always show the status bar
-	" Start the status line
-	set statusline=%f\ %m\ %r
-	set statusline+=Line:%l/%L[%p%%]
-	set statusline+=Col:%v
-	set statusline+=Buf:#%n
-	set statusline+=[%b][0x%B]
-endif
-
-
-
 if has("autocmd")
-	if exists("g:autosave_on_blur")
-		au FocusLost * silent! wall
-	endif
+  if exists("g:autosave_on_blur")
+    au FocusLost * silent! wall
+  endif
 endif
 
 if has("autocmd")
-	" In Makefiles, use real tabs, not tabs expanded to spaces
-	au FileType make setlocal noexpandtab
+  " In Makefiles, use real tabs, not tabs expanded to spaces
+  au FileType make setlocal noexpandtab
 
-	" Make sure all mardown files have the correct filetype set and setup wrapping
-	au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
-	if !exists("g:disable_markdown_autostyle")
-		au FileType markdown setlocal wrap linebreak textwidth=72 nolist
-	endif
+  " Make sure all mardown files have the correct filetype set and setup wrapping
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
+  if !exists("g:disable_markdown_autostyle")
+    au FileType markdown setlocal wrap linebreak textwidth=72 nolist
+  endif
 
-	" make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
-	au FileType python setlocal tabstop=4 shiftwidth=4
+  " make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
+  au FileType python setlocal tabstop=4 shiftwidth=4
 
-	" Remember last location in file, but not for commit messages.
-	" see :help last-position-jump
-	au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
-				\| exe "normal! g`\"" | endif
+  " Remember last location in file, but not for commit messages.
+  " see :help last-position-jump
+  au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
+        \| exe "normal! g`\"" | endif
 endif
-
-""
-"" General Mappings (Normal, Visual, Operator-pending)
-""
 
 " Toggle paste mode
 nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
@@ -257,7 +193,7 @@ nmap <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
 nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
 
 " Underline the current line with '='
-nmap <silent> <leader>ul :t.<CR>Vr=
+nmap <silent> <leader>un :t.<CR>Vr=
 
 " set text wrapping toggles
 nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
@@ -275,41 +211,39 @@ nmap <leader>hs :set hlsearch! hlsearch?<CR>
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-
-""
-"" Command-Line Mappings
-""
-
 " After whitespace, insert the current directory into a command-line path
 cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 
+" Plugin settings
 
-""
-"" Plugin settings
-""
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <Enter> <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " prevents delimitMate from loading for md
 au FileType markdown let b:loaded_delimitMate = 1
 
 " ack setting {
 " Define <C-F> to a dummy value to see if it would set <C-f> as well.
-map <C-F> :dummy
-if maparg("<C-f>") == ":dummy"
+"map <C-F> :dummy
+"if maparg("<C-f>") == ":dummy"
 " <leader>f on systems where <C-f> == <C-F>
-map <leader>f :Ack<space>
-else
+"map <leader>f :Ack<space>
+"else
 " <C-F> if we can still map <C-f> to <S-Down>
-map <C-F> :Ack<space>
-endif
-map <C-f> <S-Down>
+"map <C-F> :Ack<space>
+"endif
+"map <C-f> <S-Down>
 " }
 
 " ctrlp setting {
+map <Leader>p :CtrlP<CR>
 let g:ctrlp_map = ''
 let g:ctrlp_custom_ignore = {
-    \ 'dir': '\v[\/]\.(git|hg|svn)$',
-    \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
-    \ }
+      \ 'dir': '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
+      \ }
 " }
 
 " git fugitive {
@@ -323,14 +257,14 @@ nmap <leader>gp :Git push<CR>
 
 " gist {
 if executable("pbcopy")
-" The copy command
-let g:gist_clip_command = 'pbcopy'
+  " The copy command
+  let g:gist_clip_command = 'pbcopy'
 elseif executable("xclip")
-" The copy command
-let g:gist_clip_command = 'xclip -selection clipboard'
+  " The copy command
+  let g:gist_clip_command = 'xclip -selection clipboard'
 elseif executable("putclip")
-" The copy command
-let g:gist_clip_command = 'putclip'
+  " The copy command
+  let g:gist_clip_command = 'putclip'
 end
 
 " detect filetype if vim failed auto-detection.
@@ -343,7 +277,7 @@ imap <F5> <ESC>:GundoToggle<CR>
 " }
 
 " NEARDcommenter {
- map <leader>/ <plug>NERDCommenterToggle<CR>
+map <leader>/ <plug>NERDCommenterToggle<CR>
 " }
 
 " NEARDTree {
@@ -358,48 +292,48 @@ autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
 
 " If the parameter is a directory, cd into it
 function s:CdIfDirectory(directory)
-let explicitDirectory = isdirectory(a:directory)
-let directory = explicitDirectory || empty(a:directory)
+  let explicitDirectory = isdirectory(a:directory)
+  let directory = explicitDirectory || empty(a:directory)
 
-if explicitDirectory
-  exe "cd " . fnameescape(a:directory)
-endif
+  if explicitDirectory
+    exe "cd " . fnameescape(a:directory)
+  endif
 
-" Allows reading from stdin
-" ex: git diff | mvim -R -
-if strlen(a:directory) == 0
-  return
-endif
+  " Allows reading from stdin
+  " ex: git diff | mvim -R -
+  if strlen(a:directory) == 0
+    return
+  endif
 
-if directory
-  NERDTree
-  wincmd p
-  bd
-endif
+  if directory
+    NERDTree
+    wincmd p
+    bd
+  endif
 
-if explicitDirectory
-  wincmd p
-endif
+  if explicitDirectory
+    wincmd p
+  endif
 endfunction
 
 " NERDTree utility function
 function s:UpdateNERDTree(...)
-let stay = 0
+  let stay = 0
 
-if(exists("a:1"))
-  let stay = a:1
-end
+  if(exists("a:1"))
+    let stay = a:1
+  end
 
-if exists("t:NERDTreeBufName")
-  let nr = bufwinnr(t:NERDTreeBufName)
-  if nr != -1
-    exe nr . "wincmd w"
-    exe substitute(mapcheck("R"), "<CR>", "", "")
-    if !stay
-      wincmd p
-    end
+  if exists("t:NERDTreeBufName")
+    let nr = bufwinnr(t:NERDTreeBufName)
+    if nr != -1
+      exe nr . "wincmd w"
+      exe substitute(mapcheck("R"), "<CR>", "", "")
+      if !stay
+        wincmd p
+      end
+    endif
   endif
-endif
 endfunction
 " }
 
@@ -426,160 +360,160 @@ map <leader>zw :ZoomWin<CR>
 
 " Lightline setting {
 let g:lightline = {
-    \ 'active': {
-    \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly' ], ['ctrlpmark', 'bufferline'] ],
-    \   'right': [ ['lineinfo'], ['percent'], [ 'fileformat', 'fileencoding', 'filetype', 'syntastic' ] ]
-    \ },
-    \ 'component_function': {
-    \   'fugitive': 'MyFugitive',
-    \   'readonly': 'MyReadonly',
-    \   'bufferline': 'MyBufferline',
-    \   'fileformat': 'MyFileformat',
-    \   'filetype': 'MyFiletype',
-    \   'fileencoding': 'MyFileencoding',
-    \   'mode': 'MyMode',
-    \   'ctrlpmark': 'CtrlPMark',
-    \ },
-    \ 'component_expand': {
-    \   'syntastic': 'SyntasticStatuslineFlag',
-    \ },
-    \ 'component_type': {
-    \   'syntastic': 'middle',
-    \ },
-    \ 'subseparator': { 'left': '|', 'right': '|' }
-    \ }
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly' ], ['ctrlpmark', 'bufferline'] ],
+      \   'right': [ ['lineinfo'], ['percent'], [ 'fileformat', 'fileencoding', 'filetype', 'syntastic' ] ]
+      \ },
+      \ 'component_function': {
+      \   'fugitive': 'MyFugitive',
+      \   'readonly': 'MyReadonly',
+      \   'bufferline': 'MyBufferline',
+      \   'fileformat': 'MyFileformat',
+      \   'filetype': 'MyFiletype',
+      \   'fileencoding': 'MyFileencoding',
+      \   'mode': 'MyMode',
+      \   'ctrlpmark': 'CtrlPMark',
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'middle',
+      \ },
+      \ 'subseparator': { 'left': '|', 'right': '|' }
+      \ }
 
 let g:lightline.mode_map = {
-    \ 'n' : ' N ',
-    \ 'i' : ' I ',
-    \ 'R' : ' R ',
-    \ 'v' : ' V ',
-    \ 'V' : 'V-L',
-    \ 'c' : ' C ',
-    \ "\<C-v>" : 'V-B',
-    \ 's' : ' S ',
-    \ 'S' : 'S-L',
-    \ "\<C-s>" : 'S-B',
-    \ '?' : ' ' }
+      \ 'n' : ' N ',
+      \ 'i' : ' I ',
+      \ 'R' : ' R ',
+      \ 'v' : ' V ',
+      \ 'V' : 'V-L',
+      \ 'c' : ' C ',
+      \ "\<C-v>" : 'V-B',
+      \ 's' : ' S ',
+      \ 'S' : 'S-L',
+      \ "\<C-s>" : 'S-B',
+      \ '?' : ' ' }
 
 function! MyModified()
-return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
 function! MyReadonly()
-return &ft !~? 'help' && &readonly ? 'RO' : ''
+  return &ft !~? 'help' && &readonly ? 'RO' : ''
 endfunction
 
 function! MyFilename()
-let fname = expand('%:t')
-return fname == 'ControlP' ? g:lightline.ctrlp_item :
-      \ fname == '__Tagbar__' ? g:lightline.fname :
-      \ fname =~ '__Gundo\|NERD_tree' ? '' :
-      \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-      \ &ft == 'unite' ? unite#get_status_string() :
-      \ &ft == 'vimshell' ? vimshell#get_status_string() :
-      \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
-      \ ('' != fname ? fname : '[No Name]') .
-      \ ('' != MyModified() ? ' ' . MyModified() : '')
+  let fname = expand('%:t')
+  return fname == 'ControlP' ? g:lightline.ctrlp_item :
+        \ fname == '__Tagbar__' ? g:lightline.fname :
+        \ fname =~ '__Gundo\|NERD_tree' ? '' :
+        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \ &ft == 'unite' ? unite#get_status_string() :
+        \ &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
 endfunction
 
 function! MyFugitive()
-try
-  if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-    let mark = ''  " edit here for cool mark
-    let _ = fugitive#head()
-    return strlen(_) ? mark._ : ''
-  endif
-catch
-endtry
-return ''
+  try
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+      let mark = ''  " edit here for cool mark
+      let _ = fugitive#head()
+      return strlen(_) ? mark._ : ''
+    endif
+  catch
+  endtry
+  return ''
 endfunction
 
 function! MyFileformat()
-return winwidth(0) > 70 ? &fileformat : ''
+  return winwidth(0) > 70 ? &fileformat : ''
 endfunction
 
 function! MyFiletype()
-return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
 endfunction
 
 function! MyFileencoding()
-return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! MyMode()
-let fname = expand('%:t')
-return fname == '__Tagbar__' ? 'Tagbar' :
-      \ fname == 'ControlP' ? 'CtrlP' :
-      \ fname == '__Gundo__' ? 'Gundo' :
-      \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-      \ fname =~ 'NERD_tree' ? 'NERDTree' :
-      \ &ft == 'unite' ? 'Unite' :
-      \ &ft == 'vimfiler' ? 'VimFiler' :
-      \ &ft == 'vimshell' ? 'VimShell' :
-      \ winwidth(0) > 60 ? lightline#mode() : ''
+  let fname = expand('%:t')
+  return fname == '__Tagbar__' ? 'Tagbar' :
+        \ fname == 'ControlP' ? 'CtrlP' :
+        \ fname == '__Gundo__' ? 'Gundo' :
+        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+        \ fname =~ 'NERD_tree' ? 'NERDTree' :
+        \ &ft == 'unite' ? 'Unite' :
+        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'vimshell' ? 'VimShell' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 
 function! CtrlPMark()
-if expand('%:t') =~ 'ControlP'
-  call lightline#link('iR'[g:lightline.ctrlp_regex])
-  return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-        \ , g:lightline.ctrlp_next], 0)
-else
-  return ''
-endif
+  if expand('%:t') =~ 'ControlP'
+    call lightline#link('iR'[g:lightline.ctrlp_regex])
+    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+          \ , g:lightline.ctrlp_next], 0)
+  else
+    return ''
+  endif
 endfunction
 
 function! MyBufferline()
-call bufferline#refresh_status()
-let b = g:bufferline_status_info.before
-let c = g:bufferline_status_info.current
-let a = g:bufferline_status_info.after
-let alen = strlen(a)
-let blen = strlen(b)
-let clen = strlen(c)
-let w = winwidth(0) * 4 / 11
-if w < alen+blen+clen
-  let whalf = (w - strlen(c)) / 2
-  let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
-  let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
-  return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
-else
-  return b . c . a
-endif
+  call bufferline#refresh_status()
+  let b = g:bufferline_status_info.before
+  let c = g:bufferline_status_info.current
+  let a = g:bufferline_status_info.after
+  let alen = strlen(a)
+  let blen = strlen(b)
+  let clen = strlen(c)
+  let w = winwidth(0) * 4 / 11
+  if w < alen+blen+clen
+    let whalf = (w - strlen(c)) / 2
+    let aa = alen > whalf && blen > whalf ? a[:whalf] : alen + blen < w - clen || alen < whalf ? a : a[:(w - clen - blen)]
+    let bb = alen > whalf && blen > whalf ? b[-(whalf):] : alen + blen < w - clen || blen < whalf ? b : b[-(w - clen - alen):]
+    return (strlen(bb) < strlen(b) ? '...' : '') . bb . c . aa . (strlen(aa) < strlen(a) ? '...' : '')
+  else
+    return b . c . a
+  endif
 endfunction
 
 let g:ctrlp_status_func = {
-    \ 'main': 'CtrlPStatusFunc_1',
-    \ 'prog': 'CtrlPStatusFunc_2',
-    \ }
+      \ 'main': 'CtrlPStatusFunc_1',
+      \ 'prog': 'CtrlPStatusFunc_2',
+      \ }
 
 function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-let g:lightline.ctrlp_regex = a:regex
-let g:lightline.ctrlp_prev = a:prev
-let g:lightline.ctrlp_item = a:item
-let g:lightline.ctrlp_next = a:next
-return lightline#statusline(0)
+  let g:lightline.ctrlp_regex = a:regex
+  let g:lightline.ctrlp_prev = a:prev
+  let g:lightline.ctrlp_item = a:item
+  let g:lightline.ctrlp_next = a:next
+  return lightline#statusline(0)
 endfunction
 
 function! CtrlPStatusFunc_2(str)
-return lightline#statusline(0)
+  return lightline#statusline(0)
 endfunction
 
 let g:tagbar_status_func = 'TagbarStatusFunc'
 
 function! TagbarStatusFunc(current, sort, fname, ...) abort
-let g:lightline.fname = a:fname
-return lightline#statusline(0)
+  let g:lightline.fname = a:fname
+  return lightline#statusline(0)
 endfunction
 
 augroup AutoSyntastic
-autocmd!
-autocmd BufWritePost *.c,*.cpp,*.rb,*.py call s:syntastic()
+  autocmd!
+  autocmd BufWritePost *.c,*.cpp,*.rb,*.py call s:syntastic()
 augroup END
 function! s:syntastic()
-SyntasticCheck
-call lightline#update()
+  SyntasticCheck
+  call lightline#update()
 endfunction
 
 "Changing background color on the fly
