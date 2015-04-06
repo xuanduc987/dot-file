@@ -78,6 +78,7 @@ let mapleader = " "
 
 nore ; :
 nore \ ;
+inore jk <Esc>
 
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
@@ -106,10 +107,10 @@ set cc=+1
 map <Leader>p :CtrlP<CR>
 
 set wmh=0 " no current line on minimized windows
-nmap <silent> <C-K> :wincmd k<CR>
-nmap <silent> <C-J> :wincmd j<CR>
-nmap <silent> <C-H> :wincmd h<CR>
-nmap <silent> <C-L> :wincmd l<CR>
+nore <silent> <C-K> :wincmd k<CR>
+nore <silent> <C-J> :wincmd j<CR>
+nore <silent> <C-H> :wincmd h<CR>
+nore <silent> <C-L> :wincmd l<CR>
 
 set splitbelow
 set splitright
