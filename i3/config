@@ -98,14 +98,15 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 set $tag1 "1: work"
-set $tag2 "2: www"
-set $tag3 "3: mail"
+set $tag2 "2: work^2"
+set $tag3 "3: www"
+set $tag4 "4: misc"
 
 # switch to workspace
 bindsym $mod+1 workspace $tag1
 bindsym $mod+2 workspace $tag2
 bindsym $mod+3 workspace $tag3
-bindsym $mod+4 workspace 4
+bindsym $mod+4 workspace $tag4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
@@ -117,7 +118,7 @@ bindsym $mod+0 workspace 10
 bindsym $mod+Shift+1 move container to workspace $tag1
 bindsym $mod+Shift+2 move container to workspace $tag2
 bindsym $mod+Shift+3 move container to workspace $tag3
-bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+4 move container to workspace $tag4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
@@ -203,8 +204,8 @@ exec --no-startup-id nm-applet
 exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
 exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
-exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird"
-exec --no-startup-id i3-msg "workspace $tag2; exec firefox www.facebook.com"
+exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird; layout tabbed"
+exec --no-startup-id i3-msg "workspace $tag3; exec firefox www.facebook.com"
 exec --no-Startup-id i3-msg "workspace $tag1"
 
 # Custom KeyBinds
