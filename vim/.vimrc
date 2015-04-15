@@ -68,6 +68,7 @@ Plug 'tpope/vim-ragtag'
 "Plug 'depuracao/vim-rdoc'
 
 Plug 'chriskempson/base16-vim'
+Plug 'reedes/vim-colors-pencil'
 call plug#end()
 
 set nocompatible " Use vim, no vi defaults
@@ -94,6 +95,9 @@ let mapleader = " "
 nore ; :
 nore \ ;
 inore jk <Esc>
+
+nore <silent> <F6> :%s/{ \(.*\) }/{\1}/gc<CR>
+nore <silent> <F7> :%s/'\(.\{-}\)'/"\1"/gc<CR>
 
 set laststatus=2 " always show the status bar
 " Wrapped line treated as normal line
@@ -546,5 +550,6 @@ let g:vimshell_force_overwrite_statusline = 0
 "}
 
 let base16colorspace=256
-color base16-brewer
+let g:lightline.colorscheme = "Tomorrow_Night"
+color base16-tomorrow
 set background=dark

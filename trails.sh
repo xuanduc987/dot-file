@@ -25,6 +25,7 @@ fi
 
 echo "Starting rails app $SESSION session..."
 tmux new-session -d -s $SESSION
+tmux send-keys "cd ." C-m
 
 # Setup Windows. Note `cd $APPDIR` is necessary to fire .rvmrc
 tmux new-window -t $SESSION:2 -n edit "cd $APPDIR;vim config/routes.rb"
