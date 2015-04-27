@@ -221,6 +221,9 @@ map <Leader>= <C-w>=
 cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 
 " Plugin settings
+" Markdown
+let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
+      \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
 
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
