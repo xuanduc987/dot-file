@@ -202,8 +202,8 @@ exec xrdb -merge ~/.Xresources
 #exec --no-startup-id urxvtd
 exec --no-startup-id nm-applet
 exec --no-startup-id volumeicon
-exec --no-startup-id naturalscrolling
 exec --no-startup-id rescuetime
+exec --no-startup-id ~/.i3/gvfs_automount.py >/dev/null
 exec --no-startup-id feh --bg-fill ~/Pictures/wall.jpg
 exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird; layout tabbed"
 exec --no-startup-id i3-msg "workspace $tag3; exec firefox www.facebook.com"
