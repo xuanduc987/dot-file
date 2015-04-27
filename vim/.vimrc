@@ -95,6 +95,7 @@ let mapleader = " "
 nore ; :
 nore \ ;
 inore jk <Esc>
+inore kj <Esc>
 
 nore <silent> <F6> :%s/{ \(.*\) }/{\1}/gc<CR>
 nore <silent> <F7> :%s/'\(.\{-}\)'/"\1"/gc<CR>
@@ -566,6 +567,20 @@ endfunction
 " Sane regex
 nnoremap / /\v
 vnoremap / /\v
+
+" Type <tab> is easier than type %
+nnoremap <tab> %
+vnoremap <tab> %
+
+" No arrow keys
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
 
 let base16colorspace=256
 let g:lightline.colorscheme = "Tomorrow_Night"
