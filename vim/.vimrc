@@ -563,6 +563,10 @@ function! QuickfixFilenames()
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
+" Sane regex
+nnoremap / /\v
+vnoremap / /\v
+
 let base16colorspace=256
 let g:lightline.colorscheme = "Tomorrow_Night"
 color base16-tomorrow
