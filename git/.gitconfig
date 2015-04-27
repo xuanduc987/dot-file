@@ -3,7 +3,7 @@
 	excludesfile = ~/.gitignore
 [push]
   config = default
-	default = tracking
+	default = simple
 [rebase]
   autosquash = true
 [alias]
