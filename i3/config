@@ -22,6 +22,7 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # font pango:DejaVu Sans Mono 10
 
 new_window 1pixel
+hide_edge_borders both
 new_float normal
 
 bindsym $sup+Shift+b border toggle
@@ -98,7 +99,7 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 set $tag1 "1: work"
-set $tag2 "2: work^2"
+set $tag2 "2: work²"
 set $tag3 "3: www"
 set $tag4 "4: misc"
 
