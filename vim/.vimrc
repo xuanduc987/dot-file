@@ -13,6 +13,7 @@ Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-abolish'
+Plug 'mtth/scratch.vim', {'on': 'Scratch'}
 "Plug 'mileszs/ack.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
@@ -260,6 +261,10 @@ map <Leader>= <C-w>=
 cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 
 " Plugin settings
+" split join
+let g:splitjoin_split_mapping = 'ss'
+let g:splitjoin_join_mapping  = 'sj'
+
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
       \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
