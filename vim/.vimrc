@@ -5,57 +5,67 @@ if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
   execute '!mkdir -p ~/.vim/autoload'
   execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
 endif
+
 call plug#begin('~/.vim/plugged')
-Plug 'itchyny/lightline.vim'
+" Visual
 Plug 'bling/vim-bufferline'
-Plug 'Yggdroot/indentLine'
-Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
+Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-abolish'
-Plug 'mtth/scratch.vim', {'on': 'Scratch'}
-"Plug 'mileszs/ack.vim'
+Plug 'scrooloose/syntastic'
+
+" Browsing
+Plug 'Lokaltog/vim-easymotion'
+Plug 'Yggdroot/indentLine'
+Plug 'itspriddle/ZoomWin'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
-Plug 'tpope/vim-dispatch'
-Plug 'Lokaltog/vim-easymotion'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-eunuch'
-Plug 'mattn/gist-vim', {'on': 'Gist'}
-Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'edsono/vim-matchit'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/syntastic'
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'tpope/vim-repeat'
-Plug 'garbas/vim-snipmate'
-Plug 'ervandew/supertab'
-Plug 'tomtom/tlib_vim'
-Plug 'tpope/vim-unimpaired'
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'honza/vim-snippets'
-Plug 'bronson/vim-trailing-whitespace'
-"Plug 'thinca/vim-visualstar'
-Plug 'mattn/webapi-vim'
-Plug 'itspriddle/ZoomWin'
+Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-eunuch'
+" Plug 'mileszs/ack.vim'
+
+" Git
+Plug 'mattn/gist-vim', {'on': 'Gist'}
+Plug 'tpope/vim-fugitive'
+
+" Edit
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'edsono/vim-matchit'
+Plug 'ervandew/supertab'
+Plug 'garbas/vim-snipmate'
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'mtth/scratch.vim', {'on': 'Scratch'}
+Plug 'scrooloose/nerdcommenter'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 
-Plug 'sheerun/vim-polyglot'
+" Lib
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'honza/vim-snippets'
+Plug 'mattn/webapi-vim'
+Plug 'tomtom/tlib_vim'
+
+" Lang
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'chrisbra/csv.vim'
 Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
+Plug 'sheerun/vim-polyglot'
+Plug 'skalnik/vim-vroom'
+Plug 'tpope/vim-ragtag'
+Plug 'tpope/vim-rails'
 if !g:windows_os
   Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
 endif
-Plug 'tpope/vim-rails'
-Plug 'skalnik/vim-vroom'
-Plug 'chrisbra/csv.vim'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'tpope/vim-ragtag'
 " Included in vim-polyglot
 "Plug 'ap/vim-css-color'
 "Plug 'tpope/vim-git'
@@ -69,10 +79,12 @@ Plug 'tpope/vim-ragtag'
 "Plug 'skwp/vim-rspec'
 "Plug 'depuracao/vim-rdoc'
 
+" Colors
 Plug 'chriskempson/base16-vim'
 Plug 'reedes/vim-colors-pencil'
 call plug#end()
 
+let mapleader = " "
 set nocompatible " Use vim, no vi defaults
 set ruler " Show line and column number
 syntax enable " Turn on syntax highlighting allowing local overrides
@@ -93,21 +105,7 @@ set incsearch " incremental searching
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-let mapleader = " "
-nore ; :
-nore \ ;
-inore jk <Esc>
-inore kj <Esc>
-
-nore <silent> <F6> :%s/{ \(.*\) }/{\1}/gc<CR>
-nore <silent> <F7> :%s/'\(.\{-}\)'/"\1"/gc<CR>
-
 set laststatus=2 " always show the status bar
-" Wrapped line treated as normal line
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
 " Need more context
 set scrolloff=2
 set nonumber
@@ -118,16 +116,9 @@ set textwidth=80
 " color column textwidth+1
 set cc=+1
 set wmh=0 " no current line on minimized windows
-" easy move between windows
-nore <silent> <C-K> :wincmd k<CR>
-nore <silent> <C-J> :wincmd j<CR>
-nore <silent> <C-H> :wincmd h<CR>
-nore <silent> <C-L> :wincmd l<CR>
 " Natural split
 set splitbelow
 set splitright
-" clear highlight
-nmap <leader>hl :noh<CR>
 
 " Disable output and VCS files
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
@@ -208,105 +199,21 @@ if has("autocmd")
         \| exe "normal! g`\"" | endif
 endif
 
-" Toggle paste mode
-nmap <silent> <F4> :set invpaste<CR>:set paste?<CR>
-imap <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
-
-" format the entire file
-nnoremap <leader>fef :normal! gg=G``<CR>
-
-" upper/lower word
-nmap <leader>u mQviwU`Q
-nmap <leader>l mQviwu`Q
-
-" upper/lower first char of word
-nmap <leader>U mQgewvU`Q
-nmap <leader>L mQgewvu`Q
-
-" cd to the directory containing the file in the buffer
-nmap <silent> <leader>cd :lcd %:h<CR>
-
-" Create the directory containing the file in the buffer
-nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
-
-" Some helpers to edit mode
-" http://vimcasts.org/e/14
-nmap <leader>ew :e <C-R>=expand('%:h').'/'<cr>
-nmap <leader>es :sp <C-R>=expand('%:h').'/'<cr>
-nmap <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
-nmap <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
-
-" Swap two words
-nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-" Underline the current line with '='
-nmap <silent> <leader>un :t.<CR>Vr=
-
-" set text wrapping toggles
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-
-" find merge conflict markers
-nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
-" Map the arrow keys to be based on display lines, not physical lines
-map <Down> gj
-map <Up> gk
-
-" Toggle hlsearch with <leader>hs
-nmap <leader>hs :set hlsearch! hlsearch?<CR>
-
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
-
-" After whitespace, insert the current directory into a command-line path
-cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
-
 " Plugin settings
-" split join
-let g:splitjoin_split_mapping = 'ss'
-let g:splitjoin_join_mapping  = 'sj'
 
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
       \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
 
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Enter> <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " prevents delimitMate from loading for md
 au FileType markdown let b:loaded_delimitMate = 1
 
-" ack setting {
-" Define <C-F> to a dummy value to see if it would set <C-f> as well.
-"map <C-F> :dummy
-"if maparg("<C-f>") == ":dummy"
-" <leader>f on systems where <C-f> == <C-F>
-"map <leader>f :Ack<space>
-"else
-" <C-F> if we can still map <C-f> to <S-Down>
-"map <C-F> :Ack<space>
-"endif
-"map <C-f> <S-Down>
-" }
-
 " ctrlp setting {
-map <Leader>p :CtrlP<CR>
 let g:ctrlp_map = ''
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
       \ }
-" }
-
-" git fugitive {
-nmap <leader>gb :Gblame<CR>
-nmap <leader>gs :Gstatus<CR>
-nmap <leader>gd :Gdiff<CR>
-nmap <leader>gl :Glog<CR>
-nmap <leader>gc :Gcommit<CR>
-nmap <leader>gp :Git push<CR>
 " }
 
 " gist {
@@ -325,20 +232,8 @@ end
 let g:gist_detect_filetype = 1
 " }
 
-" gundo {
-nmap <F5> :GundoToggle<CR>
-imap <F5> <ESC>:GundoToggle<CR>
-" }
-
-" NEARDcommenter {
-map <leader>/ <plug>NERDCommenterToggle<CR>
-" }
-
 " NEARDTree {
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
-
-" Default mapping, <leader>n
-map <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
 
 augroup AuNERDTreeCmd
 autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
@@ -395,22 +290,6 @@ endfunction
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=2
 " }
-
-" Tagbar mappings.
-map <Leader>rc :TagbarToggle<CR>
-
-" unimpaired {
-" Normal Mode: Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-
-" Visual Mode: Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-" }
-
-" Map <Leader><Leader> to ZoomWin
-map <leader>zw :ZoomWin<CR>
 
 " Lightline setting {
 let g:lightline = {
@@ -608,6 +487,7 @@ function! QuickfixFilenames()
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
+" Mapings
 " Sane regex
 nnoremap / /\v
 vnoremap / /\v
@@ -625,6 +505,123 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
+
+nore <leader>zw :ZoomWin<CR>
+
+" unimpaired {
+" Normal Mode: Bubble single lines
+nnore <C-Up> [e
+nnore <C-Down> ]e
+
+" Visual Mode: Bubble multiple lines
+vnore <C-Up> [egv
+vnore <C-Down> ]egv
+" }
+
+" Tagbar mappings.
+nore <Leader>rc :TagbarToggle<CR>
+
+" NEARDTree
+nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
+
+" NEARDcommenter {
+nore <leader>/ <plug>NERDCommenterToggle<CR>
+" }
+
+" gundo {
+nnore <F5> :GundoToggle<CR>
+inore <F5> <ESC>:GundoToggle<CR>
+" }
+
+" git fugitive {
+nnore <leader>gb :Gblame<CR>
+nnore <leader>gs :Gstatus<CR>
+nnore <leader>gd :Gdiff<CR>
+nnore <leader>gl :Glog<CR>
+nnore <leader>gc :Gcommit<CR>
+nnore <leader>gp :Git push<CR>
+" }
+
+nore <Leader>p :CtrlP<CR>
+
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vnore <Enter> <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nnore ga <Plug>(EasyAlign)
+
+" split join
+let g:splitjoin_split_mapping = 'ss'
+let g:splitjoin_join_mapping  = 'sj'
+
+" Toggle paste mode
+nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
+inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
+
+" format the entire file
+nnoremap <leader>fef :normal! gg=G``<CR>
+
+" upper/lower word
+nnore <leader>u mQviwU`Q
+nnore <leader>l mQviwu`Q
+
+" upper/lower first char of word
+nnore <leader>U mQgewvU`Q
+nnore <leader>L mQgewvu`Q
+
+" cd to the directory containing the file in the buffer
+nnore <silent> <leader>cd :lcd %:h<CR>
+
+" Create the directory containing the file in the buffer
+nnore <silent> <leader>md :!mkdir -p %:p:h<CR>
+
+" Some helpers to edit mode
+" http://vimcasts.org/e/14
+nnore <leader>ew :e <C-R>=expand('%:h').'/'<cr>
+nnore <leader>es :sp <C-R>=expand('%:h').'/'<cr>
+nnore <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
+nnore <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
+
+" Swap two words
+nnore <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+
+" Underline the current line with '='
+nnore <silent> <leader>ul :t.<CR>Vr=
+
+" set text wrapping toggles
+nnore <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+
+" find merge conflict markers
+nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+
+" Map the arrow keys to be based on display lines, not physical lines
+nore <Down> gj
+nore <Up> gk
+
+" Toggle hlsearch with <leader>hs
+nnore <leader>hs :set hlsearch! hlsearch?<CR>
+
+" Adjust viewports to the same size
+nore <Leader>= <C-w>=
+
+" After whitespace, insert the current directory into a command-line path
+cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
+
+" clear highlight
+nnore <leader>hl :noh<CR>
+" easy move between windows
+nore <silent> <C-K> :wincmd k<CR>
+nore <silent> <C-J> :wincmd j<CR>
+nore <silent> <C-H> :wincmd h<CR>
+nore <silent> <C-L> :wincmd l<CR>
+nore ; :
+nore \ ;
+inore jk <Esc>
+inore kj <Esc>
+" Wrapped line treated as normal line
+noremap  <buffer> <silent> k gk
+noremap  <buffer> <silent> j gj
+noremap  <buffer> <silent> 0 g0
+noremap  <buffer> <silent> $ g$
 
 let base16colorspace=256
 let g:lightline.colorscheme = "Tomorrow_Night"
