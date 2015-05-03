@@ -10,6 +10,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'bling/vim-bufferline'
 Plug 'Yggdroot/indentLine'
 Plug 'junegunn/vim-easy-align', {'on': '<Plug>(EasyAlign)'}
+Plug 'junegunn/goyo.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-abolish'
