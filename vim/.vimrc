@@ -618,10 +618,10 @@ nore \ ;
 inore jk <Esc>
 inore kj <Esc>
 " Wrapped line treated as normal line
-noremap  <buffer> <silent> k gk
-noremap  <buffer> <silent> j gj
-noremap  <buffer> <silent> 0 g0
-noremap  <buffer> <silent> $ g$
+noremap <silent> k gk
+noremap <silent> j gj
+noremap <silent> 0 g0
+noremap <silent> $ g$
 
 let base16colorspace=256
 let g:lightline.colorscheme = "Tomorrow_Night"
