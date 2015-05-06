@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'bling/vim-bufferline'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 Plug 'scrooloose/syntastic'
 
 " Browsing
@@ -622,6 +623,33 @@ noremap <silent> k gk
 noremap <silent> j gj
 noremap <silent> 0 g0
 noremap <silent> $ g$
+
+function! s:goyo_enter()
+  if has('gui_running')
+    set fullscreen
+    colorscheme pencil
+    set background=light
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+  endif
+  Limelight
+endfunction
+
+function! s:goyo_leave()
+  if has('gui_running')
+    set nofullscreen
+    colorscheme base16-tomorrow
+    set background=dark
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+  endif
+  Limelight!
+endfunction
+
+autocmd User GoyoEnter nested call <SID>goyo_enter()
+autocmd User GoyoLeave nested call <SID>goyo_leave()
 
 let base16colorspace=256
 let g:lightline.colorscheme = "Tomorrow_Night"
