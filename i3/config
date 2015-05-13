@@ -197,6 +197,11 @@ client.urgent #2f343a $red #eff1f5 #900000
 
 # app setting
 for_window [class="feh"] floating enable
+for_window [class="^TeamViewer.exe$"] floating enable
+for_window [title="^TeamViewer$"] floating enable
+for_window [title="^Computers & Contacts$"] floating enable
+for_window [title="- TeamViewer -"] floating enable
+for_window [window_role="bubble"] floating enable
 
 # Startup programs
 exec xrdb -merge ~/.Xresources

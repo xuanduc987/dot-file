@@ -49,6 +49,9 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+if !g:windows_os
+  Plug 'hsanson/vim-im'
+endif
 
 " Lib
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -476,6 +479,26 @@ let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 "}
+
+" Ibus - unikey
+
+:command Unikey let g:unikey_auto = 1
+:command NoUnikey let g:unikey_auto = 0
+
+function! UnikeyDisable()
+  if exists("g:unikey_auto") && g:unikey_auto == 1
+    call ibus#python#setEngine("xkb:us::eng")
+  endif
+endfunction
+
+function! UnikeyEnable()
+  if exists("g:unikey_auto") && g:unikey_auto == 1
+    call ibus#python#setEngine("Unikey")
+  endif
+endfunction
+
+autocmd InsertLeave * call UnikeyDisable()
+autocmd InsertEnter * call UnikeyEnable()
 
 " sets the arglist to contain each of the files referenced by the quickfix list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
