@@ -27,3 +27,5 @@
   tool = vimdiff
 [github]
 	user = xuanduc987
+[merge]
+  conflictstyle = diff3
