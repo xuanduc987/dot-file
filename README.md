@@ -1,25 +1,6 @@
 ## Install janus
-```
-curl -Lo- https://bit.ly/janus-bootstrap | bash
-```
 
-For more information go to janus [repo](http://github.com/carlhuda/janus)
-
-## Additional plugins
- - [Vim-rails](https://github.com/tpope/vim-rails.git)
- - [Lightline](https://github.com/itchyny/lightline.git)
- - [Vim-gitgutter](https://github.com/airblade/vim-gitgutter.git)
- - [Vim-bufferline](https://github.com/bling/vim-bufferline.git)
- - [clever-f.vim](https://github.com/rhysd/clever-f.vim.git)
- - [vim-abolish](https://github.com/tpope/vim-abolish.git)
-
-## Mapping:
- - ; to :
- - \ to ;
- - \<Space\> to \<Leader\>
- - \<Leader\>p to :CtrlP
-
-## Notice when use base16 theme
+## Notices when use base16 theme
 Have to install
 [base16-shell](https://github.com/chriskempson/base16-shell) if use
 gnome-terminal or iTerms or urxvt
