@@ -15,17 +15,18 @@ Plug 'junegunn/limelight.vim'
 Plug 'scrooloose/syntastic'
 
 " Browsing
+" Plug 'mileszs/ack.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'itspriddle/ZoomWin'
 Plug 'jeetsukumaran/vim-buffergator'
+Plug 'jpalardy/vim-slime'
 Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
-" Plug 'mileszs/ack.vim'
 
 " Git
 Plug 'mattn/gist-vim', {'on': 'Gist'}
@@ -204,6 +205,9 @@ if has("autocmd")
 endif
 
 " Plugin settings
+
+" Vim-slime
+let g:slime_target = "tmux"
 
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
