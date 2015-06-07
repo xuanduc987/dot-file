@@ -377,7 +377,7 @@ nore <Leader>rc :TagbarToggle<CR>
 nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
 
 " NEARDcommenter {
-nore <leader>/ <plug>NERDCommenterToggle<CR>
+map <leader>/ <plug>NERDCommenterToggle<CR>
 " }
 
 " gundo {
@@ -397,9 +397,9 @@ nnore <leader>gp :Git push<CR>
 nore <Leader>p :CtrlP<CR>
 
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vnore <Enter> <Plug>(EasyAlign)
+vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nnore ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " split join
 let g:splitjoin_split_mapping = 'ss'
