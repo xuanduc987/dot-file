@@ -1,5 +1,10 @@
 let g:windows_os = has("win32") || has("win16") || has("win8")
 
+if !g:windows_os
+  let os = substitute(system('uname'), "\n", "", "")
+  let g:linux_os = os == "Linux"
+endif
+
 " Load vim-plug
 if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
   execute '!mkdir -p ~/.vim/autoload'
@@ -51,7 +56,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-if !g:windows_os
+if g:linux_os
   Plug 'hsanson/vim-im'
 endif
 
@@ -62,28 +67,27 @@ Plug 'mattn/webapi-vim'
 Plug 'tomtom/tlib_vim'
 
 " Lang
+Plug 'ap/vim-css-color'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'chrisbra/csv.vim'
+Plug 'depuracao/vim-rdoc'
 Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
-Plug 'sheerun/vim-polyglot'
+Plug 'elzr/vim-json'
+Plug 'kchmck/vim-coffee-script'
+Plug 'pangloss/vim-javascript'
+Plug 'raichoo/haskell-vim'
 Plug 'skalnik/vim-vroom'
+Plug 'skwp/vim-rspec'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-liquid'
+Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
 if !g:windows_os
   Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
 endif
-" Included in vim-polyglot
-"Plug 'ap/vim-css-color'
-"Plug 'tpope/vim-git'
-"Plug 'tpope/vim-haml'
-"Plug 'pangloss/vim-javascript'
-"Plug 'elzr/vim-json'
-"Plug 'kchmck/vim-coffee-script'
-"Plug 'tpope/vim-liquid'
-"Plug 'tpope/vim-markdown'
-"Plug 'vim-ruby/vim-ruby'
-"Plug 'skwp/vim-rspec'
-"Plug 'depuracao/vim-rdoc'
 
 " Colors
 Plug 'chriskempson/base16-vim'
@@ -206,6 +210,20 @@ if has("autocmd")
 endif
 
 " Plugin settings
+
+" Haskell-vim
+let g:haskell_enable_quantification = 1
+let g:haskell_enable_recursivedo = 1
+let g:haskell_enable_arrowsyntax = 1
+let g:haskell_enable_pattern_synonyms = 1
+let g:haskell_enable_typeroles = 1
+let g:haskell_enable_static_pointers = 1
+let g:haskell_indent_if = 3
+let g:haskell_indent_case = 2
+let g:haskell_indent_let = 4
+let g:haskell_indent_where = 6
+let g:haskell_indent_do = 3
+let g:haskell_indent_in = 1
 
 " Airline
 let g:airline#extensions#tagbar#enabled = 0
