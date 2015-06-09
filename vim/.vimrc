@@ -228,6 +228,8 @@ let g:haskell_indent_in = 1
 " Airline
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme = 'base16'
+let g:airline_powerline_fonts = 1
 
 " Vim-slime
 let g:slime_target = "tmux"
