@@ -33,6 +33,9 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-eunuch'
+if !g:windows_os
+  Plug 'dyng/ctrlsf.vim'
+endif
 
 " Git
 Plug 'mattn/gist-vim', {'on': 'Gist'}
@@ -210,6 +213,11 @@ if has("autocmd")
 endif
 
 " Plugin settings
+
+" ctrlsf.vim
+nmap <C-F> <Plug>CtrlSFPrompt
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_default_root = 'project'
 
 " Haskell-vim
 let g:haskell_enable_quantification = 1
