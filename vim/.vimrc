@@ -484,7 +484,7 @@ nore <Leader>= <C-w>=
 cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
 
 " clear highlight
-nnore <leader>hl :noh<CR>
+nnore <leader><CR> :noh<CR>
 " easy move between windows
 nore <silent> <C-K> :wincmd k<CR>
 nore <silent> <C-J> :wincmd j<CR>
