@@ -20,7 +20,6 @@ Plug 'junegunn/limelight.vim'
 Plug 'scrooloose/syntastic'
 
 " Browsing
-" Plug 'mileszs/ack.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
@@ -50,13 +49,11 @@ Plug 'ervandew/supertab'
 Plug 'garbas/vim-snipmate'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'michaeljsmith/vim-indent-object'
-Plug 'mtth/scratch.vim', {'on': 'Scratch'}
 Plug 'scrooloose/nerdcommenter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-speeddating'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 if g:linux_os
@@ -73,19 +70,16 @@ Plug 'tomtom/tlib_vim'
 Plug 'ap/vim-css-color'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'depuracao/vim-rdoc'
-Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
-Plug 'elzr/vim-json'
+"Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
+"Plug 'elzr/vim-json'
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
 Plug 'raichoo/haskell-vim'
 Plug 'skalnik/vim-vroom'
-Plug 'skwp/vim-rspec'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-haml'
-Plug 'tpope/vim-liquid'
+"Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-ragtag'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 if !g:windows_os
@@ -333,7 +327,6 @@ let g:syntastic_auto_loc_list=2
 " }
 
 " Ibus - unikey
-
 :command Unikey let g:unikey_auto = 1
 :command NoUnikey let g:unikey_auto = 0
 
