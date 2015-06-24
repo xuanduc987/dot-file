@@ -30,7 +30,7 @@ Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-Plug 'tpope/vim-dispatch'
+Plug 'benmills/vimux'
 Plug 'tpope/vim-eunuch'
 if !g:windows_os
   Plug 'dyng/ctrlsf.vim'
@@ -207,6 +207,10 @@ if has("autocmd")
 endif
 
 " Plugin settings
+
+" Vroom
+let g:vroom_use_vimux = 1
+let g:vroom_use_binstubs = 1
 
 " ctrlsf.vim
 nmap <C-F> <Plug>CtrlSFPrompt
