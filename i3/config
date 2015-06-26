@@ -25,6 +25,8 @@ new_window 1pixel
 hide_edge_borders both
 new_float normal
 
+workspace_auto_back_and_forth yes
+
 bindsym $sup+Shift+b border toggle
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -102,8 +104,10 @@ set $tag1 "1: work"
 set $tag2 "2: work²"
 set $tag3 "3: www"
 set $tag4 "4: misc"
+set $t_com "mail"
 
 # switch to workspace
+bindsym $mod+c workspace $t_com
 bindsym $mod+1 workspace $tag1
 bindsym $mod+2 workspace $tag2
 bindsym $mod+3 workspace $tag3
@@ -211,7 +215,7 @@ exec --no-startup-id volumeicon
 exec --no-startup-id rescuetime
 exec --no-startup-id ~/.i3/gvfs_automount.py >/dev/null
 exec --no-startup-id feh --bg-fill ~/.i3/wp.png
-exec --no-startup-id i3-msg "workspace $tag3; exec thunderbird; layout tabbed"
+exec --no-startup-id i3-msg "workspace $t_com; exec thunderbird"
 # exec --no-startup-id i3-msg "workspace $tag3; exec firefox www.facebook.com"
 exec --no-Startup-id i3-msg "workspace $tag1"
 
