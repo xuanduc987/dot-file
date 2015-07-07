@@ -3,6 +3,8 @@ let g:windows_os = has("win32") || has("win16") || has("win8")
 if !g:windows_os
   let os = substitute(system('uname'), "\n", "", "")
   let g:linux_os = os == "Linux"
+else
+  let g:linux_os = 0
 endif
 
 " Load vim-plug
