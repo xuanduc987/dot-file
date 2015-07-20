@@ -60,6 +60,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 if g:linux_os
   Plug 'hsanson/vim-im'
+  Plug 'vim-scripts/fcitx.vim'
 endif
 
 " Lib
