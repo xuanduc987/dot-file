@@ -390,12 +390,12 @@ nore <leader>zw :ZoomWin<CR>
 
 " unimpaired {
 " Normal Mode: Bubble single lines
-nnore <C-Up> [e
-nnore <C-Down> ]e
+nmap <C-Up> [e
+nmap <C-Down> ]e
 
 " Visual Mode: Bubble multiple lines
-vnore <C-Up> [egv
-vnore <C-Down> ]egv
+nmap <C-Up> [egv
+nmap <C-Down> ]egv
 " }
 
 " Tagbar mappings.
@@ -420,6 +420,7 @@ nnore <leader>gd :Gdiff<CR>
 nnore <leader>gl :Glog<CR>
 nnore <leader>gc :Gcommit<CR>
 nnore <leader>gp :Git push<CR>
+nnore <leader>gw :Gwrite<CR>
 " }
 
 nore <Leader>p :CtrlP<CR>
@@ -502,6 +503,13 @@ noremap <silent> k gk
 noremap <silent> j gj
 noremap <silent> 0 g0
 noremap <silent> $ g$
+
+inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
+\ "\<lt>C-n>" :
+\ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
+\ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
+\ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
+imap <C-@> <C-Space>
 
 function! s:goyo_enter()
   if has('gui_running')
