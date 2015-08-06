@@ -11,3 +11,6 @@ ln -s ${BASEDIR}/git/gitignore ~/.gitignore
 
 # tmux
 ln -s ${BASEDIR}/tmux/tmux.conf ~/.tmux.conf
+
+# i3
+ln -s ${BASEDIR}/i3 ~/.i3

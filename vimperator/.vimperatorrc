@@ -1,9 +1,0 @@
-"3.9 (created: 2015/02/15 15:49:05)
-
-nmap ; :
-set gui=noaddons,bookmarks,nomenu,nonavigation,tabs
-set hintchars=hjklasdfgyuiopqwertnmzxcvb
-set status=input,location,bookmark,history,tabcount,position,ssl
-source! /home/ducnx/.vimperatorrc.local
-
-" vim: set ft=vimperator:
