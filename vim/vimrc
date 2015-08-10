@@ -526,7 +526,7 @@ endfunction
 function! s:goyo_leave()
   if has('gui_running')
     set nofullscreen
-    colorscheme base16-tomorrow
+    colorscheme base16-monokai
     set background=dark
     set linespace=0
   elseif exists('$TMUX')
@@ -539,5 +539,5 @@ autocmd User GoyoEnter nested call <SID>goyo_enter()
 autocmd User GoyoLeave nested call <SID>goyo_leave()
 
 let base16colorspace=256
-color base16-tomorrow
+color base16-monokai
 set background=dark
