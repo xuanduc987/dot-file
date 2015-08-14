@@ -92,6 +92,9 @@ endif
 " Colors
 Plug 'chriskempson/base16-vim'
 Plug 'reedes/vim-colors-pencil'
+
+" Dev Icon
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 let mapleader = " "
@@ -252,6 +255,7 @@ au FileType markdown let b:loaded_delimitMate = 1
 
 " ctrlp setting {
 let g:ctrlp_map = ''
+let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
@@ -501,8 +505,6 @@ inore kj <Esc>
 " Wrapped line treated as normal line
 noremap <silent> k gk
 noremap <silent> j gj
-noremap <silent> 0 g0
-noremap <silent> $ g$
 
 inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
 \ "\<lt>C-n>" :
