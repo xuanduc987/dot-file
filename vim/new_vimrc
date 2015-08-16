@@ -48,6 +48,8 @@ Plug 'tpope/vim-haml'
 Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
+
+Plug 'sickill/vim-monokai'
 call plug#end()
 
 " http://stackoverflow.com/a/9528322
@@ -305,6 +307,7 @@ let g:splitjoin_join_mapping  = 'sj'
 let g:airline#extensions#tagbar#enabled = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline_theme = 'molokai'
 
 " sets the arglist to contain each of the files referenced by the quickfix list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
@@ -351,7 +354,8 @@ inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   if pumvisible()
     call UltiSnips#ExpandSnippet()
-    return neocomplete#close_popup()
+    call neocomplete#close_popup()
+    return (g:ulti_expand_res == 0) ? "\<CR>" : ""
   else
     return "\<CR>"
   endif
@@ -384,3 +388,5 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 imap <C-Space> <C-@>
 let g:UltiSnipsExpandTrigger="<C-@>"
 " }
+
+colorscheme monokai
