@@ -49,7 +49,7 @@ Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 
-Plug 'sickill/vim-monokai'
+Plug 'tomasr/molokai'
 call plug#end()
 
 " http://stackoverflow.com/a/9528322
@@ -389,4 +389,4 @@ imap <C-Space> <C-@>
 let g:UltiSnipsExpandTrigger="<C-@>"
 " }
 
-colorscheme monokai
+colorscheme molokai
