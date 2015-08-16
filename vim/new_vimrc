@@ -387,6 +387,7 @@ let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\
 " Use <C-Space>
 imap <C-Space> <C-@>
 let g:UltiSnipsExpandTrigger="<C-@>"
+let g:UltiSnipsJumpForwardTrigger="<C-@>"
 " }
 
 colorscheme molokai
