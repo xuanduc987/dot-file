@@ -13,7 +13,6 @@ Plug 'benekastah/neomake'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'jgdavey/tslime.vim'
 Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
@@ -402,4 +401,5 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
+let g:rehash256 = 1
 colorscheme molokai
