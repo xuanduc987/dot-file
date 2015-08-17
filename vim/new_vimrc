@@ -50,6 +50,7 @@ Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
 
 Plug 'tomasr/molokai'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " http://stackoverflow.com/a/9528322
@@ -208,6 +209,7 @@ let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
 
 " ctrlp setting {
 let g:ctrlp_map = ''
+let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
