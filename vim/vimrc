@@ -1,7 +1,11 @@
-let g:windows_os = has("win32") || has("win16") || has("win8")
+let g:is_windows = has('win32')
+let g:is_cygwin = has('win32unix')
+let g:is_mac = !g:is_windows
+      \ && (has('mac') || has('macunix') || has('gui_macvim') ||
+      \   (!isdirectory('/proc') && executable('sw_vers')))
 
 " Load vim-plug
-if !g:windows_os && empty(glob($HOME . "/.vim/autoload/plug.vim"))
+if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
   :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
   :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
 endif
@@ -39,6 +43,7 @@ Plug 'Shougo/neocomplete.vim'
 
 Plug 'benekastah/neomake'
 Plug 'janko-m/vim-test'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
@@ -391,6 +396,22 @@ imap <C-Space> <C-@>
 let g:UltiSnipsExpandTrigger="<C-@>"
 let g:UltiSnipsJumpForwardTrigger="<C-@>"
 " }
+
+" Multiple cursors integrate with neocomplete {{{ "
+" Called once right before you start selecting multiple cursors
+function! Multiple_cursors_before()
+  if exists(':NeoCompleteLock')==2
+    exe 'NeoCompleteLock'
+  endif
+endfunction
+
+" Called once only when the multiple selection is canceled (default <Esc>)
+function! Multiple_cursors_after()
+  if exists(':NeoCompleteUnlock')==2
+    exe 'NeoCompleteUnlock'
+  endif
+endfunction
+" }}} Multiple cursors integrate with neocomplete "
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
