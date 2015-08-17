@@ -1,56 +1,29 @@
 let g:windows_os = has("win32") || has("win16") || has("win8")
 
-if !g:windows_os
-  let os = substitute(system('uname'), "\n", "", "")
-  let g:linux_os = os == "Linux"
-else
-  let g:linux_os = 0
-endif
-
 " Load vim-plug
-if !g:windows_os && empty(glob("~/.vim/autoload/plug.vim"))
-  execute '!mkdir -p ~/.vim/autoload'
-  execute '!curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+if !g:windows_os && empty(glob($HOME . "/.vim/autoload/plug.vim"))
+  :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
+  :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
 endif
 
 call plug#begin('~/.vim/plugged')
-" Visual
-Plug 'bling/vim-bufferline'
+Plug 'tpope/vim-sensible'
 Plug 'bling/vim-airline'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'scrooloose/syntastic'
-
-" Browsing
+Plug 'benekastah/neomake'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'itspriddle/ZoomWin'
 Plug 'jeetsukumaran/vim-buffergator'
-Plug 'jpalardy/vim-slime'
-Plug 'kien/ctrlp.vim', {'on': 'CtrlP'}
+Plug 'jgdavey/tslime.vim'
+Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-Plug 'benmills/vimux'
 Plug 'tpope/vim-eunuch'
-if !g:windows_os
-  Plug 'dyng/ctrlsf.vim'
-endif
-
-" Git
-Plug 'mattn/gist-vim', {'on': 'Gist'}
 Plug 'tpope/vim-fugitive'
-
-" Edit
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'edsono/vim-matchit'
-Plug 'ervandew/supertab'
-Plug 'garbas/vim-snipmate'
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
-Plug 'michaeljsmith/vim-indent-object'
 Plug 'scrooloose/nerdcommenter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-abolish'
@@ -58,93 +31,27 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-if g:linux_os
-  Plug 'hsanson/vim-im'
-  Plug 'vim-scripts/fcitx.vim'
-endif
 
-" Lib
-Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
+
+Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'mattn/webapi-vim'
-Plug 'tomtom/tlib_vim'
+Plug 'Shougo/neocomplete.vim'
 
-" Lang
-Plug 'ap/vim-css-color'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'chrisbra/csv.vim'
-"Plug 'ecomba/vim-ruby-refactoring', {'for': 'ruby'}
-"Plug 'elzr/vim-json'
+Plug 'benekastah/neomake'
+Plug 'janko-m/vim-test'
+
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
-Plug 'raichoo/haskell-vim'
-Plug 'skalnik/vim-vroom'
 Plug 'tpope/vim-git'
 Plug 'tpope/vim-haml'
-"Plug 'tpope/vim-liquid'
+Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
-if !g:windows_os
-  Plug 'rorymckinley/vim-rubyhash', {'for': 'ruby'}
-endif
 
-" Colors
-Plug 'chriskempson/base16-vim'
-Plug 'reedes/vim-colors-pencil'
-
-" Dev Icon
+Plug 'tomasr/molokai'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
-
-let mapleader = " "
-set nocompatible " Use vim, no vi defaults
-set ruler " Show line and column number
-syntax enable " Turn on syntax highlighting allowing local overrides
-set encoding=utf-8 " Set default encoding to UTF-8
-set nowrap " don't wrap lines
-set tabstop=2 " a tab is two spaces
-set shiftwidth=2 " an autoindent (with <<) is two spaces
-set expandtab " use spaces, not tabs
-set list " Show invisible characters
-set backspace=indent,eol,start " backspace through everything in insert mode
-set listchars="" " Reset the listchars
-set listchars=tab:\ \ " a tab should display as " ", trailing whitespace as "."
-set listchars+=trail:. " show trailing spaces as dots
-set listchars+=extends:> " The character to show in the last column when wrap is off and the line continues beyond the right of the screen
-set listchars+=precedes:< " The character to show in the last column when wrap is off and the line continues beyond the left of the screen
-set hlsearch " highlight matches
-set incsearch " incremental searching
-set ignorecase " searches are case insensitive...
-set smartcase " ... unless they contain at least one capital letter
-
-set laststatus=2 " always show the status bar
-" Need more context
-set scrolloff=2
-set nonumber
-set relativenumber
-" Enable mouse support
-set mouse=a
-set textwidth=80
-" color column textwidth+1
-set cc=+1
-set wmh=0 " no current line on minimized windows
-" Natural split
-set splitbelow
-set splitright
-
-" Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
-" Disable archive files
-set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-" Ignore bundler and sass cache
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
-set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
-" Ignore rails temporary asset caches
-set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
-" Disable temp and backup files
-set wildignore+=*.swp,*~,._*
 
 " http://stackoverflow.com/a/9528322
 " Save your backups to a less annoying place than the current directory.
@@ -187,11 +94,37 @@ if exists("+undofile")
   set undofile
 endif
 
-if has("autocmd")
-  if exists("g:autosave_on_blur")
-    au FocusLost * silent! wall
-  endif
-endif
+let mapleader = " "
+set nowrap " don't wrap lines
+set tabstop=2 " a tab is two spaces
+set shiftwidth=2 " an autoindent (with <<) is two spaces
+set expandtab " use spaces, not tabs
+set list " Show invisible characters
+set hlsearch " highlight matches
+set ignorecase " searches are case insensitive...
+set smartcase " ... unless they contain at least one capital letter
+
+set relativenumber
+set mouse=a " Enable mouse support
+set cc=+1 " Color column textwidth + 1
+set wmh=0 " no current line on minimized windows
+
+" Natural split
+set splitbelow
+set splitright
+
+" Disable output and VCS files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+" Disable archive files
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+" Ignore bundler and sass cache
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
+set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
+" Ignore rails temporary asset caches
+set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
+" Disable temp and backup files
+set wildignore+=*.swp,*~,._*
 
 if has("autocmd")
   " In Makefiles, use real tabs, not tabs expanded to spaces
@@ -212,46 +145,67 @@ if has("autocmd")
         \| exe "normal! g`\"" | endif
 endif
 
-" Plugin settings
+" easy move between windows
+nore <silent> <C-K> :wincmd k<CR>
+nore <silent> <C-J> :wincmd j<CR>
+nore <silent> <C-H> :wincmd h<CR>
+nore <silent> <C-L> :wincmd l<CR>
 
-" Vroom
-let g:vroom_use_vimux = 1
-let g:vroom_use_binstubs = 1
+" Adjust viewports to the same size
+nore <Leader>= <C-w>=
 
-" ctrlsf.vim
-nmap <C-F> <Plug>CtrlSFPrompt
-let g:ctrlsf_auto_close = 0
-let g:ctrlsf_default_root = 'project'
+" Toggle paste mode
+nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
+inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 
-" Haskell-vim
-let g:haskell_enable_quantification = 1
-let g:haskell_enable_recursivedo = 1
-let g:haskell_enable_arrowsyntax = 1
-let g:haskell_enable_pattern_synonyms = 1
-let g:haskell_enable_typeroles = 1
-let g:haskell_enable_static_pointers = 1
-let g:haskell_indent_if = 3
-let g:haskell_indent_case = 2
-let g:haskell_indent_let = 4
-let g:haskell_indent_where = 6
-let g:haskell_indent_do = 3
-let g:haskell_indent_in = 1
+" format the entire file
+nnoremap <leader>fef :normal! gg=G``<CR>
 
-" Airline
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = 'base16'
-let g:airline_powerline_fonts = 1
+" Some helpers to edit mode
+" http://vimcasts.org/e/14
+nnore <leader>ew :e <C-R>=expand('%:h').'/'<cr>
+nnore <leader>es :sp <C-R>=expand('%:h').'/'<cr>
+nnore <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
+nnore <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
 
-" Vim-slime
-let g:slime_target = "tmux"
+" Underline the current line with '='
+nnore <silent> <leader>ul :t.<CR>Vr=
+
+" Map the arrow keys to be based on display lines, not physical lines
+nore <Down> gj
+nore <Up> gk
+
+" clear highlight
+nnore <leader><CR> :noh<CR>
+
+nore ; :
+nore \ ;
+inore jk <Esc>
+inore kj <Esc>
+
+" Sane regex
+nnoremap / /\v
+vnoremap / /\v
+
+" Tslime
+vmap <C-c><C-c> <Plug>SendSelectionToTmux
+nmap <C-c><C-c> <Plug>NormalModeSendToTmux
+nmap <C-c>r <Plug>SetTmuxVars
+
+" Neomake
+autocmd! BufWritePost * Neomake
+
+" vim-test
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+let test#strategy = "tslime"
 
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
       \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
-
-" prevents delimitMate from loading for md
-au FileType markdown let b:loaded_delimitMate = 1
 
 " ctrlp setting {
 let g:ctrlp_map = ''
@@ -260,22 +214,6 @@ let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
       \ }
-" }
-
-" gist {
-if executable("pbcopy")
-  " The copy command
-  let g:gist_clip_command = 'pbcopy'
-elseif executable("xclip")
-  " The copy command
-  let g:gist_clip_command = 'xclip -selection clipboard'
-elseif executable("putclip")
-  " The copy command
-  let g:gist_clip_command = 'putclip'
-end
-
-" detect filetype if vim failed auto-detection.
-let g:gist_detect_filetype = 1
 " }
 
 " NEARDTree {
@@ -332,75 +270,9 @@ function s:UpdateNERDTree(...)
 endfunction
 " }
 
-" syntastic {
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=2
-" }
-
-" Ibus - unikey
-:command Unikey let g:unikey_auto = 1
-:command NoUnikey let g:unikey_auto = 0
-
-function! UnikeyDisable()
-  if exists("g:unikey_auto") && g:unikey_auto == 1
-    call ibus#python#setEngine("xkb:us::eng")
-  endif
-endfunction
-
-function! UnikeyEnable()
-  if exists("g:unikey_auto") && g:unikey_auto == 1
-    call ibus#python#setEngine("Unikey")
-  endif
-endfunction
-
-autocmd InsertLeave * call UnikeyDisable()
-autocmd InsertEnter * call UnikeyEnable()
-
-" sets the arglist to contain each of the files referenced by the quickfix list
-command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
-function! QuickfixFilenames()
-  " Building a hash ensures we get each buffer only once
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
-
 " DelimitMate
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
-
-" Mapings
-" Sane regex
-nnoremap / /\v
-vnoremap / /\v
-
-" Type <tab> is easier than type %
-nnoremap <tab> %
-vnoremap <tab> %
-
-" No arrow keys
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
-
-nore <leader>zw :ZoomWin<CR>
-
-" unimpaired {
-" Normal Mode: Bubble single lines
-nmap <C-Up> [e
-nmap <C-Down> ]e
-
-" Visual Mode: Bubble multiple lines
-nmap <C-Up> [egv
-nmap <C-Down> ]egv
-" }
 
 " Tagbar mappings.
 nore <Leader>rc :TagbarToggle<CR>
@@ -429,118 +301,105 @@ nnore <leader>gw :Gwrite<CR>
 
 nore <Leader>p :CtrlP<CR>
 
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Enter> <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " split join
 let g:splitjoin_split_mapping = 'ss'
 let g:splitjoin_join_mapping  = 'sj'
 
-" Toggle paste mode
-nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
-inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
+" Airline
+let g:airline#extensions#tagbar#enabled = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline_theme = 'molokai'
 
-" format the entire file
-nnoremap <leader>fef :normal! gg=G``<CR>
-
-" upper/lower word
-nnore <leader>u mQviwU`Q
-nnore <leader>l mQviwu`Q
-
-" upper/lower first char of word
-nnore <leader>U mQgewvU`Q
-nnore <leader>L mQgewvu`Q
-
-" cd to the directory containing the file in the buffer
-nnore <silent> <leader>cd :lcd %:h<CR>
-
-" Create the directory containing the file in the buffer
-nnore <silent> <leader>md :!mkdir -p %:p:h<CR>
-
-" Some helpers to edit mode
-" http://vimcasts.org/e/14
-nnore <leader>ew :e <C-R>=expand('%:h').'/'<cr>
-nnore <leader>es :sp <C-R>=expand('%:h').'/'<cr>
-nnore <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
-nnore <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
-
-" Swap two words
-nnore <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-" Underline the current line with '='
-nnore <silent> <leader>ul :t.<CR>Vr=
-
-" set text wrapping toggles
-nnore <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
-
-" find merge conflict markers
-nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
-" Map the arrow keys to be based on display lines, not physical lines
-nore <Down> gj
-nore <Up> gk
-
-" Toggle hlsearch with <leader>hs
-nnore <leader>hs :set hlsearch! hlsearch?<CR>
-
-" Adjust viewports to the same size
-nore <Leader>= <C-w>=
-
-" After whitespace, insert the current directory into a command-line path
-cnoremap <expr> <C-P> getcmdline()[getcmdpos()-2] ==# ' ' ? expand('%:p:h') : "\<C-P>"
-
-" clear highlight
-nnore <leader><CR> :noh<CR>
-" easy move between windows
-nore <silent> <C-K> :wincmd k<CR>
-nore <silent> <C-J> :wincmd j<CR>
-nore <silent> <C-H> :wincmd h<CR>
-nore <silent> <C-L> :wincmd l<CR>
-nore ; :
-nore \ ;
-inore jk <Esc>
-inore kj <Esc>
-" Wrapped line treated as normal line
-noremap <silent> k gk
-noremap <silent> j gj
-
-inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
-\ "\<lt>C-n>" :
-\ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
-\ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
-\ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
-imap <C-@> <C-Space>
-
-function! s:goyo_enter()
-  if has('gui_running')
-    set fullscreen
-    colorscheme pencil
-    set background=light
-    set linespace=7
-  elseif exists('$TMUX')
-    silent !tmux set status off
-  endif
-  Limelight
+" sets the arglist to contain each of the files referenced by the quickfix list
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+  " Building a hash ensures we get each buffer only once
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-function! s:goyo_leave()
-  if has('gui_running')
-    set nofullscreen
-    colorscheme base16-monokai
-    set background=dark
-    set linespace=0
-  elseif exists('$TMUX')
-    silent !tmux set status on
+:command! Fcitx :
+
+" Neocomplete + UltiSnips {
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  if pumvisible()
+    call UltiSnips#ExpandSnippet()
+    call neocomplete#close_popup()
+    return (g:ulti_expand_res == 0) ? "\<CR>" : ""
+  else
+    return "\<CR>"
   endif
-  Limelight!
 endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
 
-autocmd User GoyoEnter nested call <SID>goyo_enter()
-autocmd User GoyoLeave nested call <SID>goyo_leave()
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-set t_Co=256
-let base16colorspace=256
-color base16-monokai
-set background=dark
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+
+" Use <C-Space>
+imap <C-Space> <C-@>
+let g:UltiSnipsExpandTrigger="<C-@>"
+let g:UltiSnipsJumpForwardTrigger="<C-@>"
+" }
+
+" Ruby completion
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+
+colorscheme molokai
