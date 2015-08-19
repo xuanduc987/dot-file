@@ -13,7 +13,6 @@ endif
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'bling/vim-airline'
-Plug 'benekastah/neomake'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
@@ -28,30 +27,28 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'scrooloose/nerdcommenter'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'tpope/vim-abolish'
+"Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
 
 Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
 
 Plug 'Shougo/neosnippet.vim'
-Plug 'honza/vim-snippets'
 Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'honza/vim-snippets'
 
 Plug 'benekastah/neomake'
 Plug 'janko-m/vim-test'
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
 Plug 'kchmck/vim-coffee-script'
 Plug 'pangloss/vim-javascript'
-Plug 'tpope/vim-git'
+"Plug 'tpope/vim-git'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 
 Plug 'tomasr/molokai'
 Plug 'ryanoasis/vim-devicons'
@@ -108,10 +105,8 @@ set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-set relativenumber
 set mouse=a " Enable mouse support
 set cc=+1 " Color column textwidth + 1
-set wmh=0 " no current line on minimized windows
 
 " Natural split
 set splitbelow
@@ -131,18 +126,6 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*.swp,*~,._*
 
 if has("autocmd")
-  " In Makefiles, use real tabs, not tabs expanded to spaces
-  au FileType make setlocal noexpandtab
-
-  " Make sure all mardown files have the correct filetype set and setup wrapping
-  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown
-  if !exists("g:disable_markdown_autostyle")
-    au FileType markdown setlocal wrap linebreak textwidth=72 nolist
-  endif
-
-  " make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
-  au FileType python setlocal tabstop=4 shiftwidth=4
-
   " Remember last location in file, but not for commit messages.
   " see :help last-position-jump
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
@@ -167,10 +150,7 @@ nnoremap <leader>fef :normal! gg=G``<CR>
 
 " Some helpers to edit mode
 " http://vimcasts.org/e/14
-nnore <leader>ew :e <C-R>=expand('%:h').'/'<cr>
-nnore <leader>es :sp <C-R>=expand('%:h').'/'<cr>
-nnore <leader>ev :vsp <C-R>=expand('%:h').'/'<cr>
-nnore <leader>et :tabe <C-R>=expand('%:h').'/'<cr>
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
 " Underline the current line with '='
 nnore <silent> <leader>ul :t.<CR>Vr=
@@ -369,13 +349,6 @@ inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
@@ -390,24 +363,8 @@ imap <C-Space> <C-@>
 imap <C-@>     <Plug>(neosnippet_expand_or_jump)
 smap <C-@>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-@>     <Plug>(neosnippet_expand_target)
-" }
 let g:neosnippet#enable_snipmate_compatibility = 1
-
-" Multiple cursors integrate with neocomplete {{{ "
-" Called once right before you start selecting multiple cursors
-function! Multiple_cursors_before()
-  if exists(':NeoCompleteLock')==2
-    exe 'NeoCompleteLock'
-  endif
-endfunction
-
-" Called once only when the multiple selection is canceled (default <Esc>)
-function! Multiple_cursors_after()
-  if exists(':NeoCompleteUnlock')==2
-    exe 'NeoCompleteUnlock'
-  endif
-endfunction
-" }}} Multiple cursors integrate with neocomplete "
+" }
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
