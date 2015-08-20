@@ -309,8 +309,6 @@ function! QuickfixFilenames()
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-:command! Fcitx :
-
 " Neocomplete + Neosnippet {
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
