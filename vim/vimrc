@@ -47,7 +47,7 @@ Plug 'pangloss/vim-javascript'
 "Plug 'tpope/vim-git'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-liquid'
-Plug 'tpope/vim-markdown'
+"Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 
 Plug 'tomasr/molokai'
@@ -190,6 +190,9 @@ let test#strategy = "tslime"
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
       \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
+
+" prevents delimitMate from loading for md
+au FileType markdown let b:loaded_delimitMate = 1
 
 " ctrlp setting {
 let g:ctrlp_map = ''
