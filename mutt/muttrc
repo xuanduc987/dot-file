@@ -1,0 +1,13 @@
+## General options
+set header_cache = ~/.cache/mutt
+set imap_check_subscribed
+set imap_keepalive = 300
+unset imap_passive
+set mail_check = 120
+set mbox_type = Maildir
+
+set message_cachedir = "~/.cache/mutt"
+
+## Personal
+#source "~/.mutt/personal"
+#folder-hook $folder 'source ~/.mutt/personal'

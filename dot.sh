@@ -14,3 +14,7 @@ ln -s ${BASEDIR}/tmux/tmux.conf ~/.tmux.conf
 
 # i3
 ln -s ${BASEDIR}/i3 ~/.i3
+
+# mutt
+cp ${BASEDIR}/mutt/muttrc ~/.muttrc
+cp -r ${BASEDIR}/mutt ~/.mutt
