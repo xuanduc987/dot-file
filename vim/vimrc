@@ -47,7 +47,7 @@ Plug 'pangloss/vim-javascript'
 "Plug 'tpope/vim-git'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-liquid'
-"Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 
 Plug 'tomasr/molokai'
