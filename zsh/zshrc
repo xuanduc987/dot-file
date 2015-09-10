@@ -5,14 +5,16 @@ source $CURR_DIR/alias.zsh
 source $CURR_DIR/history.zsh
 source $CURR_DIR/directory.zsh
 source $CURR_DIR/completion.zsh
+source $CURR_DIR/key_info.zsh
 
 if ! zgen saved; then
   echo "Creating zgen save"
 
   zgen oh-my-zsh plugins/git
   zgen oh-my-zsh plugins/command-not-found
-  zgen load zsh-users/zsh-history-substring-search
   zgen load zsh-users/zsh-completions src
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen load zsh-users/zsh-history-substring-search
 
   zgen load mafredri/zsh-async
   zgen load sindresorhus/pure
@@ -49,3 +51,4 @@ if [ -z "$TMUX" ] ; then
   fi
 fi
 # }}}
+
