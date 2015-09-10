@@ -179,6 +179,7 @@ nmap <C-c>r <Plug>SetTmuxVars
 
 " Neomake
 autocmd! BufWritePost * Neomake
+let g:neomake_ruby_enabled_makers = ['mri']
 
 " vim-test
 nmap <silent> <leader>t :TestNearest<CR>
