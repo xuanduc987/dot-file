@@ -16,7 +16,7 @@ if ! zgen saved; then
   zgen save
 fi
 
-# Copy from prezto
+# Copy from prezto {{{
 
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
 setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
@@ -144,3 +144,14 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' l
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-domain' ignored-patterns '<->.<->.<->.<->' '^[-[:alnum:]]##(.[-[:alnum:]]##)##' '*@*'
 zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
 
+# }}}
+
+# set $TERM correctly {{{
+if [ -z "$TMUX" ] ; then
+  if [ -n "$COLORTERM" ] ; then
+    if [ "$COLORTERM" = "xfce4-terminal" ] ; then
+      export TERM=xterm-256color
+    fi
+  fi
+fi
+# }}}
