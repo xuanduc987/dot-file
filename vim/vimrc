@@ -195,9 +195,6 @@ let test#strategy = "tslime"
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
       \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
 
-" prevents delimitMate from loading for md
-au FileType markdown let b:loaded_delimitMate = 1
-
 " ctrlp setting {
 let g:ctrlp_map = ''
 let g:ctrlp_clear_cache_on_exit = 0
@@ -264,6 +261,7 @@ endfunction
 " DelimitMate
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
+let delimitMate_excluded_ft = "markdown" " disable for markdown
 
 " Tagbar mappings.
 nore <Leader>rc :TagbarToggle<CR>
