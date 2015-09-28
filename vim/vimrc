@@ -170,6 +170,8 @@ nore \ ;
 inore jk <Esc>
 inore kj <Esc>
 
+nnore <CR> i<CR><ESC>
+
 " Sane regex
 nnoremap / /\v
 vnoremap / /\v
