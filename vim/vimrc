@@ -26,7 +26,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 "Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
@@ -270,10 +270,6 @@ nore <Leader>rc :TagbarToggle<CR>
 
 " NEARDTree
 nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
-
-" NEARDcommenter {
-map <leader>/ <plug>NERDCommenterToggle<CR>
-" }
 
 " gundo {
 nnore <F5> :GundoToggle<CR>
