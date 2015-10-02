@@ -346,6 +346,9 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 " Vim-devicons
 autocmd FileType nerdtree setlocal nolist
 
+" SuperTab
+let g:SuperTabDefaultCompletionType = "context"
+
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
