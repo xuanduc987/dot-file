@@ -31,6 +31,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'mattn/emmet-vim'
 
 Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
 
