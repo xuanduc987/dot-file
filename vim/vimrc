@@ -46,12 +46,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'benekastah/neomake'
 Plug 'janko-m/vim-test'
 
-Plug 'kchmck/vim-coffee-script'
-Plug 'pangloss/vim-javascript'
-"Plug 'tpope/vim-git'
-Plug 'tpope/vim-haml'
-Plug 'tpope/vim-liquid'
-Plug 'tpope/vim-markdown'
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ecomba/vim-ruby-refactoring', { 'on': 'RubyRefactoring' }
 
