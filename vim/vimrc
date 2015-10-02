@@ -341,5 +341,9 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
+" Language setting
+autocmd FileType php setlocal tabstop=4 shiftwidth=4
+autocmd FileType php let b:delimitMate_eol_maker=';'
+
 let g:rehash256 = 1
 colorscheme molokai
