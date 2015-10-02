@@ -63,7 +63,6 @@ call plug#end()
 " http://stackoverflow.com/a/9528322
 " Save your backups to a less annoying place than the current directory.
 " If you have .vim-backup in the current directory, it'll use that.
-
 " Otherwise it saves it to ~/.vim/_backup or . if all else fails.
 if isdirectory($HOME . '/.vim/_backup') == 0
   :silent !mkdir -p ~/.vim/_backup >/dev/null 2>&1
