@@ -169,8 +169,6 @@ nore \ ;
 inore jk <Esc>
 inore kj <Esc>
 
-nnore <CR> i<CR><ESC>
-
 " Sane regex
 nnoremap / /\v
 vnoremap / /\v
@@ -191,6 +189,11 @@ nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "tslime"
+
+" vim-buffergator
+let g:buffergator_suppress_keymaps = 1
+nmap <silent> <leader>to :BuffergatorTabsOpen<CR>
+nmap <silent> <leader>b :BuffergatorOpen<CR>
 
 " Markdown
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
