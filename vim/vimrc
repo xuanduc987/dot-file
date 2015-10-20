@@ -110,6 +110,11 @@ set smartcase " ... unless they contain at least one capital letter
 set mouse=a " Enable mouse support
 set cc=+1 " Color column textwidth + 1
 
+set ttyfast
+set lazyredraw
+set timeout timeoutlen=1000 ttimeoutlen=100
+set synmaxcol=300
+
 " Natural split
 set splitbelow
 set splitright
