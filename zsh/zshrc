@@ -1,4 +1,7 @@
 CURR_DIR=`dirname $0`
+
+export ZSH_TMUX_AUTOSTART=true
+
 source $CURR_DIR/zgen/zgen.zsh
 
 source $CURR_DIR/alias.zsh
@@ -10,8 +13,13 @@ source $CURR_DIR/key_info.zsh
 if ! zgen saved; then
   echo "Creating zgen save"
 
+  zgen oh-my-zsh
+
   zgen oh-my-zsh plugins/git
   zgen oh-my-zsh plugins/command-not-found
+  zgen oh-my-zsh plugins/debian
+  zgen oh-my-zsh plugins/autojump
+  zgen oh-my-zsh plugins/tmux
   zgen load zsh-users/zsh-completions src
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
