@@ -1,7 +1,5 @@
 CURR_DIR=`dirname $0`
 
-export ZSH_TMUX_AUTOSTART=true
-
 source $CURR_DIR/zgen/zgen.zsh
 
 source $CURR_DIR/alias.zsh
