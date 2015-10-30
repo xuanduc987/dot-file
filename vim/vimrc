@@ -54,6 +54,10 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': 'RubyRefactoring' }
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
+
+if filereadable(expand("~/.vimplug.local"))
+  source ~/.vimrc.local
+endif
 call plug#end()
 
 " http://stackoverflow.com/a/9528322
@@ -391,3 +395,7 @@ autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist
 
 let g:rehash256 = 1
 colorscheme molokai
+
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
