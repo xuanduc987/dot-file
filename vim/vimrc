@@ -111,6 +111,8 @@ set mouse=a " Enable mouse support
 set mousemodel=popup " Right click behavior like MS
 set cc=+1 " Color column textwidth + 1
 
+set shiftround
+
 set ttyfast
 set lazyredraw
 set timeout timeoutlen=1000 ttimeoutlen=100
