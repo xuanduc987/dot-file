@@ -214,8 +214,12 @@ nmap <silent> <leader>to :BuffergatorTabsOpen<CR>
 nmap <silent> <leader>b :BuffergatorOpen<CR>
 
 " Markdown
-let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby', 'javascript',
-      \ 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'sh']
+let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby.html',
+      \ 'javascript', 'json=javascript', 'ruby', 'sass', 'html', 'sh']
+
+" Liquid
+let g:liquid_highlight_types = g:markdown_fenced_languages +
+      \ ['html+erb=eruby.html']
 
 " ctrlp setting {
 let g:ctrlp_map = ''
@@ -376,8 +380,14 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
 " Language setting
+autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+
 autocmd FileType php setlocal tabstop=4 shiftwidth=4
 autocmd FileType php let b:delimitMate_eol_marker = ";"
+
+autocmd FileType ruby setlocal tw=79 isfname+=:
+autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist
 
 let g:rehash256 = 1
 colorscheme molokai
