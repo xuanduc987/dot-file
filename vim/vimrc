@@ -57,7 +57,7 @@ Plug 'zenorocha/dracula-theme', { 'rtp': 'vim' }
 Plug 'ryanoasis/vim-devicons'
 
 if filereadable(expand("~/.vimplug.local"))
-  source ~/.vimrc.local
+  source ~/.vimplug.local
 endif
 call plug#end()
 
