@@ -406,7 +406,7 @@ autocmd FileType php setlocal tabstop=4 shiftwidth=4
 autocmd FileType php let b:delimitMate_eol_marker = ";"
 
 autocmd FileType ruby setlocal tw=79 isfname+=:
-autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist
+autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 
 let g:rehash256 = 1
 colorscheme molokai
