@@ -50,7 +50,10 @@ Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSu
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
-Plug 'ecomba/vim-ruby-refactoring', { 'on': 'RubyRefactoring' }
+Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
+      \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
+      \ 'RExtractLocalVariable', 'RRenameLocalVariable',
+      \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
