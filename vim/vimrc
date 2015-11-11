@@ -44,8 +44,8 @@ Plug 'honza/vim-snippets'
 Plug 'tpope/vim-unimpaired'
 Plug 'jeetsukumaran/vim-buffergator'
 
-Plug 'benekastah/neomake'
-Plug 'janko-m/vim-test'
+Plug 'benekastah/neomake', { 'on': ['Neomake'] }
+Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
