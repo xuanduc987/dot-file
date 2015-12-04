@@ -147,12 +147,13 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-if has("autocmd")
+augroup restore_position
+  autocmd!
   " Remember last location in file, but not for commit messages.
   " see :help last-position-jump
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
         \| exe "normal! g`\"" | endif
-endif
+augroup END
 
 " easy move between windows
 nore <silent> <C-K> :wincmd k<CR>
@@ -201,6 +202,7 @@ nmap <C-c><C-c> <Plug>NormalModeSendToTmux
 nmap <C-c>r <Plug>SetTmuxVars
 
 " Neomake
+
 autocmd! BufWritePost * Neomake
 if !has('nvim')
   let g:neomake_ruby_enabled_makers = ['mri']
@@ -254,8 +256,10 @@ endif
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
 
 augroup AuNERDTreeCmd
-autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
-autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
+  autocmd!
+  autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
+  autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
+augroup END
 
 " If the parameter is a directory, cd into it
 function! s:CdIfDirectory(directory)
@@ -377,7 +381,10 @@ imap <C-R><Tab>  <Plug>snipMateShow
 " }
 
 " Vim-devicons
-autocmd FileType nerdtree setlocal nolist
+augroup devicon_fixNerdtree
+  autocmd!
+  autocmd FileType nerdtree setlocal nolist
+augroup END
 
 " SuperTab
 let g:SuperTabDefaultCompletionType = "context"
@@ -395,18 +402,21 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
 " Language setting
-autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+augroup language_settings
+  autocmd!
+  autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+  autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
 
-autocmd FileType php setlocal tabstop=4 shiftwidth=4
-autocmd FileType php let b:delimitMate_eol_marker = ";"
+  autocmd FileType php setlocal tabstop=4 shiftwidth=4
+  autocmd FileType php let b:delimitMate_eol_marker = ";"
 
-autocmd FileType ruby setlocal tw=79 isfname+=:
-autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
-autocmd FileType gitcommit setlocal spell
+  autocmd FileType ruby setlocal tw=79 isfname+=:
+  autocmd FileType ruby iabbr bpry require'pry';binding.pry
+  autocmd FileType ruby map <Leader>bp orequire'pry';binding.pry<esc>:w<cr>
 
-iabbr bpry require'pry';binding.pry
-map <Leader>bp orequire'pry';binding.pry<esc>:w<cr>
+  autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
+  autocmd FileType gitcommit setlocal spell
+augroup END
 
 let g:rehash256 = 1
 colorscheme molokai
