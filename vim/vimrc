@@ -119,7 +119,7 @@ set shiftround
 
 set ttyfast
 set lazyredraw
-set timeout timeoutlen=400 ttimeoutlen=100
+set timeout timeoutlen=500 ttimeoutlen=100
 set synmaxcol=300
 
 " Natural split
