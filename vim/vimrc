@@ -108,7 +108,10 @@ set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-set mouse=a " Enable mouse support
+set mouse=n " Enable mouse support
+" restore position mouse click
+nnoremap <LeftMouse> m'<LeftMouse>
+nnoremap <LeftRelease> <LeftRelease>g``
 set mousemodel=popup " Right click behavior like MS
 set cc=+1 " Color column textwidth + 1
 
