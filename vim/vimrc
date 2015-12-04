@@ -405,6 +405,9 @@ autocmd FileType ruby setlocal tw=79 isfname+=:
 autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 autocmd FileType gitcommit setlocal spell
 
+iabbr bpry require'pry';binding.pry
+map <Leader>bp orequire'pry';binding.pry<esc>:w<cr>
+
 let g:rehash256 = 1
 colorscheme molokai
 
