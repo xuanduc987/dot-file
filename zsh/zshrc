@@ -27,6 +27,10 @@ if ! zgen saved; then
   zgen load zenorocha/dracula-theme zsh/dracula
   # zgen load sindresorhus/pure
 
+  if [ -f ~/.zgen.local ]; then
+    source .zgen.local
+  fi
+
   zgen save
 fi
 
@@ -62,3 +66,7 @@ fi
 
 # set other var
 export  EDITOR=vim
+
+if [ -f ~/.zshrc.local ]; then
+  source .zshrc.local
+fi
