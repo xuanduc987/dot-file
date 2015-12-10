@@ -60,7 +60,7 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'zenorocha/dracula-theme', { 'rtp': 'vim' }
-Plug 'ryanoasis/vim-devicons'
+" Plug 'ryanoasis/vim-devicons'
 
 if filereadable(expand("~/.vimplug.local"))
   source ~/.vimplug.local
