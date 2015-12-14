@@ -57,6 +57,8 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
       \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
+Plug 'amix/vim-zenroom2'
+
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'zenorocha/dracula-theme', { 'rtp': 'vim' }
@@ -388,9 +390,6 @@ augroup END
 
 " SuperTab
 let g:SuperTabDefaultCompletionType = "context"
-
-" Emmet-vim
-let g:user_emmet_leader_key = '\\'
 
 " vim-multiple-cursors
 let g:multi_cursor_exit_from_visual_mode=0
