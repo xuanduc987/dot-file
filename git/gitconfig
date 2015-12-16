@@ -30,5 +30,8 @@
   user = xuanduc987
 [merge]
   conflictstyle = diff3
+	tool = fugitive
 [include]
   path = ~/.gitconfig.local
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
