@@ -57,7 +57,7 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
       \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
-Plug 'amix/vim-zenroom2'
+Plug 'reedes/vim-colors-pencil'
 Plug 'junegunn/goyo.vim'
 
 Plug 'tomasr/molokai'
@@ -395,6 +395,39 @@ let g:SuperTabDefaultCompletionType = "context"
 " vim-multiple-cursors
 let g:multi_cursor_exit_from_visual_mode=0
 let g:multi_cursor_exit_from_insert_mode=0
+
+" goyo
+let s:save_background = ""
+let s:save_color = ""
+function! s:goyo_before()
+    if !has("gui_running")
+        return
+    endif
+    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
+
+    if is_mark_or_rst
+        let s:save_background = &background
+        let s:save_color = g:colors_name
+        set linespace=8
+        set background=light
+        colorscheme pencil
+    endif
+endfunction
+
+function! s:goyo_after()
+    if !has("gui_running")
+        return
+    endif
+    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
+    if is_mark_or_rst
+        set linespace=0
+
+        exec( "set background=" . s:save_background )
+        exec( "colorscheme " . s:save_color )
+    endif
+endfunction
+
+let g:goyo_callbacks = [ function('s:goyo_before'), function('s:goyo_after') ]
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
