@@ -390,9 +390,6 @@ augroup devicon_fixNerdtree
   autocmd FileType nerdtree setlocal nolist
 augroup END
 
-" SuperTab
-let g:SuperTabDefaultCompletionType = "context"
-
 " vim-multiple-cursors
 let g:multi_cursor_exit_from_visual_mode=0
 let g:multi_cursor_exit_from_insert_mode=0
@@ -442,7 +439,8 @@ augroup language_settings
   autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
 
   autocmd FileType php setlocal tabstop=4 shiftwidth=4
-  autocmd FileType php let b:delimitMate_eol_marker = ";"
+
+  autocmd FileType php,javascript let b:delimitMate_eol_marker = ";"
 
   autocmd FileType ruby setlocal tw=79 isfname+=:
 
