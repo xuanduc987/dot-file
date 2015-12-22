@@ -375,12 +375,13 @@ endfunction
 " vim-snipmate {
 " Use <C-Space>
 let g:snips_no_mappings=1
-map <C-Space> <C-@>
-map <C-S-Space> <C-S-@>
-imap <C-@>     <Plug>snipMateNextOrTrigger
-smap <C-@>     <Plug>snipMateNextOrTrigger
-smap <C-S-@>     <Plug>snipMateBack
-imap <C-R><Tab>  <Plug>snipMateShow
+imap <C-@> <Plug>snipMateNextOrTrigger
+smap <C-@> <Plug>snipMateNextOrTrigger
+imap <C-Space> <Plug>snipMateNextOrTrigger
+smap <C-Space> <Plug>snipMateNextOrTrigger
+smap <C-S-@> <Plug>snipMateBack
+smap <C-S-Space> <Plug>snipMateBack
+imap <C-R><Tab> <Plug>snipMateShow
 " }
 
 " Vim-devicons
