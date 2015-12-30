@@ -188,8 +188,6 @@ nore <Up> gk
 " clear highlight
 nnore <leader><CR> :noh<CR>
 
-nore ; :
-nore \ ;
 inore jk <Esc>
 inore kj <Esc>
 
