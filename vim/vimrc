@@ -36,6 +36,8 @@ Plug 'tpope/vim-projectionist'
 Plug 'mattn/emmet-vim'
 Plug 'terryma/vim-multiple-cursors'
 
+Plug 'junegunn/vim-easy-align'
+
 Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
 
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -382,6 +384,12 @@ smap <C-S-@> <Plug>snipMateBack
 smap <C-S-Space> <Plug>snipMateBack
 imap <C-R><Tab> <Plug>snipMateShow
 " }
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " Vim-devicons
 augroup devicon_fixNerdtree
