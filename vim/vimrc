@@ -54,6 +54,7 @@ Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSu
 
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
+Plug 'tpope/vim-bundler', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
@@ -433,6 +434,47 @@ function! s:goyo_after()
 endfunction
 
 let g:goyo_callbacks = [ function('s:goyo_before'), function('s:goyo_after') ]
+
+" vim-rails
+let g:rails_gem_projections = {
+      \ "active_model_serializers": {
+      \   "app/serializers/*_serializer.rb": {
+      \     "command":   "serializer",
+      \     "affinity":  "model",
+      \     "test":      "spec/serializers/{}_spec.rb",
+      \     "related":   "app/models/{}.rb",
+      \     "template":  "class {camelcase|capitalize|colons}Serializer < ActiveModel::Serializer\nend"
+      \   }
+      \ },
+      \ "draper": {
+      \   "app/decorators/*_decorator.rb": {
+      \     "command": "decorator",
+      \     "affinity": "model",
+      \     "test": "spec/decorators/%s_spec.rb",
+      \     "related": "app/models/%s.rb",
+      \     "template": "class %SDecorator < Draper::Decorator\nend"
+      \   }
+      \ },
+      \ "factory_girl": {
+      \   "test/factories/*.rb": {
+      \     "command":   "factory",
+      \     "affinity":  "collection",
+      \     "alternate": "app/models/{singular}.rb",
+      \     "related":   "db/schema.rb#{}",
+      \     "test":      "test/models/{singular}_test.rb",
+      \     "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+      \     "keywords":  "factory sequence"
+      \   },
+      \   "spec/factories/*.rb": {
+      \     "command":   "factory",
+      \     "affinity":  "collection",
+      \     "alternate": "app/models/{singular}.rb",
+      \     "related":   "db/schema.rb#{}",
+      \     "test":      "spec/models/{singular}_test.rb",
+      \     "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+      \     "keywords":  "factory sequence"
+      \   }
+      \ }}
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
