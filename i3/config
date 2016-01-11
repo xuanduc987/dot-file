@@ -128,8 +128,6 @@ bindsym $mod+Shift+r restart
 
 bindsym Print exec scrot '%Y-%m-%d-%T_$wx$h_scrot.png' -e 'mv $f ~/Pictures/screenshots/'
 
-bindsym $mod+n --no-startup-id thunar
-
 bindsym $mod+Shift+p floating toggle
 bindsym $mod+p focus mode_toggle
 bindsym $mod+a focus parent
@@ -204,6 +202,8 @@ bindsym $sup+t exec thunderbird
 bindsym $sup+a exec anki
 bindsym $sup+g exec gvim
 bindsym $sup+c exec google-chrome
+bindsym $sup+n exec --no-startup-id thunar
+
 
 # Startup programs
 # exec xrdb -merge ~/.Xresources
