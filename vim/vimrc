@@ -64,7 +64,6 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
       \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
-
 " colorscheme
 Plug 'reedes/vim-colors-pencil'
 Plug 'tomasr/molokai'
@@ -112,7 +111,8 @@ endif
 
 let mapleader = " "
 set nowrap " don't wrap lines
-set tabstop=2 " a tab is two spaces
+set tabstop=8
+set softtabstop=2 " a tab is two spaces
 set shiftwidth=2 " an autoindent (with <<) is two spaces
 set expandtab " use spaces, not tabs
 set list " Show invisible characters
@@ -242,9 +242,7 @@ let g:liquid_highlight_types = g:markdown_fenced_languages +
 " ctrlp setting {
 let g:ctrlp_map = ''
 let g:ctrlp_clear_cache_on_exit = 0
-if !has('python')
-  echo 'In order to use pymatcher plugin, you need +python compiled vim'
-else
+if has('python')
   let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 endif
 let g:ctrlp_custom_ignore = {
@@ -258,64 +256,14 @@ if executable("ag")
         \ --ignore ''.git''
         \ --ignore ''.DS_Store''
         \ --ignore ''node_modules''
+        \ --ignore ''vendor/plugins''
         \ --hidden -g ""'
+  let g:ctrlp_use_caching = 0
 endif
 " }
 
 " NEARDTree {
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
-
-augroup AuNERDTreeCmd
-  autocmd!
-  autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
-  autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
-augroup END
-
-" If the parameter is a directory, cd into it
-function! s:CdIfDirectory(directory)
-  let explicitDirectory = isdirectory(a:directory)
-  let directory = explicitDirectory || empty(a:directory)
-
-  if explicitDirectory
-    exe "cd " . fnameescape(a:directory)
-  endif
-
-  " Allows reading from stdin
-  " ex: git diff | mvim -R -
-  if strlen(a:directory) == 0
-    return
-  endif
-
-  if directory
-    NERDTree
-    wincmd p
-    bd
-  endif
-
-  if explicitDirectory
-    wincmd p
-  endif
-endfunction
-
-" NERDTree utility function
-function! s:UpdateNERDTree(...)
-  let stay = 0
-
-  if(exists("a:1"))
-    let stay = a:1
-  end
-
-  if exists("t:NERDTreeBufName")
-    let nr = bufwinnr(t:NERDTreeBufName)
-    if nr != -1
-      exe nr . "wincmd w"
-      exe substitute(mapcheck("R"), "<CR>", "", "")
-      if !stay
-        wincmd p
-      end
-    endif
-  endif
-endfunction
 " }
 
 " DelimitMate
@@ -338,18 +286,16 @@ inore <F5> <ESC>:GundoToggle<CR>
 " git fugitive {
 nnore <leader>gb :Gblame<CR>
 nnore <leader>gs :Gstatus<CR>
-nnore <leader>gd :Gdiff<CR>
-nnore <leader>gl :Glog<CR>
-nnore <leader>gc :Gcommit<CR>
-nnore <leader>gp :Git push<CR>
 nnore <leader>gw :Gwrite<CR>
 " }
 
 nore <Leader>p :CtrlP<CR>
 
 " split join
-let g:splitjoin_split_mapping = 'ss'
-let g:splitjoin_join_mapping  = 'sj'
+let g:splitjoin_split_mapping = ''
+let g:splitjoin_join_mapping = ''
+nmap <Leader>j :SplitjoinJoin<cr>
+nmap <Leader>s :SplitjoinSplit<cr>
 
 " Airline
 let g:airline#extensions#tagbar#enabled = 0
@@ -488,8 +434,11 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
 " Language setting
+let ruby_no_expensive=1
+set regexpengine=1
 augroup language_settings
   autocmd!
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
   autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
   autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
   autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
