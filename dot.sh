@@ -4,6 +4,8 @@ BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # vim
 ln -s ${BASEDIR}/vim/vimrc ~/.vimrc
+mkdir -p ~/.vim
+ln -s ${BASEDIR}/vim/ftplugin ~/.vim/ftplugin
 
 # git
 ln -s ${BASEDIR}/git/gitconfig ~/.gitconfig

@@ -11,41 +11,44 @@ if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
 endif
 
 call plug#begin('~/.vim/plugged')
+
+" file management
+Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
+Plug 'FelikZ/ctrlp-py-matcher', { 'on': 'CtrlP' }
+Plug 'tpope/vim-eunuch'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+
+" git
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+
+" textedit
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'junegunn/vim-easy-align'
+Plug 'tpope/vim-commentary'
+
 Plug 'tpope/vim-sensible'
 Plug 'bling/vim-airline'
-Plug 'Lokaltog/vim-easymotion'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jgdavey/tslime.vim'
-Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
-Plug 'FelikZ/ctrlp-py-matcher', { 'on': 'CtrlP' }
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'Raimondi/delimitMate'
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'tpope/vim-commentary'
-"Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'mattn/emmet-vim'
-Plug 'terryma/vim-multiple-cursors'
-
-Plug 'junegunn/vim-easy-align'
-
 Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
-
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'ervandew/supertab'
 Plug 'honza/vim-snippets'
-
 Plug 'tpope/vim-unimpaired'
 Plug 'jeetsukumaran/vim-buffergator'
 
@@ -53,6 +56,7 @@ Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 Plug 'sheerun/vim-polyglot'
+
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'tpope/vim-bundler', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
@@ -60,12 +64,14 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
       \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
-Plug 'reedes/vim-colors-pencil'
-Plug 'junegunn/goyo.vim'
 
+" colorscheme
+Plug 'reedes/vim-colors-pencil'
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'zenorocha/dracula-theme', { 'rtp': 'vim' }
+
+Plug 'junegunn/goyo.vim'
 " Plug 'ryanoasis/vim-devicons'
 
 if filereadable(expand("~/.vimplug.local"))
@@ -486,15 +492,7 @@ augroup language_settings
   autocmd!
   autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
   autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
-
-  autocmd FileType php setlocal tabstop=4 shiftwidth=4
-
-  autocmd FileType php,javascript let b:delimitMate_eol_marker = ";"
-
-  autocmd FileType ruby setlocal tw=79 isfname+=:
-
   autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
-  autocmd FileType gitcommit setlocal spell
 augroup END
 
 let g:rehash256 = 1
