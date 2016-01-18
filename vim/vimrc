@@ -120,6 +120,8 @@ set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
+set nu
+
 set mouse=n " Enable mouse support
 " restore position mouse click
 nnoremap <LeftMouse> m'<LeftMouse>

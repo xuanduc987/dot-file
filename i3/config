@@ -207,5 +207,6 @@ bindsym $sup+n exec --no-startup-id thunar
 
 # Startup programs
 # exec xrdb -merge ~/.Xresources
+exec --no-startup-id urxvtd -o -q -f
 exec --no-startup-id nm-applet
 exec --no-startup-id compton -b
