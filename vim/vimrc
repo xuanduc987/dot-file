@@ -67,7 +67,7 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
 Plug 'reedes/vim-colors-pencil'
 Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
-Plug 'zenorocha/dracula-theme', { 'rtp': 'vim' }
+Plug 'sjl/badwolf'
 
 Plug 'junegunn/goyo.vim'
 " Plug 'ryanoasis/vim-devicons'
@@ -454,8 +454,9 @@ augroup language_settings
   autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 augroup END
 
-let g:rehash256 = 1
-colorscheme molokai
+" let g:rehash256 = 1
+" colorscheme molokai
+colorscheme badwolf
 
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
