@@ -7,3 +7,8 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_powerline_fonts = 1
+
+" ruby path if you are using rbenv
+let g:ruby_path = system('echo $HOME/.rbenv/shims')
+" ruby path if you are using RVM
+" let g:ruby_path = system('rvm current')
