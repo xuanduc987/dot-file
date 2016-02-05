@@ -1,8 +1,4 @@
-let g:is_windows = has('win32')
-let g:is_cygwin = has('win32unix')
-let g:is_mac = !g:is_windows
-      \ && (has('mac') || has('macunix') || has('gui_macvim') ||
-      \   (!isdirectory('/proc') && executable('sw_vers')))
+let g:is_windows = has('win33')
 
 " Load vim-plug
 if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
@@ -20,7 +16,6 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 
 " git
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-git'
 
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
@@ -32,7 +27,6 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'tpope/vim-commentary'
 
 Plug 'tpope/vim-sensible'
-Plug 'bling/vim-airline'
 Plug 'Yggdroot/indentLine'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jgdavey/tslime.vim'
@@ -47,9 +41,6 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
 Plug 'MarcWeber/vim-addon-mw-utils'| Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
 Plug 'ervandew/supertab'
-Plug 'honza/vim-snippets'
-Plug 'tpope/vim-unimpaired'
-Plug 'jeetsukumaran/vim-buffergator'
 
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
@@ -57,7 +48,6 @@ Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSu
 Plug 'sheerun/vim-polyglot'
 
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
-Plug 'tpope/vim-bundler', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
       \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
       \ 'RExtractLocalVariable', 'RRenameLocalVariable',
@@ -70,16 +60,12 @@ Plug 'morhetz/gruvbox'
 Plug 'sjl/badwolf'
 
 Plug 'junegunn/goyo.vim'
-" Plug 'ryanoasis/vim-devicons'
 
 if filereadable(expand("~/.vimplug.local"))
   source ~/.vimplug.local
 endif
 call plug#end()
 
-" Save your swp files to a less annoying place than the current directory.
-" If you have .vim-swap in the current directory, it'll use that.
-" Otherwise it saves it to ~/.vim/_temp, ~/tmp or .
 if isdirectory($HOME . '/.vim/_temp') == 0
   :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
 endif
@@ -88,7 +74,6 @@ set directory+=~/.vim/_temp//
 set directory+=~/tmp//
 set directory+=.
 
-" viminfo stores the the state of your previous editing session
 if has('nvim')
   set viminfo+=n~/.config/nvim/nvim.shada
 else
@@ -96,10 +81,6 @@ else
 endif
 
 if exists("+undofile")
-  " undofile - This allows you to use undos after exiting and restarting
-  " This, like swap and backups, uses .vim-undo first, then ~/.vim/_undo
-  " :help undo-persistence
-  " This is only present in 7.3+
   if isdirectory($HOME . '/.vim/_undo') == 0
     :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
   endif
@@ -113,26 +94,21 @@ set nowrap " don't wrap lines
 set tabstop=8
 set softtabstop=2 " a tab is two spaces
 set shiftwidth=2 " an autoindent (with <<) is two spaces
+set shiftround
 set expandtab " use spaces, not tabs
 set list " Show invisible characters
 set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-set nu
+set relativenumber
 
 set mouse=n " Enable mouse support
-" restore position mouse click
-nnoremap <LeftMouse> m'<LeftMouse>
-nnoremap <LeftRelease> <LeftRelease>g``
-set mousemodel=popup " Right click behavior like MS
 set cc=+1 " Color column textwidth + 1
-
-set shiftround
 
 set ttyfast
 set lazyredraw
-set timeout timeoutlen=500 ttimeoutlen=100
+set timeout timeoutlen=500 ttimeoutlen=50
 set synmaxcol=300
 
 " Natural split
@@ -188,9 +164,6 @@ nnoremap <leader>fef :normal! gg=G``<CR>
 " http://vimcasts.org/e/14
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
-" Underline the current line with '='
-nnore <silent> <leader>ul :t.<CR>Vr=
-
 " Map the arrow keys to be based on display lines, not physical lines
 nore <Down> gj
 nore <Up> gk
@@ -203,8 +176,8 @@ inore kj <Esc>
 
 " incsearch.vim
 map /  <Plug>(incsearch-forward)\v
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
+map ?  <Plug>(incsearch-backward)\v
+map g/ <Plug>(incsearch-stay)\v
 
 let g:incsearch#auto_nohlsearch = 1
 map n  <Plug>(incsearch-nohl-n)
@@ -222,7 +195,6 @@ nmap <C-c><C-c> <Plug>NormalModeSendToTmux
 nmap <C-c>r <Plug>SetTmuxVars
 
 " Neomake
-
 autocmd! BufWritePost * Neomake
 if !has('nvim')
   let g:neomake_ruby_enabled_makers = ['mri']
@@ -295,8 +267,7 @@ inore <F5> <ESC>:GundoToggle<CR>
 
 " git fugitive {
 nnore <leader>gb :Gblame<CR>
-nnore <leader>gs :Gstatus<CR>
-nnore <leader>gw :Gwrite<CR>
+nnore <leader>gg :Ggrep <C-R><C-W><CR>
 " }
 
 nore <Leader>p :CtrlP<CR>
@@ -306,31 +277,6 @@ let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
 nmap <Leader>j :SplitjoinJoin<cr>
 nmap <Leader>s :SplitjoinSplit<cr>
-
-" Airline
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline_left_sep=''
-let g:airline_right_sep=''
-let g:airline_left_alt_sep=''
-let g:airline_right_alt_sep=''
-let g:airline#extensions#tagbar#enabled = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_mode_map = {
-      \ '__' : '-',
-      \ 'n'  : 'N',
-      \ 'i'  : 'I',
-      \ 'R'  : 'R',
-      \ 'c'  : 'C',
-      \ 'v'  : 'V',
-      \ 'V'  : 'V',
-      \ '' : 'V',
-      \ 's'  : 'S',
-      \ 'S'  : 'S',
-      \ '' : 'S',
-      \ }
 
 " sets the arglist to contain each of the files referenced by the quickfix list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
@@ -360,12 +306,6 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-" Vim-devicons
-augroup devicon_fixNerdtree
-  autocmd!
-  autocmd FileType nerdtree setlocal nolist
-augroup END
 
 " vim-multiple-cursors
 let g:multi_cursor_exit_from_visual_mode=0
@@ -405,26 +345,21 @@ endfunction
 let g:goyo_callbacks = [ function('s:goyo_before'), function('s:goyo_after') ]
 
 " vim-rails
-let g:rails_gem_projections = {
-      \ "active_model_serializers": {
+let g:rails_projections = {
       \   "app/serializers/*_serializer.rb": {
       \     "command":   "serializer",
       \     "affinity":  "model",
       \     "test":      "spec/serializers/{}_spec.rb",
       \     "related":   "app/models/{}.rb",
       \     "template":  "class {camelcase|capitalize|colons}Serializer < ActiveModel::Serializer\nend"
-      \   }
-      \ },
-      \ "draper": {
+      \   },
       \   "app/decorators/*_decorator.rb": {
       \     "command": "decorator",
       \     "affinity": "model",
       \     "test": "spec/decorators/%s_spec.rb",
       \     "related": "app/models/%s.rb",
       \     "template": "class %SDecorator < Draper::Decorator\nend"
-      \   }
-      \ },
-      \ "factory_girl": {
+      \   },
       \   "test/factories/*.rb": {
       \     "command":   "factory",
       \     "affinity":  "collection",
@@ -443,7 +378,7 @@ let g:rails_gem_projections = {
       \     "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
       \     "keywords":  "factory sequence"
       \   }
-      \ }}
+      \ }
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
@@ -456,14 +391,15 @@ set regexpengine=1
 augroup language_settings
   autocmd!
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-  autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
-  autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
   autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 augroup END
 
-" let g:rehash256 = 1
-" colorscheme molokai
-colorscheme badwolf
+if !exists('g:colors_name')
+  let g:rehash256 = 1
+  " colorscheme molokai
+  let g:badwolf_darkgutter = 1
+  colorscheme badwolf
+endif
 
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local

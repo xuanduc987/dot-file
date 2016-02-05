@@ -6,8 +6,8 @@ Xft.hintstyle:              hintslig
 
 URxvt*iconFile: /usr/share/icons/elementary/apps/128/terminal.svg
 
-URxvt*font: xft:Hack:pixelsize=13:hinting=true
-URxvt*boldFont: xft:Hack:pixelsize=13:hinting=true:style:Bold
+URxvt*font: xft:Hack:size=9:hinting=true
+URxvt*boldFont: xft:Hack:size=9:hinting=true:style:Bold
 
 URxvt.depth:                32
 URxvt.geometry:             90x30
@@ -28,7 +28,7 @@ URxvt.urlLauncher: firefox
 
 ! Cursor
 URxvt.cursorBlink:          true
-URxvt.cursorColor:          #657b83
+URxvt.cursorColor:          #0a9dff
 URxvt.cursorUnderline:      false
 
 ! Pointer

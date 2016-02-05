@@ -1,0 +1,34 @@
+snippet case
+	case ${1:object}
+	when ${2:condition}
+		${0}
+	end
+snippet r
+	attr_reader :${0:attr_names}
+snippet w
+	attr_writer :${0:attr_names}
+snippet rw
+	attr_accessor :${0:attr_names}
+snippet ana
+	accepts_nested_attributes_for :${0:association}
+snippet :
+	${1:key}: ${2:'value'}
+snippet pry
+	require 'pry'; binding.pry
+#     Rspec snippets     #
+snippet bef
+	before :${1:each} do
+		${0}
+	end
+snippet let
+	let(:${1:object}) { ${0} }
+snippet let!
+	let!(:${1:object}) { ${0} }
+snippet subj
+	subject { ${0} }
+snippet s.
+	subject.${0:method}
+snippet exp
+	expect(${1:object}).to ${0}
+snippet expb
+	expect { ${1:object} }.to ${0}
