@@ -289,18 +289,6 @@ function! QuickfixFilenames()
   return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
 
-" vim-snipmate {
-" Use <C-Space>
-let g:snips_no_mappings=1
-imap <C-@> <Plug>snipMateNextOrTrigger
-smap <C-@> <Plug>snipMateNextOrTrigger
-imap <C-Space> <Plug>snipMateNextOrTrigger
-smap <C-Space> <Plug>snipMateNextOrTrigger
-smap <C-S-@> <Plug>snipMateBack
-smap <C-S-Space> <Plug>snipMateBack
-imap <C-R><Tab> <Plug>snipMateShow
-" }
-
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
