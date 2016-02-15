@@ -22,17 +22,16 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-easy-align'
-Plug 'haya14busa/incsearch.vim'
+Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(EasyAlign)' }
+Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
 Plug 'tpope/vim-commentary'
 
-Plug 'tpope/vim-sensible'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesToggle', 'IndentGuidesEnable'] }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jgdavey/tslime.vim'
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
-Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-abolish', { 'on': 'S' }
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -89,6 +88,63 @@ if exists("+undofile")
   set undofile
 endif
 
+" sensible
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set smarttab
+
+set nrformats-=octal
+
+set ttimeout
+
+set incsearch
+
+set laststatus=2
+set ruler
+set wildmenu
+set lazyredraw
+
+set scrolloff=1
+set sidescrolloff=5
+set display+=lastline
+
+if &encoding ==# 'latin1' && has('gui_running')
+  set encoding=utf-8
+endif
+
+if v:version > 703 || v:version == 703 && has("patch541")
+  set formatoptions+=j " Delete comment character when joining commented lines
+endif
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+set autoread
+
+if &history < 1000
+  set history=1000
+endif
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+set sessionoptions-=options
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
+  set t_Co=16
+endif
+
+" Load matchit.vim, but only if the user hasn't installed a newer version.
+if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
+  runtime! macros/matchit.vim
+endif
+
+" other
 let mapleader = " "
 set nowrap " don't wrap lines
 set tabstop=8
@@ -107,7 +163,6 @@ set mouse=n " Enable mouse support
 set cc=+1 " Color column textwidth + 1
 
 set ttyfast
-set lazyredraw
 set timeout timeoutlen=500 ttimeoutlen=50
 set synmaxcol=300
 
@@ -202,8 +257,6 @@ endif
 map /  <Plug>(incsearch-forward)\v
 map ?  <Plug>(incsearch-backward)\v
 map g/ <Plug>(incsearch-stay)\v
-
-let g:incsearch#auto_nohlsearch = 1
 
 " Tslime
 let g:tslime_always_current_session = 1
