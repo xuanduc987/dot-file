@@ -177,6 +177,17 @@ inore kj <Esc>
 " replace last search
 nnore S :%s///g<Left><Left>
 
+" change cursor shape for urxvt, xterm,...
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+else
+  let &t_SI = "\<Esc>[6 q"
+  let &t_SR = "\<Esc>[4 q"
+  let &t_EI = "\<Esc>[2 q"
+endif
+
 " incsearch.vim
 map /  <Plug>(incsearch-forward)\v
 map ?  <Plug>(incsearch-backward)\v
