@@ -15,7 +15,7 @@ URxvt.transparent:          false
 URxvt.fading:               0
 ! URxvt.urgentOnBell:         true
 ! URxvt.visualBell:           true
-URxvt.loginShell:           true
+URxvt.loginShell:           false
 URxvt.saveLines:            50
 URxvt.internalBorder:       3
 URxvt.lineSpace:            0
@@ -69,7 +69,6 @@ URxvt.pointerBlank:         true
 *color14: #8ec07c
 ! LightGrey + White
 *color7:  #a89984
-*color15: #ebdbb2
 
 URxvt.color121: #8cffba
 URxvt.color137: #b88853
