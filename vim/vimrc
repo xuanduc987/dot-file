@@ -27,7 +27,7 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'tpope/vim-commentary'
 
 Plug 'tpope/vim-sensible'
-Plug 'Yggdroot/indentLine'
+Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesToggle', 'IndentGuidesEnable'] }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'jgdavey/tslime.vim'
 Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
@@ -59,7 +59,7 @@ Plug 'tomasr/molokai'
 Plug 'morhetz/gruvbox'
 Plug 'sjl/badwolf'
 
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 if filereadable(expand("~/.vimplug.local"))
   source ~/.vimplug.local
@@ -292,6 +292,11 @@ nmap ga <Plug>(EasyAlign)
 " vim-multiple-cursors
 let g:multi_cursor_exit_from_visual_mode=0
 let g:multi_cursor_exit_from_insert_mode=0
+
+" vim-indent-guides
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 
 " goyo
 let s:save_background = ""
