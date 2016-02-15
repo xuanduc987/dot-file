@@ -174,8 +174,18 @@ nnore <leader><CR> :noh<CR>
 inore jk <Esc>
 inore kj <Esc>
 
+" In command-line mode, C-a jumps to beginning (to match C-e).
+cnoremap <C-a> <Home>
+
+" Tab/shift-tab to indent/outdent in visual mode.
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
 " replace last search
 nnore S :%s///g<Left><Left>
+
+" Convert Ruby 1.8 hash rockets to 1.9 JSON style hashes.
+command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/\1:/e' . (&gdefault ? '' : 'g')
 
 " change cursor shape for urxvt, xterm,...
 if exists('$TMUX')
@@ -387,17 +397,12 @@ let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 
 " Language setting
-let ruby_no_expensive=1
-set regexpengine=1
 augroup language_settings
   autocmd!
-  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
   autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 augroup END
 
 if !exists('g:colors_name')
-  let g:rehash256 = 1
-  " colorscheme molokai
   let g:badwolf_darkgutter = 1
   colorscheme badwolf
 endif
