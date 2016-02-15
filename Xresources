@@ -70,3 +70,26 @@ URxvt.pointerBlank:         true
 ! LightGrey + White
 *color7:  #a89984
 *color15: #ebdbb2
+
+URxvt.color121: #8cffba
+URxvt.color137: #b88853
+URxvt.color154: #aeee00
+URxvt.color15: #f8f6f2
+URxvt.color16: #000000
+URxvt.color173: #c7915b
+URxvt.color196: #ff2c4b
+URxvt.color211: #ff9eb8
+URxvt.color214: #ffa724
+URxvt.color221: #fade3e
+URxvt.color222: #f4cf86
+URxvt.color232: #141413
+URxvt.color233: #1c1b1a
+URxvt.color235: #242321
+URxvt.color236: #35322d
+URxvt.color238: #45413b
+URxvt.color241: #666462
+URxvt.color243: #857f78
+URxvt.color245: #998f84
+URxvt.color252: #d9cec3
+URxvt.color39: #0a9dff
+URxvt.color95: #88633f
