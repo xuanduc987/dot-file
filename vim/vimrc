@@ -37,12 +37,16 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'mattn/emmet-vim'
-Plug 'vim-scripts/fcitx.vim', { 'on': 'Fcitx' }
+Plug 'vim-scripts/fcitx.vim', { 'on': [] }
 Plug 'MarcWeber/vim-addon-mw-utils'| Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
 Plug 'ervandew/supertab'
 
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
+
+if !g:is_windows
+  Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': './install.py --tern-completer'  }
+endif
 
 Plug 'sheerun/vim-polyglot'
 
@@ -270,6 +274,12 @@ let g:loaded_vimball      = 1
 
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
+
+" YouCompleteMe
+command YcmEnable :call plug#load('YouCompleteMe') | call youcompleteme#Enable()
+
+" Fcitx
+command Fcitx :call plug#load('fcitx.vim')
 
 " incsearch.vim
 map /  <Plug>(incsearch-forward)\v
