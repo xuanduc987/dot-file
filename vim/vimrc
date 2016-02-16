@@ -253,6 +253,13 @@ else
   let &t_EI = "\<Esc>[2 q"
 endif
 
+" PLUGIN
+
+" netrw
+" disable
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
+
 " incsearch.vim
 map /  <Plug>(incsearch-forward)\v
 map ?  <Plug>(incsearch-backward)\v
@@ -317,6 +324,36 @@ endif
 
 " NEARDTree {
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
+nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
+
+augroup AuNERDTreeCmd
+autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
+
+" If the parameter is a directory, cd into it
+function s:CdIfDirectory(directory)
+  let explicitDirectory = isdirectory(a:directory)
+  let directory = explicitDirectory || empty(a:directory)
+
+  if explicitDirectory
+    exe "cd " . fnameescape(a:directory)
+  endif
+
+  " Allows reading from stdin
+  " ex: git diff | mvim -R -
+  if strlen(a:directory) == 0
+    return
+  endif
+
+  if directory
+    NERDTree
+    wincmd p
+    bd
+  endif
+
+  if explicitDirectory
+    wincmd p
+  endif
+endfunction
 " }
 
 " DelimitMate
@@ -327,9 +364,6 @@ let delimitMate_excluded_ft = "markdown" " disable for markdown
 
 " Tagbar mappings.
 nore <Leader>rc :TagbarToggle<CR>
-
-" NEARDTree
-nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
 
 " gundo {
 nnore <F5> :GundoToggle<CR>
