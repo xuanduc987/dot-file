@@ -444,6 +444,11 @@ let g:rails_projections = {
       \   }
       \ }
 
+" emmet
+imap <C-J> <C-Y>,
+imap <C-n> <C-Y>n
+imap <C-p> <C-Y>N
+
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
