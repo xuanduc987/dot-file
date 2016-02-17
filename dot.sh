@@ -7,6 +7,7 @@ ln -s ${BASEDIR}/vim/vimrc ~/.vimrc
 mkdir -p ~/.vim
 ln -s ${BASEDIR}/vim/ftplugin ~/.vim/ftplugin
 ln -s ${BASEDIR}/vim/snippets ~/.vim/snippets
+ln -s ${BASEDIR}/vim/UltiSnips ~/.vim/UltiSnips
 
 # git
 ln -s ${BASEDIR}/git/gitconfig ~/.gitconfig
