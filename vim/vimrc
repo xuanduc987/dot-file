@@ -1,11 +1,13 @@
 let g:is_windows = has('win33')
 
-" Load vim-plug
+" Load vim-plug {{{
 if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
-  :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
-  :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
+    :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
+    :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
 endif
+" }}}
 
+" LOAD PLUGIN {{{
 call plug#begin('~/.vim/plugged')
 
 " file management
@@ -38,23 +40,22 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/fcitx.vim', { 'on': [] }
-Plug 'MarcWeber/vim-addon-mw-utils'| Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
-Plug 'ervandew/supertab'
+Plug 'SirVer/ultisnips'
 
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 if !g:is_windows
-  Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': './install.py --tern-completer'  }
+    Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': './install.py --tern-completer'    }
 endif
 
 Plug 'sheerun/vim-polyglot'
 
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
-      \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
-      \ 'RExtractLocalVariable', 'RRenameLocalVariable',
-      \ 'RRenameInstanceVariable', 'RExtractMethod'] }
+            \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
+            \ 'RExtractLocalVariable', 'RRenameLocalVariable',
+            \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
 " colorscheme
 Plug 'reedes/vim-colors-pencil'
@@ -65,12 +66,14 @@ Plug 'sjl/badwolf'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
 if filereadable(expand("~/.vimplug.local"))
-  source ~/.vimplug.local
+    source ~/.vimplug.local
 endif
 call plug#end()
+" }}}
 
+" create folder for swap, undo... {{{
 if isdirectory($HOME . '/.vim/_temp') == 0
-  :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
+    :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
 endif
 set directory=./.vim-swap//
 set directory+=~/.vim/_temp//
@@ -78,21 +81,23 @@ set directory+=~/tmp//
 set directory+=.
 
 if has('nvim')
-  set viminfo+=n~/.config/nvim/nvim.shada
+    set viminfo+=n~/.config/nvim/nvim.shada
 else
-  set viminfo+=n~/.vim/viminfo
+    set viminfo+=n~/.vim/viminfo
 endif
 
 if exists("+undofile")
-  if isdirectory($HOME . '/.vim/_undo') == 0
-    :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
-  endif
-  set undodir=./.vim-undo//
-  set undodir+=~/.vim/_undo//
-  set undofile
+    if isdirectory($HOME . '/.vim/_undo') == 0
+        :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
+    endif
+    set undodir=./.vim-undo//
+    set undodir+=~/.vim/_undo//
+    set undofile
 endif
 
-" sensible
+" }}}
+
+" sensible {{{
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
@@ -114,39 +119,40 @@ set sidescrolloff=5
 set display+=lastline
 
 if &encoding ==# 'latin1' && has('gui_running')
-  set encoding=utf-8
+    set encoding=utf-8
 endif
 
 if v:version > 703 || v:version == 703 && has("patch541")
-  set formatoptions+=j " Delete comment character when joining commented lines
+    set formatoptions+=j " Delete comment character when joining commented lines
 endif
 
 if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+    setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
 
 set autoread
 
 if &history < 1000
-  set history=1000
+    set history=1000
 endif
 if &tabpagemax < 50
-  set tabpagemax=50
+    set tabpagemax=50
 endif
 if !empty(&viminfo)
-  set viminfo^=!
+    set viminfo^=!
 endif
 set sessionoptions-=options
 
 " Allow color schemes to do bright colors without forcing bold.
 if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
+    set t_Co=16
 endif
 
 " Load matchit.vim, but only if the user hasn't installed a newer version.
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
+    runtime! macros/matchit.vim
 endif
+" }}}
 
 " other
 let mapleader = " "
@@ -163,6 +169,8 @@ set smartcase " ... unless they contain at least one capital letter
 
 set relativenumber
 
+set modeline
+
 set mouse=n " Enable mouse support
 set cc=+1 " Color column textwidth + 1
 
@@ -176,10 +184,10 @@ set splitright
 
 " Special chars
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
-  let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
-  let &fillchars = "vert:\u2502,fold:\u00b7"
+    let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
+    let &fillchars = "vert:\u2502,fold:\u00b7"
 else
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<
+    set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
 
 " Disable output and VCS files
@@ -196,11 +204,11 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 set wildignore+=*.swp,*~,._*
 
 augroup restore_position
-  autocmd!
-  " Remember last location in file, but not for commit messages.
-  " see :help last-position-jump
-  au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
-        \| exe "normal! g`\"" | endif
+    autocmd!
+    " Remember last location in file, but not for commit messages.
+    " see :help last-position-jump
+    au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal! g`\"" | endif
 augroup END
 
 " easy move between windows
@@ -248,102 +256,176 @@ command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/
 
 " change cursor shape for urxvt, xterm,...
 if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-  let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
 else
-  let &t_SI = "\<Esc>[6 q"
-  let &t_SR = "\<Esc>[4 q"
-  let &t_EI = "\<Esc>[2 q"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
 endif
 
 " PLUGIN
-" disable logiPat tarPlugin gzip zipPlugin vimballPlugin netrw
+" disable logiPat tarPlugin gzip zipPlugin vimballPlugin netrw {{{
 let g:loaded_logipat = 1
 
 let g:loaded_tarPlugin= 1
-let g:loaded_tar      = 1
+let g:loaded_tar            = 1
 
 let loaded_gzip = 1
 
 let g:loaded_zipPlugin= 1
-let g:loaded_zip      = 1
+let g:loaded_zip            = 1
 
 let g:loaded_vimballPlugin= 1
-let g:loaded_vimball      = 1
+let g:loaded_vimball            = 1
 
-let g:loaded_netrw       = 1
+let g:loaded_netrw           = 1
 let g:loaded_netrwPlugin = 1
+" }}}
 
-" YouCompleteMe
+" Ultisnips {{{
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return b:localComplete ? "\<C-p>" : "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+                if s:WillComplete()
+                    let b:localComplete = 1
+                    return "\<C-x>\<C-p>"
+                else
+                    let b:localComplete = 0
+                    return "\<TAB>"
+                endif
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+function! g:UltiSnips_Reverse()
+    call UltiSnips#JumpBackwards()
+    if g:ulti_jump_backwards_res == 0
+        if pumvisible()
+            return b:localComplete ? "\<C-n>" : "\<C-P>"
+        else
+            return "\<Plug>delimitMateS-Tab"
+        endif
+    endif
+
+    return ""
+endfunction
+
+function! s:WillComplete()
+    let line = getline('.')
+    let cnum = col('.') - 1
+    let post = line[cnum - 1:]
+
+    for pattern in ['$', '\s']
+        if post =~ '^' . pattern
+            return 0
+        endif
+    endfor
+
+    return 1
+endfunction
+
+let g:UltiSnipsExpandTrigger = "<NUL>"
+inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
+inoremap <silent> <S-TAB> <C-R>=g:UltiSnips_Reverse()<cr>
+" }}}
+
+" DelimitMate {{{
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 1
+let delimitMate_balance_matchpairs = 1
+let delimitMate_excluded_ft = "markdown" " disable for markdown
+imap <C-O> <Plug>delimitMateJumpMany
+" }}}
+
+
+" YouCompleteMe {{{
 command YcmEnable :call plug#load('YouCompleteMe') | call youcompleteme#Enable()
+" }}}
 
-" Fcitx
+" Fcitx {{{
 command Fcitx :call plug#load('fcitx.vim')
+" }}}
 
-" incsearch.vim
+" incsearch.vim {{{
 map /  <Plug>(incsearch-forward)\v
 map ?  <Plug>(incsearch-backward)\v
 map g/ <Plug>(incsearch-stay)\v
+" }}}
 
-" Tslime
+" Tslime {{{
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
 vmap <C-c><C-c> <Plug>SendSelectionToTmux
 nmap <C-c><C-c> <Plug>NormalModeSendToTmux
 nmap <C-c>r <Plug>SetTmuxVars
+" }}}
 
-" Neomake
+" Neomake {{{
 autocmd! BufWritePost * Neomake
 if !has('nvim')
-  let g:neomake_ruby_enabled_makers = ['mri']
+    let g:neomake_ruby_enabled_makers = ['mri']
 endif
+" }}}
 
-" vim-test
+" vim-test {{{
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "tslime"
+" }}}
 
-" vim-buffergator
+" vim-buffergator {{{
 let g:buffergator_suppress_keymaps = 1
 nmap <silent> <leader>to :BuffergatorTabsOpen<CR>
 nmap <silent> <leader>b :BuffergatorOpen<CR>
+" }}}
 
-" Markdown
+" Markdown {{{
 let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby.html',
-      \ 'javascript', 'json=javascript', 'ruby', 'sass', 'html', 'sh']
+            \ 'javascript', 'json=javascript', 'ruby', 'sass', 'html', 'sh']
+" }}}
 
-" Liquid
+" Liquid {{{
 let g:liquid_highlight_types = g:markdown_fenced_languages +
-      \ ['html+erb=eruby.html']
+            \ ['html+erb=eruby.html']
+" }}}
 
-" ctrlp setting {
+" ctrlp setting {{{
 let g:ctrlp_map = ''
+nore <Leader>p :CtrlP<CR>
 let g:ctrlp_clear_cache_on_exit = 0
 if has('python')
-  let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 endif
 let g:ctrlp_custom_ignore = {
-      \ 'dir': '\v[\/]\.(git|hg|svn)$',
-      \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
-      \ }
+            \ 'dir': '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
+            \ }
 " If ag is available use it as filename list generator instead of 'find'
 if executable("ag")
-  set grepprg=ag\ --nogroup\ --nocolor
-  let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup
-        \ --ignore ''.git''
-        \ --ignore ''.DS_Store''
-        \ --ignore ''node_modules''
-        \ --ignore ''vendor/plugins''
-        \ --hidden -g ""'
-  let g:ctrlp_use_caching = 0
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup
+                \ --ignore ''.git''
+                \ --ignore ''.DS_Store''
+                \ --ignore ''node_modules''
+                \ --ignore ''vendor/plugins''
+                \ --hidden -g ""'
+    let g:ctrlp_use_caching = 0
 endif
-" }
+" }}}
 
-" NEARDTree {
+" NEARDTree {{{
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.rbc$', '\.rbo$', '\.class$', '\.o$', '\~$']
 nore <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
 
@@ -351,54 +433,47 @@ augroup AuNERDTreeCmd
 autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
 
 " If the parameter is a directory, cd into it
-function s:CdIfDirectory(directory)
-  let explicitDirectory = isdirectory(a:directory)
-  let directory = explicitDirectory || empty(a:directory)
+function! s:CdIfDirectory(directory)
+    let explicitDirectory = isdirectory(a:directory)
+    let directory = explicitDirectory || empty(a:directory)
 
-  if explicitDirectory
-    exe "cd " . fnameescape(a:directory)
-  endif
+    if explicitDirectory
+        exe "cd " . fnameescape(a:directory)
+    endif
 
-  " Allows reading from stdin
-  " ex: git diff | mvim -R -
-  if strlen(a:directory) == 0
-    return
-  endif
+    " Allows reading from stdin
+    " ex: git diff | mvim -R -
+    if strlen(a:directory) == 0
+        return
+    endif
 
-  if directory
-    NERDTree
-    wincmd p
-    bd
-  endif
+    if directory
+        NERDTree
+        wincmd p
+        bd
+    endif
 
-  if explicitDirectory
-    wincmd p
-  endif
+    if explicitDirectory
+        wincmd p
+    endif
 endfunction
-" }
+" }}}
 
-" DelimitMate
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 1
-let delimitMate_balance_matchpairs = 1
-let delimitMate_excluded_ft = "markdown" " disable for markdown
-
-" Tagbar mappings.
+" Tagbar mappings {{{
 nore <Leader>rc :TagbarToggle<CR>
+" }}}
 
-" gundo {
+" gundo {{{
 nnore <F5> :GundoToggle<CR>
 inore <F5> <ESC>:GundoToggle<CR>
-" }
+" }}}
 
-" git fugitive {
+" git fugitive {{{
 nnore <leader>gb :Gblame<CR>
 nnore <leader>gg :Ggrep <C-R><C-W><CR>
-" }
+" }}}
 
-nore <Leader>p :CtrlP<CR>
-
-" split join
+" split join {{{
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
 nmap <Leader>j :SplitjoinJoin<cr>
@@ -407,102 +482,110 @@ nmap <Leader>s :SplitjoinSplit<cr>
 " sets the arglist to contain each of the files referenced by the quickfix list
 command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
 function! QuickfixFilenames()
-  " Building a hash ensures we get each buffer only once
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+    " Building a hash ensures we get each buffer only once
+    let buffer_numbers = {}
+    for quickfix_item in getqflist()
+        let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+    endfor
+    return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
 endfunction
+" }}}
 
+" EasyAlign {{{
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+" }}}
 
-" vim-multiple-cursors
+" vim-multiple-cursors {{{
 let g:multi_cursor_exit_from_visual_mode=0
 let g:multi_cursor_exit_from_insert_mode=0
+" }}}
 
-" vim-indent-guides
+" vim-indent-guides {{{
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+" }}}
 
-" goyo
+" goyo {{{
 let s:save_background = ""
 let s:save_color = ""
 function! s:goyo_before()
-    if !has("gui_running")
-        return
-    endif
-    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
+        if !has("gui_running")
+                return
+        endif
+        let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
 
-    if is_mark_or_rst
-        let s:save_background = &background
-        let s:save_color = g:colors_name
-        set linespace=8
-        set background=light
-        colorscheme pencil
-    endif
+        if is_mark_or_rst
+                let s:save_background = &background
+                let s:save_color = g:colors_name
+                set linespace=8
+                set background=light
+                colorscheme pencil
+        endif
 endfunction
 
 function! s:goyo_after()
-    if !has("gui_running")
-        return
-    endif
-    let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
-    if is_mark_or_rst
-        set linespace=0
+        if !has("gui_running")
+                return
+        endif
+        let is_mark_or_rst = &filetype == "markdown" || &filetype == "rst" || &filetype == "text"
+        if is_mark_or_rst
+                set linespace=0
 
-        exec( "set background=" . s:save_background )
-        exec( "colorscheme " . s:save_color )
-    endif
+                exec( "set background=" . s:save_background )
+                exec( "colorscheme " . s:save_color )
+        endif
 endfunction
 
 let g:goyo_callbacks = [ function('s:goyo_before'), function('s:goyo_after') ]
+" }}}
 
-" vim-rails
+" vim-rails {{{
 let g:rails_projections = {
-      \   "app/serializers/*_serializer.rb": {
-      \     "command":   "serializer",
-      \     "affinity":  "model",
-      \     "test":      "spec/serializers/{}_spec.rb",
-      \     "related":   "app/models/{}.rb",
-      \     "template":  "class {camelcase|capitalize|colons}Serializer < ActiveModel::Serializer\nend"
-      \   },
-      \   "app/decorators/*_decorator.rb": {
-      \     "command": "decorator",
-      \     "affinity": "model",
-      \     "test": "spec/decorators/%s_spec.rb",
-      \     "related": "app/models/%s.rb",
-      \     "template": "class %SDecorator < Draper::Decorator\nend"
-      \   },
-      \   "test/factories/*.rb": {
-      \     "command":   "factory",
-      \     "affinity":  "collection",
-      \     "alternate": "app/models/{singular}.rb",
-      \     "related":   "db/schema.rb#{}",
-      \     "test":      "test/models/{singular}_test.rb",
-      \     "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
-      \     "keywords":  "factory sequence"
-      \   },
-      \   "spec/factories/*.rb": {
-      \     "command":   "factory",
-      \     "affinity":  "collection",
-      \     "alternate": "app/models/{singular}.rb",
-      \     "related":   "db/schema.rb#{}",
-      \     "test":      "spec/models/{singular}_test.rb",
-      \     "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
-      \     "keywords":  "factory sequence"
-      \   }
-      \ }
+    \          "app/serializers/*_serializer.rb": {
+    \              "command":   "serializer",
+    \              "affinity":  "model",
+    \              "test":          "spec/serializers/{}_spec.rb",
+    \              "related":   "app/models/{}.rb",
+    \              "template":  "class {camelcase|capitalize|colons}Serializer < ActiveModel::Serializer\nend"
+    \          },
+    \          "app/decorators/*_decorator.rb": {
+    \              "command": "decorator",
+    \              "affinity": "model",
+    \              "test": "spec/decorators/%s_spec.rb",
+    \              "related": "app/models/%s.rb",
+    \              "template": "class %SDecorator < Draper::Decorator\nend"
+    \          },
+    \          "test/factories/*.rb": {
+    \              "command":   "factory",
+    \              "affinity":  "collection",
+    \              "alternate": "app/models/{singular}.rb",
+    \              "related":   "db/schema.rb#{}",
+    \              "test":          "test/models/{singular}_test.rb",
+    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+    \              "keywords":  "factory sequence"
+    \          },
+    \          "spec/factories/*.rb": {
+    \              "command":   "factory",
+    \              "affinity":  "collection",
+    \              "alternate": "app/models/{singular}.rb",
+    \              "related":   "db/schema.rb#{}",
+    \              "test":          "spec/models/{singular}_test.rb",
+    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+    \              "keywords":  "factory sequence"
+    \          }
+    \ }
+" }}}
 
-" emmet
+" emmet {{{
 imap <C-J> <C-Y>,
 imap <C-n> <C-Y>n
 imap <C-p> <C-Y>N
+" }}}
 
 " Ruby completion
 let g:rubycomplete_buffer_loading = 1
@@ -511,15 +594,17 @@ let g:rubycomplete_rails = 1
 
 " Language setting
 augroup language_settings
-  autocmd!
-  autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
+    autocmd!
+    autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
 augroup END
 
 if !exists('g:colors_name')
-  let g:badwolf_darkgutter = 1
-  colorscheme badwolf
+    let g:badwolf_darkgutter = 1
+    colorscheme badwolf
 endif
 
 if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
+    source ~/.vimrc.local
 endif
+
+" vim: ts=8 sts=4 sw=4 fdm=marker
