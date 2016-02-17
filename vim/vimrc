@@ -333,8 +333,9 @@ inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
 " }}}
 
 " DelimitMate {{{
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 1
+let delimitMate_expand_cr = 2
+let delimitMate_expand_space = 1
+let delimitMate_jump_expansion = 1
 let delimitMate_balance_matchpairs = 1
 let delimitMate_excluded_ft = "markdown" " disable for markdown
 imap <C-O> <Plug>delimitMateJumpMany
