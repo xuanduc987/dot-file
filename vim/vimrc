@@ -17,7 +17,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 
 " git
-Plug 'tpope/vim-fugitive', { 'on': ['Git', 'Gblame', 'Gstatus', 'Ggrep', 'Glgrep', 'Glog', 'Gdiff', 'Gsdiff', 'Gvdiff'] }
+Plug 'tpope/vim-fugitive'
 
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
