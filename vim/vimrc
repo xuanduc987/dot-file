@@ -17,7 +17,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 
 " git
-Plug 'tpope/vim-fugitive', { 'on': ['Git'] }
+Plug 'tpope/vim-fugitive'
 
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
@@ -227,6 +227,9 @@ inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 " format the entire file
 nnoremap <leader>fef :normal! gg=G``<CR>
 
+" statusline
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
 " Some helpers to edit mode
 " http://vimcasts.org/e/14
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -345,6 +348,8 @@ imap <C-O> <Plug>delimitMateJumpMany
 command YcmEnable :call plug#load('YouCompleteMe') | call youcompleteme#Enable()
 let g:ycm_key_list_select_completion = ['<Down>']
 let g:ycm_key_list_previous_completion = ['Up']
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_min_num_of_chars_for_completion = 99
 " }}}
 
 " Fcitx {{{

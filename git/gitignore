@@ -4,3 +4,4 @@ gems.tags
 .rubocop*.yml
 .versions.conf
 .rake_tasks
+.tern-project
