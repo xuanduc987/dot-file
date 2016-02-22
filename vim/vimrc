@@ -57,6 +57,8 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
             \ 'RExtractLocalVariable', 'RRenameLocalVariable',
             \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
+Plug 'ternjs/tern_for_vim'
+
 " colorscheme
 Plug 'reedes/vim-colors-pencil'
 Plug 'tomasr/molokai'
