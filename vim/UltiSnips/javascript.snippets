@@ -9,3 +9,37 @@ for (${1:prop} in ${2:obj}){
 	}
 }
 endsnippet
+
+snippet fun "function (fun)"
+function ${1:function_name}(${2}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet f "anonymous function" w
+function(${1}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet af "" w
+(${1}) => {
+	${0}
+}
+endsnippet
+
+snippet iife "Immediately-Invoked Function Expression (iife)"
+(function(${1:window}) {
+	${VISUAL}$0
+}(${2:$1}));
+endsnippet
+
+# Query selector
+snippet qs
+${1:document}.querySelector('${0:CSS selector}')
+endsnippet
+
+# Query selector all
+snippet qsa
+${1:document}.querySelectorAll('${0:CSS selector}')
+endsnippet

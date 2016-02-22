@@ -46,7 +46,7 @@ Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 if !g:is_windows
-    Plug 'Valloric/YouCompleteMe', { 'on': [], 'do': './install.py --tern-completer'    }
+    Plug 'Valloric/YouCompleteMe', { 'on': [] }
 endif
 
 Plug 'sheerun/vim-polyglot'
@@ -247,10 +247,6 @@ inore kj <Esc>
 " In command-line mode, C-a jumps to beginning (to match C-e).
 cnoremap <C-a> <Home>
 
-" Tab/shift-tab to indent/outdent in visual mode.
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
-
 " replace last search
 nnore S :%s///g<Left><Left>
 
@@ -329,6 +325,7 @@ function! s:WillComplete()
 endfunction
 
 let g:UltiSnipsExpandTrigger = "<NUL>"
+xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
 " }}}
