@@ -35,3 +35,5 @@
   path = ~/.gitconfig.local
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+[interactive]
+	singleKey = true
