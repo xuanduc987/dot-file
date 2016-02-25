@@ -250,7 +250,8 @@ inore kj <Esc>
 cnoremap <C-a> <Home>
 
 " replace last search
-nnore S :%s///g<Left><Left>
+nnore s :%s///g<Left><Left>
+vnore s :s///g<Left><Left>
 
 " Convert Ruby 1.8 hash rockets to 1.9 JSON style hashes.
 command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/\1:/e' . (&gdefault ? '' : 'g')
