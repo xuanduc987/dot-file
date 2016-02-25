@@ -5,3 +5,4 @@ gems.tags
 .versions.conf
 .rake_tasks
 .tern-project
+.projections.json
