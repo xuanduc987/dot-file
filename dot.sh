@@ -3,6 +3,7 @@
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # vim
+rm ~/.vimrc
 ln -s ${BASEDIR}/vim/vimrc ~/.vimrc
 mkdir -p ~/.vim
 rm -r ~/.vim/ftplugin
