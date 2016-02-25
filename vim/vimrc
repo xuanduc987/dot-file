@@ -294,11 +294,16 @@ function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
     if g:ulti_expand_res == 0
         if pumvisible()
-            return "\<C-n>"
+            return b:forward_complete ? "\<C-n>" : "\<C-p>"
         else
             call UltiSnips#JumpForwards()
             if g:ulti_jump_forwards_res == 0
-                return s:WillComplete() ? "\<C-x>\<C-p>" : "\<TAB>"
+                if s:WillComplete()
+                    let b:forward_complete = 0
+                    return "\<C-p>"
+                else
+                    return "\<TAB>"
+                endif
             endif
         endif
     endif
@@ -309,7 +314,7 @@ function! g:UltiSnips_Reverse()
     call UltiSnips#JumpBackwards()
     if g:ulti_jump_backwards_res == 0
         if pumvisible()
-            return "\<C-P>"
+            return b:forward_complete ? "\<C-p>" ? "\<C-n>"
         else
             return "\<C-r>=delimitMate#JumpAny()\<CR>"
         endif
@@ -332,10 +337,16 @@ function! s:WillComplete()
     return 1
 endfunction
 
+function! g:WrapOmni()
+    let b:forward_complete = 1
+    return "\<C-X>\<C-O>"
+endfunction
+
 let g:UltiSnipsExpandTrigger = "<NUL>"
 xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
+inoremap <expr> <C-X><C-O> g:WrapOmni()
 " }}}
 
 " DelimitMate {{{
