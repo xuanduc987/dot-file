@@ -40,7 +40,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/fcitx.vim', { 'on': [] }
-Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips', { 'on': [] }
 
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
@@ -284,6 +284,11 @@ let g:loaded_vimball            = 1
 " }}}
 
 " Ultisnips {{{
+augroup load_us
+    autocmd!
+    autocmd InsertEnter * call plug#load('ultisnips') | autocmd! load_us
+augroup END
+
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
     if g:ulti_expand_res == 0
