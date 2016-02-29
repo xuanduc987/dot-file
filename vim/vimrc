@@ -342,11 +342,14 @@ function! g:WrapOmni()
     return "\<C-X>\<C-O>"
 endfunction
 
-let g:UltiSnipsExpandTrigger = "<NUL>"
+let g:UltiSnipsExpandTrigger = "<C-k>"
 xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
 inoremap <expr> <C-X><C-O> g:WrapOmni()
+
+imap <Nul> <C-Space>
+imap <expr> <C-Space> g:WrapOmni()
 " }}}
 
 " DelimitMate {{{
