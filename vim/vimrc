@@ -443,6 +443,8 @@ let g:liquid_highlight_types = g:markdown_fenced_languages +
 " ctrlp setting {{{
 let g:ctrlp_map = ''
 nore <Leader>p :CtrlP<CR>
+nore <Leader>, :CtrlPTag<CR>
+nore <Leader>; :CtrlPBufTag<CR>
 let g:ctrlp_clear_cache_on_exit = 0
 if has('python')
     let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
