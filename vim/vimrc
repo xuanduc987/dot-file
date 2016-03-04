@@ -11,8 +11,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " file management
-Plug 'ctrlpvim/ctrlp.vim', { 'on': 'CtrlP' }
-Plug 'FelikZ/ctrlp-py-matcher', { 'on': 'CtrlP' }
+Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'tpope/vim-eunuch'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 
