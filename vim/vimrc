@@ -366,7 +366,7 @@ endfunction
 
 function! g:WrapOmni()
     let b:forward_complete = 1
-    return "\<C-X>\<C-O>"
+    return "\<C-X>\<C-O>\<C-P>"
 endfunction
 
 let g:UltiSnipsExpandTrigger = "<C-k>"
@@ -376,7 +376,7 @@ inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
 inoremap <expr> <C-X><C-O> g:WrapOmni()
 
 imap <Nul> <C-Space>
-imap <expr> <C-Space> g:WrapOmni()
+inoremap <expr> <C-Space> g:WrapOmni()
 " }}}
 
 " DelimitMate {{{
