@@ -44,10 +44,6 @@ Plug 'SirVer/ultisnips', { 'on': [] }
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
-if !g:is_windows
-    Plug 'Valloric/YouCompleteMe', { 'on': [] }
-endif
-
 Plug 'sheerun/vim-polyglot'
 
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
@@ -386,14 +382,6 @@ let delimitMate_jump_expansion = 1
 let delimitMate_balance_matchpairs = 1
 let delimitMate_excluded_ft = "markdown" " disable for markdown
 imap <C-O> <Plug>delimitMateJumpMany
-" }}}
-
-" YouCompleteMe {{{
-command YcmEnable :call plug#load('YouCompleteMe') | call youcompleteme#Enable()
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['Up']
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_min_num_of_chars_for_completion = 99
 " }}}
 
 " Fcitx {{{
