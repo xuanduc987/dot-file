@@ -20,10 +20,11 @@ if ! zgen saved; then
   zgen oh-my-zsh plugins/gitfast
   zgen oh-my-zsh plugins/colored-man-pages
 
+  zgen load unixorn/git-extra-commands
   zgen load zsh-users/zsh-completions src
+  zgen load djui/alias-tips
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
-  zgen load djui/alias-tips
 
   zgen oh-my-zsh themes/frisk
 
