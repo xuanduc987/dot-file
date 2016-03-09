@@ -319,14 +319,11 @@ function! g:UltiSnips_Complete()
         if pumvisible()
             return b:forward_complete ? "\<C-n>" : "\<C-p>"
         else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-                if s:WillComplete()
-                    let b:forward_complete = 0
-                    return "\<C-p>"
-                else
-                    return "\<TAB>"
-                endif
+            if s:WillComplete()
+                let b:forward_complete = 0
+                return "\<C-p>"
+            else
+                return "\<TAB>"
             endif
         endif
     endif
@@ -334,16 +331,11 @@ function! g:UltiSnips_Complete()
 endfunction
 
 function! g:UltiSnips_Reverse()
-    call UltiSnips#JumpBackwards()
-    if g:ulti_jump_backwards_res == 0
-        if pumvisible()
-            return b:forward_complete ? "\<C-p>" ? "\<C-n>"
-        else
-            return "\<C-r>=delimitMate#JumpAny()\<CR>"
-        endif
+    if pumvisible()
+        return b:forward_complete ? "\<C-p>" ? "\<C-n>"
+    else
+        return "\<C-r>=delimitMate#JumpAny()\<CR>"
     endif
-
-    return ""
 endfunction
 
 function! s:WillComplete()
