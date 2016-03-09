@@ -333,7 +333,7 @@ endfunction
 
 function! g:UltiSnips_Reverse()
     if pumvisible()
-        return b:forward_complete ? "\<C-p>" ? "\<C-n>"
+        return b:forward_complete ? "\<C-p>" : "\<C-n>"
     else
         return "\<C-r>=delimitMate#JumpAny()\<CR>"
     endif
