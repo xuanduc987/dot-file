@@ -309,6 +309,7 @@ let g:loaded_vimball            = 1
 " }}}
 
 " Ultisnips {{{
+let b:forward_complete = 0
 augroup load_us
     autocmd!
     autocmd InsertEnter * call plug#load('ultisnips') | autocmd! load_us
