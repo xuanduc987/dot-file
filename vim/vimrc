@@ -41,6 +41,7 @@ Plug 'mattn/emmet-vim'
 Plug 'vim-scripts/fcitx.vim', { 'on': [] }
 Plug 'SirVer/ultisnips', { 'on': [] }
 
+Plug 'tpope/vim-dispatch'
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
@@ -410,7 +411,7 @@ nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
-let test#strategy = "tslime"
+let test#strategy = "dispatch"
 " }}}
 
 " Markdown {{{
