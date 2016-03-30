@@ -335,18 +335,18 @@ nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
 
 " PLUGIN
 " disable logiPat tarPlugin gzip zipPlugin vimballPlugin {{{
-let g:loaded_logipat = 1
+let g:loaded_logipat       = 1
 
-let g:loaded_tarPlugin= 1
-let g:loaded_tar            = 1
+let g:loaded_tarPlugin     = 1
+let g:loaded_tar           = 1
 
-let loaded_gzip = 1
+let loaded_gzip            = 1
 
-let g:loaded_zipPlugin= 1
-let g:loaded_zip            = 1
+let g:loaded_zipPlugin     = 1
+let g:loaded_zip           = 1
 
-let g:loaded_vimballPlugin= 1
-let g:loaded_vimball            = 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_vimball       = 1
 
 " }}}
 
@@ -412,7 +412,7 @@ inoremap <expr> <C-Space> g:WrapOmni()
 " }}}
 
 " Fcitx {{{
-command Fcitx :call plug#load('fcitx.vim')
+command! Fcitx :call plug#load('fcitx.vim')
 " }}}
 
 " incsearch.vim {{{
