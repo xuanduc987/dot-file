@@ -26,6 +26,7 @@ Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(i
 Plug 'tpope/vim-commentary'
 Plug 'wellle/targets.vim'
 Plug 'conradirwin/vim-bracketed-paste'
+Plug 'tpope/vim-rsi'
 
 Plug 'tpope/vim-sleuth'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesToggle', 'IndentGuidesEnable'] }
