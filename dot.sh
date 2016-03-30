@@ -36,4 +36,5 @@ cp ${BASEDIR}/mutt/muttrc ~/.muttrc
 cp -r ${BASEDIR}/mutt ~/.mutt
 
 # zsh
-echo "source ${BASEDIR}/zsh/zshrc" >> ~/.zshrc
+SOURCE_LINE="source ${BASEDIR}/zsh/zshrc"
+grep -q "$SOURCE_LINE" ~/.zshrc || echo "$SOURCE_LINE" >> ~/.zshrc
