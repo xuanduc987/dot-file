@@ -231,7 +231,15 @@ set statusline +=%w                          " preview window flag
 set statusline +=%y                          " filetype
 set statusline +=%=%-14.(%l,%c%V%)           " Line, column-virtual column"
 set statusline +=\ %P
-set statusline +=\ ←\ %{fugitive#head()}
+function! StatusGitBranch()
+    let b:s_git_branch_name = fugitive#head()
+    if !empty(b:s_git_branch_name)
+        return " ← ".b:s_git_branch_name
+    else
+        return " "
+    endif
+endfunction
+set statusline +=%{StatusGitBranch()}
 
 " Some helpers to edit mode
 " http://vimcasts.org/e/14
