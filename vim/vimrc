@@ -19,7 +19,7 @@ Plug 'tpope/vim-fugitive'
 
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'Raimondi/delimitMate'
+Plug 'jiangmiao/auto-pairs'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(EasyAlign)' }
 Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
@@ -377,7 +377,7 @@ function! g:UltiSnips_Reverse()
     if pumvisible()
         return b:forward_complete ? "\<C-p>" : "\<C-n>"
     else
-        return "\<C-r>=delimitMate#JumpAny()\<CR>"
+        return "\<S-TAB>"
     endif
 endfunction
 
@@ -408,15 +408,6 @@ inoremap <expr> <C-X><C-O> g:WrapOmni()
 
 imap <Nul> <C-Space>
 inoremap <expr> <C-Space> g:WrapOmni()
-" }}}
-
-" DelimitMate {{{
-let delimitMate_expand_cr = 2
-let delimitMate_expand_space = 1
-let delimitMate_jump_expansion = 1
-let delimitMate_balance_matchpairs = 1
-let delimitMate_excluded_ft = "markdown" " disable for markdown
-imap <C-O> <Plug>delimitMateJumpMany
 " }}}
 
 " Fcitx {{{
