@@ -37,7 +37,7 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'haml', 'eruby'] }
 Plug 'vim-scripts/fcitx.vim', { 'on': [] }
 Plug 'SirVer/ultisnips', { 'on': [] }
 
