@@ -56,7 +56,7 @@ Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
 Plug 'ternjs/tern_for_vim'
 
 " colorscheme
-Plug 'sjl/badwolf'
+Plug 'xuanduc987/badwolf'
 
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
