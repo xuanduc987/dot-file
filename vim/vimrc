@@ -206,6 +206,9 @@ augroup restore_position
                 \| exe "normal! g`\"" | endif
 augroup END
 
+" easy change buffer
+nmap <leader>b :ls<CR>:b
+
 " easy move between windows
 nore <silent> <C-K> :wincmd k<CR>
 nore <silent> <C-J> :wincmd j<CR>
