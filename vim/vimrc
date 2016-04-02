@@ -1,4 +1,4 @@
-let g:is_windows = has('win33')
+let g:is_windows = has('win32')
 
 " Load vim-plug {{{
 if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
@@ -270,7 +270,7 @@ if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
     let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-else
+elif if !g:is_windows
     let &t_SI = "\<Esc>[6 q"
     let &t_SR = "\<Esc>[4 q"
     let &t_EI = "\<Esc>[2 q"
