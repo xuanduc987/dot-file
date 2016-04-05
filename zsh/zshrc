@@ -1,14 +1,17 @@
 CURR_DIR=`dirname $0`
 
-source $CURR_DIR/zgen/zgen.zsh
-
 source $CURR_DIR/alias.zsh
 source $CURR_DIR/history.zsh
 source $CURR_DIR/directory.zsh
 source $CURR_DIR/completion.zsh
 source $CURR_DIR/key_info.zsh
 
-if ! zgen saved; then
+lazy_source () {
+    eval "$1 () { [ -f $2 ] && source $2 && $1 \$@ }"
+}
+
+lazy_source zgen $CURR_DIR/zgen/zgen.zsh
+if ! source "$HOME/.zgen/init.zsh"; then
   echo "Creating zgen save"
 
   zgen oh-my-zsh
@@ -33,6 +36,7 @@ if ! zgen saved; then
   fi
 
   zgen save
+  zgen init
 fi
 
 #
