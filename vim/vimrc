@@ -473,16 +473,6 @@ nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "dispatch"
 " }}}
 
-" Markdown {{{
-let g:markdown_fenced_languages = ['coffee', 'css', 'erb=eruby.html',
-            \ 'javascript', 'json=javascript', 'ruby', 'sass', 'html', 'sh']
-" }}}
-
-" Liquid {{{
-let g:liquid_highlight_types = g:markdown_fenced_languages +
-            \ ['html+erb=eruby.html']
-" }}}
-
 " ctrlp setting {{{
 let g:ctrlp_map = ''
 nore <Leader>p :CtrlP<CR>
