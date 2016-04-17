@@ -223,26 +223,27 @@ nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 
 " statusline
-set statusline =
-set statusline +=%m                          " modified flag
-set statusline +=\ »
-set statusline +=\ %f                        " Relative path to file
-set statusline +=\ «
-set statusline +=\ %h                        " [help]
-set statusline +=%r                          " read only flag
-set statusline +=%w                          " preview window flag
-set statusline +=%y                          " filetype
-set statusline +=%=%-14.(%l,%c%V%)           " Line, column-virtual column"
-set statusline +=\ %P
-function! StatusGitBranch()
-    let b:s_git_branch_name = fugitive#head()
-    if !empty(b:s_git_branch_name)
-        return " ← ".b:s_git_branch_name
-    else
-        return " "
-    endif
+set statusline =%!MyStatusLine()
+
+function! MyStatusLine()
+  let stl = '%m'                            " modified flag
+  let stl .= ' »'
+  let stl .= ' %f'                          " Relative path to file
+  let stl .= ' «'
+  let stl .= ' %h'                          " [help]
+  let stl .= '%r'                           " read only flag
+  let stl .= '%w'                           " preview window flag
+  let stl .= '%y'                           " filetype
+  let stl .= '%=%-14.(%l,%c%V%)'            " Line, column-virtual column"
+  let stl .= ' %P'
+
+  if exists('b:git_dir')
+    let stl .= ' ← '
+    let branch = fugitive#head(8)
+    let stl .= (branch == 'master') ? '%#ErrorMsg#master%*' : branch
+  endif
+  return stl
 endfunction
-set statusline +=%{StatusGitBranch()}
 
 " Some helpers to edit mode
 " http://vimcasts.org/e/14
