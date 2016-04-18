@@ -81,6 +81,9 @@ bindsym $mod+Shift+j move down 35px
 bindsym $mod+Shift+k move up 35px
 bindsym $mod+Shift+l move right 35px
 
+bindsym $sup+Shift+h move workspace to output left
+bindsym $sup+Shift+l move workspace to output right
+
 bindsym $mod+Shift+Left move left 35px
 bindsym $mod+Shift+Down move down 35px
 bindsym $mod+Shift+Up move up 35px
