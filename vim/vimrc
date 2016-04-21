@@ -58,8 +58,6 @@ Plug 'ternjs/tern_for_vim'
 " colorscheme
 Plug 'xuanduc987/badwolf'
 
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
 endif
