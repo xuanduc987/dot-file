@@ -6,8 +6,8 @@ Xft.hintstyle:              hintslig
 
 URxvt*iconFile: /usr/share/icons/elementary/apps/128/terminal.svg
 
-URxvt*font: xft:Inconsolata:size=10:hinting=true
-URxvt*boldFont: xft:Inconsolata:size=10:hinting=true:style:Bold
+URxvt*font: xft:Consolas:size=9:hinting=true
+URxvt*boldFont: xft:Consolas:size=9:hinting=true:style:Bold
 
 URxvt.depth:                32
 URxvt.geometry:             90x30
