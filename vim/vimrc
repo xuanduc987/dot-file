@@ -380,7 +380,8 @@ let g:loaded_vimball       = 1
 " }}}
 
 " Ultisnips {{{
-let b:forward_complete = 0
+let b:forward_complete = 1
+autocmd! CompleteDone * let b:forward_complete = 1
 
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
@@ -426,7 +427,7 @@ function! g:WrapOmni()
     return "\<C-X>\<C-O>\<C-P>"
 endfunction
 
-let g:UltiSnipsExpandTrigger = "<C-k>"
+let g:UltiSnipsExpandTrigger = "<C-}>"
 xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
 inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
