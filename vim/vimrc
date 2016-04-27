@@ -380,17 +380,17 @@ let g:loaded_vimball       = 1
 " }}}
 
 " Ultisnips {{{
-let b:forward_complete = 1
-autocmd! CompleteDone * let b:forward_complete = 1
+let g:forward_complete = 1
+autocmd! CompleteDone * let g:forward_complete = 1
 
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
     if g:ulti_expand_res == 0
         if pumvisible()
-            return b:forward_complete ? "\<C-n>" : "\<C-p>"
+            return g:forward_complete ? "\<C-n>" : "\<C-p>"
         else
             if s:WillComplete()
-                let b:forward_complete = 0
+                let g:forward_complete = 0
                 return "\<C-p>"
             else
                 return "\<TAB>"
@@ -402,7 +402,7 @@ endfunction
 
 function! g:UltiSnips_Reverse()
     if pumvisible()
-        return b:forward_complete ? "\<C-p>" : "\<C-n>"
+        return g:forward_complete ? "\<C-p>" : "\<C-n>"
     else
         return "\<S-TAB>"
     endif
@@ -423,7 +423,7 @@ function! s:WillComplete()
 endfunction
 
 function! g:WrapOmni()
-    let b:forward_complete = 1
+    let g:forward_complete = 1
     return "\<C-X>\<C-O>\<C-P>"
 endfunction
 
