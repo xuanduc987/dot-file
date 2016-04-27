@@ -178,6 +178,7 @@ for_window [instance="__scratchpad"] floating enable
 for_window [instance="__nmtui"] floating enable
 for_window [class="(?i)pavucontrol"] floating enable, border normal, move position mouse
 for_window [class="Anki"] floating enable, border normal
+for_window [class="Zeal"] floating enable, border normal
 
 bar {
   # status_command i3status --config ~/.i3/i3status.conf
