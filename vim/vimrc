@@ -541,13 +541,6 @@ hi IndentGuidesEven ctermbg=darkgrey
 
 " vim-rails {{{
 let g:rails_projections = {
-    \          "app/serializers/*_serializer.rb": {
-    \              "command":   "serializer",
-    \              "affinity":  "model",
-    \              "test":          "spec/serializers/{}_spec.rb",
-    \              "related":   "app/models/{}.rb",
-    \              "template":  "class {camelcase|capitalize|colons}Serializer < ActiveModel::Serializer\nend"
-    \          },
     \          "app/decorators/*_decorator.rb": {
     \              "command": "decorator",
     \              "affinity": "model",
