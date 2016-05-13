@@ -29,7 +29,7 @@ if ! source "$HOME/.zgen/init.zsh"; then
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
 
-  zgen oh-my-zsh themes/frisk
+  zgen oh-my-zsh themes/ys
 
   if [ -f ~/.zgen.local ]; then
     source .zgen.local
