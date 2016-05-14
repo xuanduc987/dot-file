@@ -202,9 +202,6 @@ augroup restore_position
                 \| exe "normal! g`\"" | endif
 augroup END
 
-" easy change buffer
-nmap <leader>b :ls<CR>:b
-
 " easy move between windows
 nore <silent> <C-K> :wincmd k<CR>
 nore <silent> <C-J> :wincmd j<CR>
@@ -474,6 +471,7 @@ let test#strategy = "dispatch"
 " ctrlp setting {{{
 let g:ctrlp_map = ''
 nore <Leader>p :CtrlP<CR>
+nore <Leader>b :CtrlPBuffer<CR>
 nore <Leader>; :CtrlPTag<CR>
 nore <Leader>, :CtrlPBufTag<CR>
 let g:ctrlp_clear_cache_on_exit = 0
