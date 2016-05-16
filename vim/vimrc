@@ -37,8 +37,11 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-haystack'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'haml', 'eruby'] }
-Plug 'vim-scripts/fcitx.vim', { 'on': [] }
+if !g:is_windows
+    Plug 'vim-scripts/fcitx.vim', { 'on': [] }
+endif
 Plug 'SirVer/ultisnips'
 
 Plug 'tpope/vim-dispatch'
@@ -46,12 +49,10 @@ Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
-Plug 'ecomba/vim-ruby-refactoring', { 'on': ['RAddParameter', 'RInlineTemp',
-            \ 'RConvertPostConditional', 'RExtractConstant', 'RExtractLet',
-            \ 'RExtractLocalVariable', 'RRenameLocalVariable',
-            \ 'RRenameInstanceVariable', 'RExtractMethod'] }
 
 Plug 'ternjs/tern_for_vim'
+
+Plug 'leafgarland/typescript-vim'
 
 " colorscheme
 Plug 'xuanduc987/badwolf'
