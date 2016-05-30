@@ -159,7 +159,7 @@ set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
-set relativenumber
+set number
 
 set modeline
 
@@ -169,6 +169,8 @@ set cc=+1 " Color column textwidth + 1
 set ttyfast
 set timeout timeoutlen=800 ttimeoutlen=50
 set synmaxcol=300
+
+set textwidth=80
 
 " Natural split
 set splitbelow
@@ -180,6 +182,13 @@ if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
     let &fillchars = "vert:│,fold:·"
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
+endif
+
+" Some options for neovim
+if has('nvim')
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+  let g:python3_host_skip_check = 1
+  let g:python_host_skip_check = 1
 endif
 
 " Disable output and VCS files
@@ -252,6 +261,15 @@ nnore <leader><CR> :noh<CR>
 
 " In command-line mode, C-a jumps to beginning (to match C-e).
 cnoremap <C-a> <Home>
+
+" In command-line mode, C-p use history to complete
+cnoremap <C-P> <Up>
+
+" C-O in insert mode to jump to end of line
+inoremap <C-O> <End>
+
+" * not jump to next
+nnoremap * :keepjumps normal! *``<cr>
 
 " replace last search
 nnore s :%s///g<Left><Left>
