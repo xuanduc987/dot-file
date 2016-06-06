@@ -268,9 +268,6 @@ cnoremap <C-P> <Up>
 " C-O in insert mode to jump to end of line
 inoremap <C-O> <End>
 
-" * not jump to next
-nnoremap * :keepjumps normal! *``<cr>
-
 " replace last search
 nnore s :%s///g<Left><Left>
 vnore s :s///g<Left><Left>
