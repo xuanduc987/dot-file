@@ -225,6 +225,12 @@ nore <Leader>= <C-w>=
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 
+" Auto adjust quickfix window
+au FileType qf call AdjustWindowHeight(3, 15)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
 " statusline
 set statusline =%!MyStatusLine()
 
