@@ -1,13 +1,37 @@
+" init {{{1
 let g:is_windows = has('win32')
 
-" Load vim-plug {{{
+" Download vim-plug {{{2
 if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
     :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
     :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
 endif
-" }}}
 
-" LOAD PLUGIN {{{
+" Create folder for vimfinfo, swap, undo... {{{2
+if isdirectory($HOME . '/.vim/_temp') == 0
+    :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
+endif
+set directory=./.vim-swap//
+set directory+=~/.vim/_temp//
+set directory+=~/tmp//
+set directory+=.
+
+if has('nvim')
+    set viminfo+=n~/.config/nvim/nvim.shada
+else
+    set viminfo+=n~/.vim/viminfo
+endif
+
+if exists("+undofile")
+    if isdirectory($HOME . '/.vim/_undo') == 0
+        :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
+    endif
+    set undodir=./.vim-undo//
+    set undodir+=~/.vim/_undo//
+    set undofile
+endif
+
+" Plug {{{1
 call plug#begin('~/.vim/plugged')
 
 " file management
@@ -61,35 +85,9 @@ if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
 endif
 call plug#end()
-" }}}
 
-" create folder for swap, undo... {{{
-if isdirectory($HOME . '/.vim/_temp') == 0
-    :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
-endif
-set directory=./.vim-swap//
-set directory+=~/.vim/_temp//
-set directory+=~/tmp//
-set directory+=.
-
-if has('nvim')
-    set viminfo+=n~/.config/nvim/nvim.shada
-else
-    set viminfo+=n~/.vim/viminfo
-endif
-
-if exists("+undofile")
-    if isdirectory($HOME . '/.vim/_undo') == 0
-        :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
-    endif
-    set undodir=./.vim-undo//
-    set undodir+=~/.vim/_undo//
-    set undofile
-endif
-
-" }}}
-
-" sensible {{{
+" set {{{1
+" sensible {{{2
 set autoindent
 set backspace=indent,eol,start
 set complete-=i
@@ -144,9 +142,8 @@ endif
 if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
     runtime! macros/matchit.vim
 endif
-" }}}
 
-" other
+" other{{{2
 let mapleader = " "
 set nowrap " don't wrap lines
 set tabstop=8
@@ -186,7 +183,6 @@ endif
 
 " Some options for neovim
 if has('nvim')
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
   let g:python3_host_skip_check = 1
   let g:python_host_skip_check = 1
 endif
@@ -204,14 +200,7 @@ set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-augroup restore_position
-    autocmd!
-    " Remember last location in file, but not for commit messages.
-    " see :help last-position-jump
-    au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
-                \| exe "normal! g`\"" | endif
-augroup END
-
+" mapping {{{1
 " easy move between windows
 nore <silent> <C-K> :wincmd k<CR>
 nore <silent> <C-J> :wincmd j<CR>
@@ -224,35 +213,6 @@ nore <Leader>= <C-w>=
 " Toggle paste mode
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
-
-" Auto adjust quickfix window
-au FileType qf call AdjustWindowHeight(3, 15)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-
-" statusline
-set statusline =%!MyStatusLine()
-
-function! MyStatusLine()
-  let stl = '%m'                            " modified flag
-  let stl .= ' »'
-  let stl .= ' %f'                          " Relative path to file
-  let stl .= ' «'
-  let stl .= ' %h'                          " [help]
-  let stl .= '%r'                           " read only flag
-  let stl .= '%w'                           " preview window flag
-  let stl .= '%y'                           " filetype
-  let stl .= '%=%-14.(%l,%c%V%)'            " Line, column-virtual column"
-  let stl .= ' %P'
-
-  if exists('b:git_dir')
-    let stl .= ' ← '
-    let branch = fugitive#head(8)
-    let stl .= (branch == 'master') ? '%#ErrorMsg#master%*' : branch
-  endif
-  return stl
-endfunction
 
 " Some helpers to edit mode
 " http://vimcasts.org/e/14
@@ -278,21 +238,7 @@ inoremap <C-O> <End>
 nnore s :%s///g<Left><Left>
 vnore s :s///g<Left><Left>
 
-" Convert Ruby 1.8 hash rockets to 1.9 JSON style hashes.
-command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/\1:/e' . (&gdefault ? '' : 'g')
-
-" change cursor shape for urxvt, xterm,...
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-elseif !g:is_windows
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
-endif
-
-" next textobject {{{
+" next textobject {{{3
 " Motion for "next/last object". For example, "din(" would go to the next "()"
 " pair and delete its contents.
 
@@ -320,9 +266,7 @@ function! s:NextTextObject(motion, dir)
   exe "normal! ".a:dir.c."v".a:motion.c
 endfunction
 
-" }}}
-
-" unimpaired {{{
+" unimpaired {{{3
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
   let cmd = '".(v:count ? v:count : "")."'.a:cmd
@@ -348,9 +292,18 @@ call s:MapNextFamily('b','b')
 call s:MapNextFamily('l','l')
 call s:MapNextFamily('q','c')
 call s:MapNextFamily('t','t')
-" }}}
 
-" toogle quickfix list {{{
+nnoremap [<space>     :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+
+nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
+
+" switch comma-separated arguments
+nnoremap [w           :normal f,h]w2w<cr>
+nnoremap ]w           :let s=&isk \| setl isk+=\",' \| exe "norm diwmmebgpdw'mp" \| let &isk=s<cr>
+
+" toogle quickfix list {{{3
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -379,10 +332,67 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
-" }}}
 
-" PLUGIN
-" disable logiPat tarPlugin gzip zipPlugin vimballPlugin {{{
+" change cursor shape for urxvt, xterm,... {{{3
+if has('nvim')
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+elseif exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+elseif !g:is_windows
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
+" autocmd{{{1
+augroup vimrc
+    autocmd!
+
+    " Remember last location in file, but not for commit messages.
+    " see :help last-position-jump
+    au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal! g`\"" | endif
+
+    au FileType qf call AdjustWindowHeight(3, 15)
+    " Auto adjust quickfix window
+    function! AdjustWindowHeight(minheight, maxheight)
+      exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+    endfunction
+
+    au FileType liquid,markdown,text,txt
+          \ setlocal tw=80 linebreak nolist spell
+augroup END
+
+" commands {{{1
+" Convert Ruby 1.8 hash rockets to 1.9 JSON style hashes.
+command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/\1:/e' . (&gdefault ? '' : 'g')
+
+" statusline{{{1
+set statusline =%!MyStatusLine()
+
+function! MyStatusLine()
+  let stl = '%m'                            " modified flag
+  let stl .= ' »'
+  let stl .= ' %f'                          " Relative path to file
+  let stl .= ' «'
+  let stl .= ' %h'                          " [help]
+  let stl .= '%r'                           " read only flag
+  let stl .= '%w'                           " preview window flag
+  let stl .= '%y'                           " filetype
+  let stl .= '%=%-14.(%l,%c%V%)'            " Line, column-virtual column"
+  let stl .= ' %P'
+
+  if exists('b:git_dir')
+    let stl .= ' ← '
+    let branch = fugitive#head(8)
+    let stl .= (branch == 'master') ? '%#ErrorMsg#master%*' : branch
+  endif
+  return stl
+endfunction
+
+" plugin settings {{{1
+" disable buildins {{{2
 let g:loaded_logipat       = 1
 
 let g:loaded_tarPlugin     = 1
@@ -396,11 +406,9 @@ let g:loaded_zip           = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_vimball       = 1
 
-" }}}
-
-" Ultisnips {{{
-let g:forward_complete = 1
+" Ultisnips {{{2
 autocmd! CompleteDone * let g:forward_complete = 1
+let g:forward_complete = 1
 
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
@@ -454,43 +462,37 @@ inoremap <expr> <C-X><C-O> g:WrapOmni()
 
 imap <Nul> <C-Space>
 inoremap <expr> <C-Space> g:WrapOmni()
-" }}}
 
-" Fcitx {{{
+" Fcitx {{{2
 command! Fcitx :call plug#load('fcitx.vim')
-" }}}
 
-" incsearch.vim {{{
+" incsearch.vim {{{2
 map /  <Plug>(incsearch-forward)\v
 map ?  <Plug>(incsearch-backward)\v
 map g/ <Plug>(incsearch-stay)\v
-" }}}
 
-" Tslime {{{
+" Tslime {{{2
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
 vmap <C-c><C-c> <Plug>SendSelectionToTmux
 nmap <C-c><C-c> <Plug>NormalModeSendToTmux
 nmap <C-c>r <Plug>SetTmuxVars
-" }}}
 
-" Neomake {{{
+" Neomake {{{2
 autocmd! BufWritePost * Neomake
 if !has('nvim')
     let g:neomake_ruby_enabled_makers = ['mri']
 endif
-" }}}
 
-" vim-test {{{
+" vim-test {{{2
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "dispatch"
-" }}}
 
-" ctrlp setting {{{
+" ctrlp setting {{{2
 let g:ctrlp_map = ''
 nore <Leader>p :CtrlP<CR>
 nore <Leader>b :CtrlPBuffer<CR>
@@ -515,40 +517,30 @@ if executable("ag")
                 \ --hidden -g ""'
     let g:ctrlp_use_caching = 0
 endif
-" }}}
 
-" gundo {{{
+" gundo {{{2
 nnore <F5> :GundoToggle<CR>
 inore <F5> <ESC>:GundoToggle<CR>
-" }}}
 
-" git fugitive {{{
+" git fugitive {{{2
 nnore <leader>gb :Gblame<CR>
 nnore <leader>gg :Ggrep <C-R><C-W><CR>
-" }}}
 
-" split join {{{
+" split join {{{2
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
 nmap <Leader>j :SplitjoinJoin<cr>
 nmap <Leader>s :SplitjoinSplit<cr>
-" }}}
 
-" EasyAlign {{{
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
+" EasyAlign {{{2
+xmap <CR> <Plug>(LiveEasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-" }}}
-
-" vim-indent-guides {{{
+" vim-indent-guides {{{2
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
-" }}}
 
-" vim-rails {{{
+" vim-rails {{{2
 let g:rails_projections = {
     \          "app/decorators/*_decorator.rb": {
     \              "command": "decorator",
@@ -576,30 +568,25 @@ let g:rails_projections = {
     \              "keywords":  "factory sequence"
     \          }
     \ }
-" }}}
 
-" emmet {{{
+" emmet {{{2
 imap <C-K> <C-Y>,
 imap <C-n> <C-Y>n
 imap <C-p> <C-Y>N
-" }}}
 
-" Ruby completion
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-
-" Language setting
-augroup language_settings
-    autocmd!
-    autocmd FileType liquid,markdown,text,txt setlocal tw=78 linebreak nolist spell
-augroup END
-
+" colors {{{1
 if !exists('g:colors_name')
     let g:badwolf_darkgutter = 1
     colorscheme badwolf
 endif
+"}}}
 
+" Ruby completion {{{1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+
+" read .vimrc.local {{{1
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
 endif
