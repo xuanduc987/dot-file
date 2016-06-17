@@ -1,0 +1,16 @@
+snippet fun "function (fun)"
+	function ${1:function_name}(${2}) {
+		${VISUAL}$0
+	}
+snippet f "anonymous function" w
+	function(${1}) {
+		${VISUAL}$0
+	}
+snippet af "" w
+	(${1}) => {
+		${0}
+	}
+snippet iife "Immediately-Invoked Function Expression (iife)"
+	(function(${1:window}) {
+		${VISUAL}$0
+	}(${2:$1}));

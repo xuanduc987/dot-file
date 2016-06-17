@@ -66,7 +66,8 @@ Plug 'mattn/emmet-vim', { 'for': ['html', 'haml', 'eruby'] }
 if !g:is_windows
     Plug 'vim-scripts/fcitx.vim', { 'on': [] }
 endif
-Plug 'SirVer/ultisnips'
+
+Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
 
 Plug 'tpope/vim-dispatch'
 Plug 'benekastah/neomake', { 'on': ['Neomake'] }
@@ -77,6 +78,8 @@ Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
 Plug 'ternjs/tern_for_vim'
 
 Plug 'leafgarland/typescript-vim'
+
+Plug 'xuanduc987/matchit.zip'
 
 " colorscheme
 Plug 'xuanduc987/badwolf'
@@ -202,10 +205,10 @@ set wildignore+=*.swp,*~,._*
 
 " mapping {{{1
 " easy move between windows
-nore <silent> <C-K> :wincmd k<CR>
-nore <silent> <C-J> :wincmd j<CR>
-nore <silent> <C-H> :wincmd h<CR>
-nore <silent> <C-L> :wincmd l<CR>
+nnore <silent> <C-K> :wincmd k<CR>
+nnore <silent> <C-J> :wincmd j<CR>
+nnore <silent> <C-H> :wincmd h<CR>
+nnore <silent> <C-L> :wincmd l<CR>
 
 " Adjust viewports to the same size
 nore <Leader>= <C-w>=
@@ -236,35 +239,7 @@ inoremap <C-O> <End>
 
 " replace last search
 nnore s :%s///g<Left><Left>
-vnore s :s///g<Left><Left>
-
-" next textobject {{{3
-" Motion for "next/last object". For example, "din(" would go to the next "()"
-" pair and delete its contents.
-
-onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
-xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
-onoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
-xnoremap in :<c-u>call <SID>NextTextObject('i', 'f')<cr>
-
-onoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
-xnoremap al :<c-u>call <SID>NextTextObject('a', 'F')<cr>
-onoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
-xnoremap il :<c-u>call <SID>NextTextObject('i', 'F')<cr>
-
-function! s:NextTextObject(motion, dir)
-  let c = nr2char(getchar())
-
-  if c ==# "b"
-      let c = "("
-  elseif c ==# "B"
-      let c = "{"
-  elseif c ==# "d"
-      let c = "["
-  endif
-
-  exe "normal! ".a:dir.c."v".a:motion.c
-endfunction
+xnore s :s///g<Left><Left>
 
 " unimpaired {{{3
 function! s:MapNextFamily(map,cmd)
@@ -406,32 +381,23 @@ let g:loaded_zip           = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_vimball       = 1
 
-" Ultisnips {{{2
+let g:loaded_netrw       = 1
+let g:loaded_netrwPlugin = 1
+
+" snippet {{{2
 autocmd! CompleteDone * let g:forward_complete = 1
 let g:forward_complete = 1
 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return g:forward_complete ? "\<C-n>" : "\<C-p>"
-        else
-            if s:WillComplete()
-                let g:forward_complete = 0
-                return "\<C-p>"
-            else
-                return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-function! g:UltiSnips_Reverse()
+function! g:My_Complete()
     if pumvisible()
-        return g:forward_complete ? "\<C-p>" : "\<C-n>"
+        return g:forward_complete ? "\<C-n>" : "\<C-p>"
     else
-        return "\<S-TAB>"
+        if s:WillComplete()
+            let g:forward_complete = 0
+            return "\<C-p>"
+        else
+            return "\<TAB>"
+        endif
     endif
 endfunction
 
@@ -454,22 +420,26 @@ function! g:WrapOmni()
     return "\<C-X>\<C-O>\<C-P>"
 endfunction
 
-let g:UltiSnipsExpandTrigger = "<C-}>"
-xnoremap <Tab> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
-inoremap <silent> <TAB> <C-R>=g:UltiSnips_Complete()<cr>
-inoremap <silent><expr> <S-TAB> g:UltiSnips_Reverse()
+let g:SuperTabMappingForward = "<tab>"
+imap <silent> <Plug>SuperTabForward <C-R>=g:My_Complete()<cr>
+imap <tab> <Plug>snipMateTrigger
+imap <C-J> <Plug>snipMateNextOrTrigger
+
 inoremap <expr> <C-X><C-O> g:WrapOmni()
 
 imap <Nul> <C-Space>
 inoremap <expr> <C-Space> g:WrapOmni()
 
+let g:snipMate = {}
+let g:snipMate.snippet_version = 1
+
 " Fcitx {{{2
 command! Fcitx :call plug#load('fcitx.vim')
 
 " incsearch.vim {{{2
-map /  <Plug>(incsearch-forward)\v
-map ?  <Plug>(incsearch-backward)\v
-map g/ <Plug>(incsearch-stay)\v
+nmap /  <Plug>(incsearch-forward)\v
+nmap ?  <Plug>(incsearch-backward)\v
+nmap g/ <Plug>(incsearch-stay)\v
 
 " Tslime {{{2
 let g:tslime_always_current_session = 1
@@ -576,8 +546,7 @@ imap <C-p> <C-Y>N
 
 " colors {{{1
 if !exists('g:colors_name')
-    let g:badwolf_darkgutter = 1
-    colorscheme badwolf
+    colorscheme jellybeans
 endif
 "}}}
 
