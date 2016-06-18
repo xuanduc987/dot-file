@@ -83,6 +83,7 @@ Plug 'xuanduc987/matchit.zip'
 
 " colorscheme
 Plug 'xuanduc987/badwolf'
+Plug 'nanotech/jellybeans.vim'
 
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
