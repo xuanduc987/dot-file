@@ -545,6 +545,9 @@ imap <C-K> <C-Y>,
 imap <C-n> <C-Y>n
 imap <C-p> <C-Y>N
 
+" Dispatch {{{2
+nnoremap <leader>d :Dispatch<space>
+
 " colors {{{1
 if !exists('g:colors_name')
     colorscheme jellybeans
