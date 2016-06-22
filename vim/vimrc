@@ -242,6 +242,9 @@ inoremap <C-O> <End>
 nnore s :%s///g<Left><Left>
 xnore s :s///g<Left><Left>
 
+" find merge conflict markers
+nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+
 " unimpaired {{{3
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
