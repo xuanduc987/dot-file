@@ -311,6 +311,7 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
+nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 
 " change cursor shape for urxvt, xterm,... {{{3
 if has('nvim')
@@ -462,7 +463,7 @@ endif
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>L :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "dispatch"
 
