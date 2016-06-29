@@ -173,6 +173,8 @@ set synmaxcol=300
 
 set textwidth=80
 
+set fo-=o   " Don't insert comment leader when press o or O in normal mode
+
 " Natural split
 set splitbelow
 set splitright
