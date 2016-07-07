@@ -362,8 +362,10 @@ function! MyStatusLine()
   let stl .= '%r'                           " read only flag
   let stl .= '%w'                           " preview window flag
   let stl .= '%y'                           " filetype
-  let stl .= '%=%-14.(%l,%c%V%)'            " Line, column-virtual column"
-  let stl .= ' %P'
+  let stl .= '%='
+  let stl .= '['.&fileencoding.']  '
+  let stl .= '%-8(%l,%c%V%)'                " Line, column-virtual column
+  let stl .= ' %6P'
 
   if exists('b:git_dir')
     let stl .= ' ← '
