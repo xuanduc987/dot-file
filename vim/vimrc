@@ -415,7 +415,7 @@ function! s:WillComplete()
     let cnum = col('.') - 1
     let post = line[cnum - 1:]
 
-    for pattern in ['$', '\s']
+    for pattern in ['$', '\s', '[(){}\[\]]']
         if post =~ '^' . pattern
             return 0
         endif
