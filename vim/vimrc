@@ -318,14 +318,16 @@ nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 " change cursor shape for urxvt, xterm,... {{{3
 if has('nvim')
     let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-elseif exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-elseif !g:is_windows && (v:version > 704 || v:version == 704 && has('patch687'))
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
+elseif v:version > 704 || v:version == 704 && has('patch687')
+    if exists('$TMUX')
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+        let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+    elseif !g:is_windows
+        let &t_SI = "\<Esc>[6 q"
+        let &t_SR = "\<Esc>[4 q"
+        let &t_EI = "\<Esc>[2 q"
+    endif
 endif
 " autocmd{{{1
 augroup vimrc
