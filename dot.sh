@@ -31,10 +31,6 @@ ln -s ${BASEDIR}/i3 ~/.i3
 rm ~/.Xresources
 ln -s ${BASEDIR}/Xresources ~/.Xresources
 
-# mutt
-cp ${BASEDIR}/mutt/muttrc ~/.muttrc
-cp -r ${BASEDIR}/mutt ~/.mutt
-
 # zsh
 SOURCE_LINE="source ${BASEDIR}/zsh/zshrc"
 grep -q "$SOURCE_LINE" ~/.zshrc || echo "$SOURCE_LINE" >> ~/.zshrc
