@@ -242,6 +242,15 @@ xnore s :s///g<Left><Left>
 " find merge conflict markers
 nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
+" easy toogle case
+inoremap <c-u> <esc>gUiwea
+inoremap <c-`> <esc>g~iwea
+
+" Easy copy-paste
+xnoremap <leader>y "+y
+nnoremap <leader>y "+Y
+nnoremap <c-p> "+p
+
 " unimpaired {{{3
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
