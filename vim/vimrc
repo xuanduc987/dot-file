@@ -53,9 +53,6 @@ Plug 'conradirwin/vim-bracketed-paste'
 Plug 'tpope/vim-rsi'
 
 Plug 'tpope/vim-sleuth'
-Plug 'nathanaelkane/vim-indent-guides', { 'on': ['IndentGuidesToggle', 'IndentGuidesEnable'] }
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'jgdavey/tslime.vim'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-abolish', { 'on': 'S' }
 Plug 'tpope/vim-endwise'
@@ -65,6 +62,8 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-haystack'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'haml', 'eruby'] }
 if !g:is_windows
+    Plug 'christoomey/vim-tmux-navigator'
+    Plug 'jgdavey/tslime.vim'
     Plug 'vim-scripts/fcitx.vim', { 'on': [] }
 endif
 
@@ -174,7 +173,7 @@ set synmaxcol=300
 
 set textwidth=80
 
-set fo-=o   " Don't insert comment leader when press o or O in normal mode
+set formatoptions-=o   " Don't insert comment leader when press o or O in normal mode
 
 " Natural split
 set splitbelow
@@ -200,10 +199,6 @@ set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
 set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
 " Ignore bundler and sass cache
 set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
-set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
-" Ignore rails temporary asset caches
-set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
@@ -232,14 +227,11 @@ nore <Up> gk
 " clear highlight
 nnore <leader><CR> :noh<CR>
 
-" In command-line mode, C-a jumps to beginning (to match C-e).
-cnoremap <C-a> <Home>
-
 " In command-line mode, C-p use history to complete
 cnoremap <C-P> <Up>
 
-" C-O in insert mode to jump to end of line
-inoremap <C-O> <End>
+" C-O in insert mode to create and jump to newline
+inoremap <C-O> <C-O>o
 
 " replace last search
 nnore s :%s///g<Left><Left>
@@ -275,9 +267,11 @@ call s:MapNextFamily('l','l')
 call s:MapNextFamily('q','c')
 call s:MapNextFamily('t','t')
 
+" insert blank line
 nnoremap [<space>     :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
+" swap line
 nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
 
@@ -285,7 +279,7 @@ nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
 nnoremap [w           :normal f,h]w2w<cr>
 nnoremap ]w           :let s=&isk \| setl isk+=\",' \| exe "norm diwmmebgpdw'mp" \| let &isk=s<cr>
 
-" toogle quickfix list {{{3
+" toogle quickfix/location list {{{3
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -345,13 +339,9 @@ augroup vimrc
       exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
     endfunction
 
-    au FileType liquid,markdown,text,txt
+    au FileType liquid,markdown,
           \ setlocal tw=80 linebreak nolist spell
 augroup END
-
-" commands {{{1
-" Convert Ruby 1.8 hash rockets to 1.9 JSON style hashes.
-command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+[?!]\?\)\s*=>/\1:/e' . (&gdefault ? '' : 'g')
 
 " statusline{{{1
 set statusline =%!MyStatusLine()
@@ -491,12 +481,12 @@ let g:ctrlp_custom_ignore = {
 " If ag is available use it as filename list generator instead of 'find'
 if executable("ag")
     set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup
+    let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
                 \ --ignore ''.git''
                 \ --ignore ''.DS_Store''
                 \ --ignore ''node_modules''
                 \ --ignore ''vendor/plugins''
-                \ --hidden -g ""'
+                \ --hidden -g "" %s'
     let g:ctrlp_use_caching = 0
 endif
 
@@ -516,11 +506,6 @@ nmap <Leader>s :SplitjoinSplit<cr>
 
 " EasyAlign {{{2
 xmap <CR> <Plug>(LiveEasyAlign)
-
-" vim-indent-guides {{{2
-let g:indent_guides_auto_colors = 0
-hi IndentGuidesOdd  ctermbg=black
-hi IndentGuidesEven ctermbg=darkgrey
 
 " vim-rails {{{2
 let g:rails_projections = {
