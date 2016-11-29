@@ -52,6 +52,8 @@ Plug 'tpope/vim-commentary'
 Plug 'conradirwin/vim-bracketed-paste'
 Plug 'tpope/vim-rsi'
 
+Plug '907th/vim-auto-save'
+
 Plug 'tpope/vim-sleuth'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-abolish', { 'on': 'S' }
@@ -543,6 +545,9 @@ imap <C-p> <C-Y>N
 
 " Dispatch {{{2
 nnoremap <leader>d :Dispatch<space>
+
+" Auto save {{{2
+let g:auto_save = 1
 
 " colors {{{1
 if !exists('g:colors_name')
