@@ -222,6 +222,9 @@ inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 " http://vimcasts.org/e/14
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
+" expand home directory
+cnoremap $$ <C-R>=fnameescape(expand('~')).'/'<cr>
+
 " Map the arrow keys to be based on display lines, not physical lines
 nore <Down> gj
 nore <Up> gk
@@ -287,8 +290,15 @@ nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
 
 " switch comma-separated arguments
-nnoremap [w           :normal f,h]w2w<cr>
-nnoremap ]w           :let s=&isk \| setl isk+=\",' \| exe "norm diwmmebgpdw'mp" \| let &isk=s<cr>
+function! SwitchNext()
+  let s=&isk
+  setl isk+=\",'
+  normal diwmmebgPdw`mP
+  let &isk=s
+endfunction
+
+nmap     [w          F,h]w2w
+nnoremap <silent> ]w @=SwitchNext()<CR>
 
 " toogle quickfix/location list {{{3
 function! GetBufferList()
