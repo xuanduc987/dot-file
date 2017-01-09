@@ -36,7 +36,7 @@ call plug#begin('~/.vim/plugged')
 
 " file management
 Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-eunuch', { 'on': ['SudoWrite', 'Remove', 'Rename', 'Move'] }
 Plug 'justinmk/vim-dirvish'
 
 " git
@@ -44,15 +44,18 @@ Plug 'tpope/vim-fugitive'
 
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
 Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
 Plug 'tpope/vim-commentary'
-Plug 'conradirwin/vim-bracketed-paste'
+if has('clipboard')
+    Plug 'conradirwin/vim-bracketed-paste'
+endif
 Plug 'tpope/vim-rsi'
 
 Plug '907th/vim-auto-save'
+
+Plug 'w0rp/ale'
 
 Plug 'tpope/vim-sleuth'
 Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
@@ -62,7 +65,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-haystack'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'haml', 'eruby'] }
 if !g:is_windows
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jgdavey/tslime.vim'
@@ -72,14 +74,7 @@ endif
 Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
 
 Plug 'tpope/vim-dispatch'
-Plug 'benekastah/neomake', { 'on': ['Neomake'] }
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
-
-Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
-
-Plug 'ternjs/tern_for_vim'
-
-Plug 'leafgarland/typescript-vim'
 
 Plug 'xuanduc987/matchit.zip'
 
@@ -87,9 +82,15 @@ Plug 'xuanduc987/matchit.zip'
 Plug 'xuanduc987/badwolf'
 Plug 'nanotech/jellybeans.vim'
 
+
+if filereadable(expand("~/.vimrc.lang.plug"))
+    source ~/.vimrc.lang.plug
+endif
+
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
 endif
+
 call plug#end()
 
 " set {{{1
@@ -411,47 +412,13 @@ let g:loaded_netrwPlugin = 1
 autocmd! CompleteDone * let g:forward_complete = 1
 let g:forward_complete = 1
 
-function! g:My_Complete()
-    if pumvisible()
-        return g:forward_complete ? "\<C-n>" : "\<C-p>"
-    else
-        if s:WillComplete()
-            let g:forward_complete = 0
-            return "\<C-p>"
-        else
-            return "\<TAB>"
-        endif
-    endif
-endfunction
-
-function! s:WillComplete()
-    let line = getline('.')
-    let cnum = col('.') - 1
-    let post = line[cnum - 1:]
-
-    for pattern in ['$', '\s', '[(){}\[\]]']
-        if post =~ '^' . pattern
-            return 0
-        endif
-    endfor
-
-    return 1
-endfunction
-
-function! g:WrapOmni()
-    let g:forward_complete = 1
-    return "\<C-X>\<C-O>\<C-P>"
-endfunction
-
 let g:SuperTabMappingForward = "<tab>"
-imap <silent> <Plug>SuperTabForward <C-R>=g:My_Complete()<cr>
+imap <silent> <Plug>SuperTabForward <C-R>=complete#MyComplete()<cr>
 imap <tab> <Plug>snipMateTrigger
 imap <C-J> <Plug>snipMateNextOrTrigger
 
-inoremap <expr> <C-X><C-O> g:WrapOmni()
-
 imap <Nul> <C-Space>
-inoremap <expr> <C-Space> g:WrapOmni()
+inoremap <expr> <C-Space> complete#WrapOmni()
 
 let g:snipMate = {}
 let g:snipMate.snippet_version = 1
@@ -465,18 +432,13 @@ nmap ?  <Plug>(incsearch-backward)\v
 nmap g/ <Plug>(incsearch-stay)\v
 
 " Tslime {{{2
-let g:tslime_always_current_session = 1
-let g:tslime_always_current_window = 1
-vmap <C-c><C-c> <Plug>SendSelectionToTmux
-nmap <C-c><C-c> <Plug>NormalModeSendToTmux
-nmap <C-c>r <Plug>SetTmuxVars
-
-" Neomake {{{2
-autocmd! BufWritePost * Neomake
-if !has('nvim')
-    let g:neomake_ruby_enabled_makers = ['mri']
+if !g:is_windows
+    let g:tslime_always_current_session = 1
+    let g:tslime_always_current_window = 1
+    vmap <C-c><C-c> <Plug>SendSelectionToTmux
+    nmap <C-c><C-c> <Plug>NormalModeSendToTmux
+    nmap <C-c>r <Plug>SetTmuxVars
 endif
-
 " vim-test {{{2
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
@@ -511,10 +473,6 @@ if executable("ag")
     let g:ctrlp_use_caching = 0
 endif
 
-" gundo {{{2
-nnore <F5> :GundoToggle<CR>
-inore <F5> <ESC>:GundoToggle<CR>
-
 " git fugitive {{{2
 nnore <leader>gb :Gblame<CR>
 nnore <leader>gg :Ggrep <C-R><C-W><CR>
@@ -528,57 +486,12 @@ nmap <Leader>s :SplitjoinSplit<cr>
 " EasyAlign {{{2
 xmap <CR> <Plug>(LiveEasyAlign)
 
-" vim-rails {{{2
-let g:rails_projections = {
-    \          "app/decorators/*_decorator.rb": {
-    \              "command": "decorator",
-    \              "affinity": "model",
-    \              "test": "spec/decorators/%s_spec.rb",
-    \              "related": "app/models/%s.rb",
-    \              "template": "class %SDecorator < Draper::Decorator\nend"
-    \          },
-    \          "test/factories/*.rb": {
-    \              "command":   "factory",
-    \              "affinity":  "collection",
-    \              "alternate": "app/models/{singular}.rb",
-    \              "related":   "db/schema.rb#{}",
-    \              "test":          "test/models/{singular}_test.rb",
-    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
-    \              "keywords":  "factory sequence"
-    \          },
-    \          "spec/factories/*.rb": {
-    \              "command":   "factory",
-    \              "affinity":  "collection",
-    \              "alternate": "app/models/{singular}.rb",
-    \              "related":   "db/schema.rb#{}",
-    \              "test":          "spec/models/{singular}_test.rb",
-    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
-    \              "keywords":  "factory sequence"
-    \          }
-    \ }
-
-" emmet {{{2
-imap <C-K> <C-Y>,
-imap <C-n> <C-Y>n
-imap <C-p> <C-Y>N
-
 " Dispatch {{{2
 nnoremap <leader>d :Dispatch<space>
 
 " Auto save {{{2
 let g:auto_save = 1
 
-" colors {{{1
-if !exists('g:colors_name')
-    let g:jellybeans_use_term_italics = 1
-    colorscheme jellybeans
-endif
-"}}}
-
-" Ruby completion {{{1
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
 
 " read .vimrc.local {{{1
 if filereadable(expand("~/.vimrc.local"))

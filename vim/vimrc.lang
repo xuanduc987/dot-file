@@ -1,0 +1,38 @@
+" vim-rails {{{2
+let g:rails_projections = {
+    \          "app/decorators/*_decorator.rb": {
+    \              "command": "decorator",
+    \              "affinity": "model",
+    \              "test": "spec/decorators/%s_spec.rb",
+    \              "related": "app/models/%s.rb",
+    \              "template": "class %SDecorator < Draper::Decorator\nend"
+    \          },
+    \          "test/factories/*.rb": {
+    \              "command":   "factory",
+    \              "affinity":  "collection",
+    \              "alternate": "app/models/{singular}.rb",
+    \              "related":   "db/schema.rb#{}",
+    \              "test":          "test/models/{singular}_test.rb",
+    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+    \              "keywords":  "factory sequence"
+    \          },
+    \          "spec/factories/*.rb": {
+    \              "command":   "factory",
+    \              "affinity":  "collection",
+    \              "alternate": "app/models/{singular}.rb",
+    \              "related":   "db/schema.rb#{}",
+    \              "test":          "spec/models/{singular}_test.rb",
+    \              "template":  "FactoryGirl.define do\n  factory :{singular} do\n  end\nend",
+    \              "keywords":  "factory sequence"
+    \          }
+    \ }
+
+" emmet {{{2
+imap <C-K> <C-Y>,
+imap <C-n> <C-Y>n
+imap <C-p> <C-Y>N
+
+" Ruby completion {{{1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1

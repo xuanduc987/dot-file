@@ -1,0 +1,5 @@
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
+Plug 'ternjs/tern_for_vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'fsharp/vim-fsharp'
