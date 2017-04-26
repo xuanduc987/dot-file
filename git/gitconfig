@@ -30,10 +30,11 @@
   user = xuanduc987
 [merge]
   conflictstyle = diff3
-	tool = fugitive
-[include]
-  path = ~/.gitconfig.local
+  tool = fugitive
 [mergetool "fugitive"]
-	cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
+  cmd = vim -f -c \"Gvdiff\" \"$MERGED\"
 [interactive]
-	singleKey = true
+  singleKey = true
+[user]
+  name = Duc Nghiem Xuan
+  email = git@ducnx.com
