@@ -14,22 +14,11 @@ lazy_source zgen $CURR_DIR/zgen/zgen.zsh
 if ! source "$HOME/.zgen/init.zsh"; then
   echo "Creating zgen save"
 
-  zgen oh-my-zsh
-  zgen oh-my-zsh plugins/git
-  zgen oh-my-zsh plugins/command-not-found
-  zgen oh-my-zsh plugins/autojump
-  zgen oh-my-zsh plugins/tmux
-  zgen oh-my-zsh plugins/rake-fast
-  zgen oh-my-zsh plugins/gitfast
-  zgen oh-my-zsh plugins/colored-man-pages
-
-  zgen load unixorn/git-extra-commands
   zgen load zsh-users/zsh-completions src
   zgen load djui/alias-tips
   zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
-
-  zgen oh-my-zsh themes/ys
+  zgen load agkozak/agkozak-zsh-theme
 
   if [ -f ~/.zgen.local ]; then
     source .zgen.local
