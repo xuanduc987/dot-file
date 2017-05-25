@@ -1,3 +1,5 @@
+set guioptions=M
+
 " init {{{1
 let g:is_windows = has('win32')
 
@@ -35,7 +37,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " file management
-Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'ctrlpvim/ctrlp.vim' | Plug 'FelikZ/ctrlp-py-matcher' | Plug 'tacahiroy/ctrlp-funky'
 Plug 'tpope/vim-eunuch', { 'on': ['SudoWrite', 'Remove', 'Rename', 'Move'] }
 Plug 'justinmk/vim-dirvish'
 
@@ -45,7 +47,7 @@ Plug 'tpope/vim-fugitive'
 " textedit
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', '<Plug>(LiveEasyAlign)'] }
 Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
 Plug 'tpope/vim-commentary'
 if has('clipboard')
@@ -53,12 +55,8 @@ if has('clipboard')
 endif
 Plug 'tpope/vim-rsi'
 
-Plug '907th/vim-auto-save'
-
 Plug 'w0rp/ale'
 
-Plug 'tpope/vim-sleuth'
-Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'tpope/vim-abolish', { 'on': 'S' }
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
@@ -115,7 +113,7 @@ set scrolloff=1
 set sidescrolloff=5
 set display+=lastline
 
-if &encoding ==# 'latin1' && has('gui_running')
+if has('gui_running')
     set encoding=utf-8
 endif
 
@@ -163,6 +161,8 @@ set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
 
+set ambiwidth=double
+
 set number
 
 set modeline
@@ -184,8 +184,7 @@ set splitright
 
 " Special chars
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
-    let &listchars = "tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:\u26ad"
-    let &fillchars = "vert:│,fold:·"
+    let &listchars = "tab:»-,trail:⚭,extends:»,precedes:«"
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
@@ -252,7 +251,8 @@ inoremap <c-`> <esc>g~iwea
 
 " Easy copy-paste
 xnoremap <leader>y "+y
-nnoremap <leader>y "+Y
+nnoremap <leader>y "+y
+xnoremap <c-p> "+p
 nnoremap <c-p> "+p
 
 " unimpaired {{{3
@@ -484,14 +484,10 @@ nmap <Leader>j :SplitjoinJoin<cr>
 nmap <Leader>s :SplitjoinSplit<cr>
 
 " EasyAlign {{{2
-xmap <CR> <Plug>(LiveEasyAlign)
+xmap <CR> <Plug>(EasyAlign)
 
 " Dispatch {{{2
 nnoremap <leader>d :Dispatch<space>
-
-" Auto save {{{2
-let g:auto_save = 1
-
 
 " read .vimrc.local {{{1
 if filereadable(expand("~/.vimrc.local"))
