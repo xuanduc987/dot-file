@@ -13,10 +13,7 @@ endif
 if isdirectory($HOME . '/.vim/_temp') == 0
     :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
 endif
-set directory=./.vim-swap//
-set directory+=~/.vim/_temp//
-set directory+=~/tmp//
-set directory+=.
+set directory=./.vim-swap//,~/.vim/_temp//,~/tmp//,.
 
 if has('nvim')
     set viminfo+=n~/.config/nvim/nvim.shada
@@ -28,8 +25,7 @@ if exists("+undofile")
     if isdirectory($HOME . '/.vim/_undo') == 0
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
     endif
-    set undodir=./.vim-undo//
-    set undodir+=~/.vim/_undo//
+    set undodir=./.vim-undo//,~/.vim/_undo//
     set undofile
 endif
 
@@ -51,9 +47,6 @@ Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', '<Plug>(LiveEasyAlign)'] }
 Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
 Plug 'tpope/vim-commentary'
-if has('clipboard')
-    Plug 'conradirwin/vim-bracketed-paste'
-endif
 Plug 'tpope/vim-rsi'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
@@ -65,7 +58,6 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-haystack'
 if !g:is_windows
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jgdavey/tslime.vim'
@@ -101,18 +93,12 @@ set autoindent
 set backspace=indent,eol,start
 set complete-=i
 set smarttab
-
 set nrformats-=octal
-
-set ttimeout
-
 set incsearch
-
 set laststatus=2
 set ruler
 set wildmenu
 set lazyredraw
-
 set scrolloff=1
 set sidescrolloff=5
 set display+=lastline
@@ -131,31 +117,17 @@ endif
 
 set autoread
 
-if &history < 1000
-    set history=1000
-endif
-if &tabpagemax < 50
-    set tabpagemax=50
-endif
+set history=1000
+set tabpagemax=50
 if !empty(&viminfo)
     set viminfo^=!
 endif
 set sessionoptions-=options
 
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-    set t_Co=16
-endif
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-    runtime! macros/matchit.vim
-endif
-
 " other{{{2
 let mapleader = " "
 set nowrap " don't wrap lines
-set tabstop=8
+set tabstop=4
 set softtabstop=4 " a tab is four spaces
 set shiftwidth=4 " an autoindent (with <<) is four spaces
 set shiftround
@@ -164,26 +136,16 @@ set list " Show invisible characters
 set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
-set infercase " and smart case insert mode completion
-
 set belloff=all " no bell
-
 set ambiwidth=double
-
 set number
-
 set modeline
-
 set mouse=n " Enable mouse support
 set cc=+1 " Color column textwidth + 1
-
 set ttyfast
-set timeout timeoutlen=800 ttimeoutlen=50
+set ttimeout timeout timeoutlen=800 ttimeoutlen=50
 set synmaxcol=200
-
 set textwidth=80
-
-set formatoptions-=o   " Don't insert comment leader when press o or O in normal mode
 
 " Natural split
 set splitbelow
@@ -232,18 +194,11 @@ cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
 " expand home directory
 cnoremap $$ <C-R>=fnameescape(expand('~')).'/'<cr>
 
-" Map the arrow keys to be based on display lines, not physical lines
-nore <Down> gj
-nore <Up> gk
-
 " clear highlight
 nnore <leader><CR> :noh<CR>
 
 " In command-line mode, C-p use history to complete
 cnoremap <C-P> <Up>
-
-" C-O in insert mode to create and jump to newline
-inoremap <C-O> <C-O>o
 
 " replace last search
 nnore s :%s///g<Left><Left>
@@ -254,7 +209,6 @@ nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " easy toogle case
 inoremap <c-u> <esc>gUiwea
-inoremap <c-`> <esc>g~iwea
 
 " Easy copy-paste
 xnoremap <leader>y "+y
@@ -342,6 +296,7 @@ elseif v:version > 704 || v:version == 704 && has('patch687')
         let &t_EI = "\<Esc>[2 q"
     endif
 endif
+
 " autocmd{{{1
 augroup vimrc
     autocmd!
@@ -388,19 +343,14 @@ endfunction
 
 " plugin settings {{{1
 " disable buildins {{{2
-let g:loaded_logipat       = 1
-
-let g:loaded_tarPlugin     = 1
-let g:loaded_tar           = 1
-
-let loaded_gzip            = 1
-
-let g:loaded_zipPlugin     = 1
-let g:loaded_zip           = 1
-
+let g:loaded_logipat = 1
+let g:loaded_tarPlugin = 1
+let g:loaded_tar       = 1
+let loaded_gzip        = 1
+let g:loaded_zipPlugin = 1
+let g:loaded_zip       = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_vimball       = 1
-
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
@@ -425,7 +375,6 @@ nmap cr <Plug>Coerce
 " incsearch.vim {{{2
 nmap /  <Plug>(incsearch-forward)\v
 nmap ?  <Plug>(incsearch-backward)\v
-nmap g/ <Plug>(incsearch-stay)\v
 
 " Tslime {{{2
 if !g:is_windows
@@ -464,16 +413,10 @@ if executable("ag")
     let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
                 \ --ignore ".git"
                 \ --ignore ".svn"
-                \ --ignore "trunk/doc"
                 \ --ignore ".DS_Store"
                 \ --ignore "node_modules"
-                \ --ignore "vendor/plugins"
                 \ --hidden -g "" %s'
 endif
-
-" git fugitive {{{2
-nnore <leader>gb :Gblame<CR>
-nnore <leader>gg :Ggrep <C-R><C-W><CR>
 
 " EasyAlign {{{2
 xmap <CR> <Plug>(EasyAlign)
