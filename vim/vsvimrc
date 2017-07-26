@@ -1,0 +1,28 @@
+let mapleader = " "
+set hlsearch " highlight matches
+set ignorecase " searches are case insensitive...
+set smartcase " ... unless they contain at least one capital letter
+
+" easy move between windows
+nnore <C-K> <C-W>k
+nnore <C-J> <C-W>j
+nnore <C-H> <C-W>h
+nnore <C-L> <C-W>l
+
+" clear highlight
+nnore <leader><CR> :noh<CR>
+
+" replace last search
+nnore s :%s///g
+xnore s :s///g
+
+" easy toogle case
+inoremap <c-u> <esc>gUiwea
+
+" Easy copy-paste
+xnoremap <leader>y "+y
+nnoremap <leader>y "+y
+xnoremap <c-p> "+p
+nnoremap <c-p> "+p
+
+nnoremap <F2> :vsc Refactor.Rename<CR>
