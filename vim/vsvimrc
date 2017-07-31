@@ -22,7 +22,7 @@ inoremap <c-u> <esc>gUiwea
 " Easy copy-paste
 xnoremap <leader>y "+y
 nnoremap <leader>y "+y
-xnoremap <c-p> "+p
-nnoremap <c-p> "+p
+xnoremap <leader>p "+p
+nnoremap <leader>p "+p
 
 nnoremap <F2> :vsc Refactor.Rename<CR>

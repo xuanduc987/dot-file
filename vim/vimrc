@@ -1,24 +1,11 @@
 set guioptions=M
 
-" init {{{1
 let g:is_windows = has('win32')
 
-" Download vim-plug {{{2
+" Download vim-plug
 if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
     :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
     :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
-endif
-
-" Create folder for vimfinfo, swap, undo... {{{2
-if isdirectory($HOME . '/.vim/_temp') == 0
-    :silent !mkdir -p ~/.vim/_temp >/dev/null 2>&1
-endif
-set directory=./.vim-swap//,~/.vim/_temp//,~/tmp//,.
-
-if has('nvim')
-    set viminfo+=n~/.config/nvim/nvim.shada
-else
-    set viminfo+=n~/.vim/viminfo
 endif
 
 if exists("+undofile")
@@ -29,7 +16,7 @@ if exists("+undofile")
     set undofile
 endif
 
-" Plug {{{1
+" Plug
 call plug#begin('~/.vim/plugged')
 
 " file management
@@ -45,7 +32,6 @@ Plug 'tpope/vim-fugitive'
 " textedit
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', '<Plug>(LiveEasyAlign)'] }
-Plug 'haya14busa/incsearch.vim', { 'on': ['<Plug>(incsearch-forward)', '<Plug>(incsearch-backward)', '<Plug>(incsearch-stay)'] }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rsi'
 Plug 'michaeljsmith/vim-indent-object'
@@ -87,36 +73,21 @@ endif
 
 call plug#end()
 
-" set {{{1
-" sensible {{{2
+" set
 set autoindent
 set backspace=indent,eol,start
-set complete-=i
-set smarttab
+set complete-=i                " don't scan included files
 set nrformats-=octal
 set incsearch
 set laststatus=2
 set ruler
 set wildmenu
-set lazyredraw
 set scrolloff=1
 set sidescrolloff=5
 set display+=lastline
-
-if has('gui_running')
-    set encoding=utf-8
-endif
-
-if v:version > 703 || v:version == 703 && has("patch541")
-    set formatoptions+=j " Delete comment character when joining commented lines
-endif
-
-if has('path_extra')
-    setglobal tags-=./tags tags-=./tags; tags^=./tags;
-endif
-
+set formatoptions+=j " Delete comment character when joining commented lines
+setglobal tags-=./tags tags-=./tags; tags^=./tags;
 set autoread
-
 set history=1000
 set tabpagemax=50
 if !empty(&viminfo)
@@ -124,44 +95,49 @@ if !empty(&viminfo)
 endif
 set sessionoptions-=options
 
-" other{{{2
-let mapleader = " "
-set nowrap " don't wrap lines
+if has('gui_running')
+    set encoding=utf-8
+endif
+
+set textwidth=80
+set nowrap
+set colorcolumn=+1 " Color column textwidth + 1
+
 set tabstop=4
-set softtabstop=4 " a tab is four spaces
-set shiftwidth=4 " an autoindent (with <<) is four spaces
+set softtabstop=4
+set shiftwidth=4
 set shiftround
-set expandtab " use spaces, not tabs
-set list " Show invisible characters
-set hlsearch " highlight matches
+set expandtab
+set smarttab
+
+set hlsearch
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
+
 set belloff=all " no bell
+
 set ambiwidth=double
 set number
-set modeline
-set mouse=n " Enable mouse support
-set cc=+1 " Color column textwidth + 1
+set mouse=n " Enable mouse support normal mode only
+
 set ttyfast
+set lazyredraw
 set ttimeout timeout timeoutlen=800 ttimeoutlen=50
 set synmaxcol=200
-set textwidth=80
+
+set nobackup
+set noswapfile
 
 " Natural split
 set splitbelow
 set splitright
 
 " Special chars
+set list " Show invisible characters
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
     let &listchars = "tab:»-,trail:⚭,extends:»,precedes:«"
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
-endif
-
-" Some options for neovim
-if has('nvim')
-  let g:python3_host_skip_check = 1
-  let g:python_host_skip_check = 1
 endif
 
 " Disable output and VCS files
@@ -173,7 +149,23 @@ set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
 " Disable temp and backup files
 set wildignore+=*.swp,*~,._*
 
-" mapping {{{1
+" mapping
+let mapleader = " "
+
+nnoremap <leader>q :q<cr>
+
+" 60% keyboard
+nmap <leader>1 <F1>
+nmap <leader>2 <F2>
+nmap <leader>3 <F3>
+nmap <leader>4 <F4>
+nmap <leader>5 <F5>
+nmap <leader>6 <F6>
+nmap <leader>7 <F7>
+nmap <leader>8 <F8>
+nmap <leader>9 <F9>
+nmap <leader>0 <F10>
+
 " easy move between windows
 nnore <silent> <C-K> :wincmd k<CR>
 nnore <silent> <C-J> :wincmd j<CR>
@@ -187,10 +179,8 @@ nore <Leader>= <C-w>=
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 
-" Some helpers to edit mode
-" http://vimcasts.org/e/14
+" expand current directory
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
-
 " expand home directory
 cnoremap $$ <C-R>=fnameescape(expand('~')).'/'<cr>
 
@@ -204,19 +194,20 @@ cnoremap <C-P> <Up>
 nnore s :%s///g<Left><Left>
 xnore s :s///g<Left><Left>
 
-" find merge conflict markers
-nnore <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
-
 " easy toogle case
 inoremap <c-u> <esc>gUiwea
 
 " Easy copy-paste
 xnoremap <leader>y "+y
 nnoremap <leader>y "+y
-xnoremap <c-p> "+p
-nnoremap <c-p> "+p
+xnoremap <leader>p "+p
+nnoremap <leader>p "+p
 
-" unimpaired {{{3
+" Magic search
+nnoremap /  /\v
+nnoremap ?  ?\v
+
+" unimpaired
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
   let cmd = '".(v:count ? v:count : "")."'.a:cmd
@@ -251,7 +242,8 @@ nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
 
-" toogle quickfix/location list {{{3
+
+" toogle quickfix/location list
 function! GetBufferList()
   redir =>buflist
   silent! ls!
@@ -282,22 +274,18 @@ endfunction
 nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
 nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
 
-" change cursor shape for urxvt, xterm,... {{{3
-if has('nvim')
-    let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-elseif v:version > 704 || v:version == 704 && has('patch687')
-    if exists('$TMUX')
-        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-        let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-    elseif !g:is_windows
-        let &t_SI = "\<Esc>[6 q"
-        let &t_SR = "\<Esc>[4 q"
-        let &t_EI = "\<Esc>[2 q"
-    endif
+" change cursor shape for urxvt, xterm,...
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+elseif !g:is_windows
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
 endif
 
-" autocmd{{{1
+" autocmd
 augroup vimrc
     autocmd!
 
@@ -312,11 +300,10 @@ augroup vimrc
       exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
     endfunction
 
-    au FileType liquid,markdown,
-          \ setlocal tw=80 linebreak nolist spell
+    au FileType liquid,markdown setlocal linebreak nolist spell
 augroup END
 
-" statusline{{{1
+" statusline
 set statusline =%!MyStatusLine()
 
 function! MyStatusLine()
@@ -341,8 +328,8 @@ function! MyStatusLine()
   return stl
 endfunction
 
-" plugin settings {{{1
-" disable buildins {{{2
+" plugin settings
+" disable builtins
 let g:loaded_logipat = 1
 let g:loaded_tarPlugin = 1
 let g:loaded_tar       = 1
@@ -354,7 +341,7 @@ let g:loaded_vimball       = 1
 let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
-" snippet {{{2
+" snippet
 autocmd! CompleteDone * let g:forward_complete = 1
 let g:forward_complete = 1
 
@@ -369,14 +356,10 @@ inoremap <expr> <C-Space> complete#WrapOmni()
 let g:snipMate = {}
 let g:snipMate.snippet_version = 1
 
-" Abolist {{{2
+" Abolist
 nmap cr <Plug>Coerce
 
-" incsearch.vim {{{2
-nmap /  <Plug>(incsearch-forward)\v
-nmap ?  <Plug>(incsearch-backward)\v
-
-" Tslime {{{2
+" Tslime
 if !g:is_windows
     let g:tslime_always_current_session = 1
     let g:tslime_always_current_window = 1
@@ -384,7 +367,8 @@ if !g:is_windows
     nmap <C-c><C-c> <Plug>NormalModeSendToTmux
     nmap <C-c>r <Plug>SetTmuxVars
 endif
-" vim-test {{{2
+
+" vim-test
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>a :TestSuite<CR>
@@ -392,9 +376,9 @@ nmap <silent> <leader>L :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "dispatch"
 
-" ctrlp setting {{{2
+" ctrlp setting
 let g:ctrlp_map = ''
-nore <Leader>p :CtrlP<CR>
+nore <c-p> :CtrlP<CR>
 nore <Leader>b :CtrlPBuffer<CR>
 nore <Leader>; :CtrlPTag<CR>
 nore <Leader>, :CtrlPBufTag<CR>
@@ -418,15 +402,13 @@ if executable("ag")
                 \ --hidden -g "" %s'
 endif
 
-" EasyAlign {{{2
+" EasyAlign
 xmap <CR> <Plug>(EasyAlign)
 
-" Dispatch {{{2
+" Dispatch
 nnoremap <leader>d :Dispatch<space>
 
-" read .vimrc.local {{{1
+" read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
 endif
-
-" vim: ts=8 sts=4 sw=4 fdm=marker
