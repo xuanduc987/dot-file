@@ -2,6 +2,7 @@ let mapleader = " "
 set hlsearch " highlight matches
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
+set gdefault " use global flag by default
 
 " easy move between windows
 nnore <C-K> <C-W>k
@@ -13,8 +14,8 @@ nnore <C-L> <C-W>l
 nnore <leader><CR> :noh<CR>
 
 " replace last search
-nnore s :%s///g
-xnore s :s///g
+nnore s :%s//
+xnore s :s//
 
 " easy toogle case
 inoremap <c-u> <esc>gUiwea

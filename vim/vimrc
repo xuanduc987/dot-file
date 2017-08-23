@@ -23,7 +23,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'tacahiroy/ctrlp-funky'
-Plug 'tpope/vim-eunuch', { 'on': ['SudoWrite', 'Remove', 'Rename', 'Move'] }
 Plug 'justinmk/vim-dirvish'
 
 " git
@@ -49,7 +48,9 @@ if !g:is_windows
     Plug 'jgdavey/tslime.vim'
 endif
 
-Plug 'MarcWeber/vim-addon-mw-utils' | Plug 'tomtom/tlib_vim' | Plug 'garbas/vim-snipmate'
+Plug 'joereynolds/vim-minisnip'
+
+Plug 'ajh17/VimCompletesMe'
 
 Plug 'tpope/vim-dispatch'
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
@@ -113,6 +114,7 @@ set smarttab
 set hlsearch
 set ignorecase " searches are case insensitive...
 set smartcase " ... unless they contain at least one capital letter
+set gdefault " use global flag by default
 
 set belloff=all " no bell
 
@@ -135,7 +137,7 @@ set splitright
 " Special chars
 set list " Show invisible characters
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
-    let &listchars = "tab:»-,trail:⚭,extends:»,precedes:«"
+    let &listchars = "tab:»-,trail:⋅,extends:»,precedes:«"
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
@@ -191,8 +193,8 @@ nnore <leader><CR> :noh<CR>
 cnoremap <C-P> <Up>
 
 " replace last search
-nnore s :%s///g<Left><Left>
-xnore s :s///g<Left><Left>
+nnore s :%s//
+xnore s :s//
 
 " easy toogle case
 inoremap <c-u> <esc>gUiwea
@@ -241,7 +243,6 @@ nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 " swap line
 nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
-
 
 " toogle quickfix/location list
 function! GetBufferList()
@@ -328,6 +329,15 @@ function! MyStatusLine()
   return stl
 endfunction
 
+function! SudoWrite()
+    write !sudo tee %
+    " Or with :silent (but that doesn't seem to work for everyone)
+    "silent write !sudo tee %
+    edit!
+endfun
+
+command SudoWrite call SudoWrite()
+
 " plugin settings
 " disable builtins
 let g:loaded_logipat = 1
@@ -342,19 +352,7 @@ let g:loaded_netrw       = 1
 let g:loaded_netrwPlugin = 1
 
 " snippet
-autocmd! CompleteDone * let g:forward_complete = 1
-let g:forward_complete = 1
-
-let g:SuperTabMappingForward = "<tab>"
-imap <silent> <Plug>SuperTabForward <C-R>=complete#MyComplete()<cr>
-imap <tab> <Plug>snipMateTrigger
-imap <C-J> <Plug>snipMateNextOrTrigger
-
-imap <Nul> <C-Space>
-inoremap <expr> <C-Space> complete#WrapOmni()
-
-let g:snipMate = {}
-let g:snipMate.snippet_version = 1
+let g:minisnip_trigger = '<C-j>'
 
 " Abolist
 nmap cr <Plug>Coerce
