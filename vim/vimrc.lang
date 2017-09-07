@@ -1,3 +1,26 @@
+" Plugins
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'w0rp/ale'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-dispatch'
+Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
+
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'haml', 'eruby'] }
+Plug 'ternjs/tern_for_vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'fsharp/vim-fsharp'
+
+" vim-test
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>L :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+let test#strategy = "dispatch"
+
 " vim-rails {{{2
 let g:rails_projections = {
     \          "app/decorators/*_decorator.rb": {

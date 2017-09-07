@@ -2,12 +2,6 @@ set guioptions=M
 
 let g:is_windows = has('win32')
 
-" Download vim-plug
-if !g:is_windows && empty(glob($HOME . "/.vim/autoload/plug.vim"))
-    :silent !mkdir -p ~/.vim/autoload >/dev/null 2>&1
-    :silent !curl -fLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim >/dev/null 2>&1
-endif
-
 if exists("+undofile")
     if isdirectory($HOME . '/.vim/_undo') == 0
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
@@ -22,51 +16,29 @@ call plug#begin('~/.vim/plugged')
 " file management
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
-Plug 'tacahiroy/ctrlp-funky'
 Plug 'justinmk/vim-dirvish'
 
 " git
 Plug 'tpope/vim-fugitive'
 
-" textedit
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', '<Plug>(LiveEasyAlign)'] }
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-rsi'
-Plug 'michaeljsmith/vim-indent-object'
 Plug 'coderifous/textobj-word-column.vim'
-
-Plug 'w0rp/ale'
-
-Plug 'tpope/vim-abolish', { 'on': ['S', '<Plug>Coerce'] }
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-projectionist'
 if !g:is_windows
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jgdavey/tslime.vim'
 endif
-
 Plug 'joereynolds/vim-minisnip'
-
 Plug 'ajh17/VimCompletesMe'
-
-Plug 'tpope/vim-dispatch'
-Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 Plug 'xuanduc987/matchit.zip'
 
 " colorscheme
 Plug 'xuanduc987/badwolf'
-Plug 'nanotech/jellybeans.vim'
-Plug 'bluz71/vim-moonfly-colors'
-Plug 'romanzolotarev/vim-dark'
 Plug 'albertorestifo/github.vim'
-
-if filereadable(expand("~/.vimrc.lang.plug"))
-    source ~/.vimrc.lang.plug
-endif
 
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
@@ -77,24 +49,19 @@ call plug#end()
 " set
 set autoindent
 set backspace=indent,eol,start
-set complete-=i                " don't scan included files
 set nrformats-=octal
 set incsearch
 set laststatus=2
-set ruler
 set wildmenu
-set scrolloff=1
-set sidescrolloff=5
+set scrolloff=1 sidescrolloff=5
 set display+=lastline
 set formatoptions+=j " Delete comment character when joining commented lines
 setglobal tags-=./tags tags-=./tags; tags^=./tags;
 set autoread
 set history=1000
-set tabpagemax=50
 if !empty(&viminfo)
     set viminfo^=!
 endif
-set sessionoptions-=options
 
 if has('gui_running')
     set encoding=utf-8
@@ -104,10 +71,7 @@ set textwidth=80
 set nowrap
 set colorcolumn=+1 " Color column textwidth + 1
 
-set tabstop=4
-set softtabstop=4
 set shiftwidth=4
-set shiftround
 set expandtab
 set smarttab
 
@@ -127,46 +91,25 @@ set lazyredraw
 set ttimeout timeout timeoutlen=800 ttimeoutlen=50
 set synmaxcol=200
 
-set nobackup
-set noswapfile
+set nobackup noswapfile
 
 " Natural split
 set splitbelow
 set splitright
 
-" Special chars
-set list " Show invisible characters
+set list " Show special characters for inivisible chars
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
     let &listchars = "tab:»-,trail:⋅,extends:»,precedes:«"
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
 
-" Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
-" Disable archive files
-set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-" Ignore bundler and sass cache
-set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
-" Disable temp and backup files
-set wildignore+=*.swp,*~,._*
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.swp,*~,._*
 
 " mapping
 let mapleader = " "
 
 nnoremap <leader>q :q<cr>
-
-" 60% keyboard
-nmap <leader>1 <F1>
-nmap <leader>2 <F2>
-nmap <leader>3 <F3>
-nmap <leader>4 <F4>
-nmap <leader>5 <F5>
-nmap <leader>6 <F6>
-nmap <leader>7 <F7>
-nmap <leader>8 <F8>
-nmap <leader>9 <F9>
-nmap <leader>0 <F10>
 
 " easy move between windows
 nnore <silent> <C-K> :wincmd k<CR>
@@ -178,6 +121,7 @@ nnore <silent> <C-L> :wincmd l<CR>
 nore <Leader>= <C-w>=
 
 " Toggle paste mode
+nmap <leader>4 <F4>
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 
@@ -196,7 +140,7 @@ cnoremap <C-P> <Up>
 nnore s :%s//
 xnore s :s//
 
-" easy toogle case
+" easy upper case
 inoremap <c-u> <esc>gUiwea
 
 " Easy copy-paste
@@ -209,7 +153,7 @@ nnoremap <leader>p "+p
 nnoremap /  /\v
 nnoremap ?  ?\v
 
-" unimpaired
+" copy from unimpaired
 function! s:MapNextFamily(map,cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
   let cmd = '".(v:count ? v:count : "")."'.a:cmd
@@ -239,10 +183,6 @@ call s:MapNextFamily('t','t')
 " insert blank line
 nnoremap [<space>     :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
-
-" swap line
-nnoremap [e           :<c-u>execute 'move -1-'. v:count1<cr>
-nnoremap ]e           :<c-u>execute 'move +'. v:count1<cr>
 
 " toogle quickfix/location list
 function! GetBufferList()
@@ -300,8 +240,6 @@ augroup vimrc
     function! AdjustWindowHeight(minheight, maxheight)
       exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
     endfunction
-
-    au FileType liquid,markdown setlocal linebreak nolist spell
 augroup END
 
 " statusline
@@ -329,34 +267,30 @@ function! MyStatusLine()
   return stl
 endfunction
 
-function! SudoWrite()
-    write !sudo tee %
-    " Or with :silent (but that doesn't seem to work for everyone)
-    "silent write !sudo tee %
-    edit!
-endfun
+if !g:is_windows
+    function! SudoWrite()
+        write !sudo tee %
+        edit!
+    endfun
 
-command SudoWrite call SudoWrite()
+    command! SudoWrite call SudoWrite()
+endif
 
 " plugin settings
-" disable builtins
-let g:loaded_logipat = 1
-let g:loaded_tarPlugin = 1
-let g:loaded_tar       = 1
-let loaded_gzip        = 1
-let g:loaded_zipPlugin = 1
-let g:loaded_zip       = 1
+" disable built-ins
+let g:loaded_logipat       = 1
+let g:loaded_tarPlugin     = 1
+let g:loaded_tar           = 1
+let loaded_gzip            = 1
+let g:loaded_zipPlugin     = 1
+let g:loaded_zip           = 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_vimball       = 1
-let g:loaded_netrw       = 1
-let g:loaded_netrwPlugin = 1
+let g:loaded_netrw         = 1
+let g:loaded_netrwPlugin   = 1
 
 " snippet
 let g:minisnip_trigger = '<C-j>'
-
-" Abolist
-nmap cr <Plug>Coerce
-
 " Tslime
 if !g:is_windows
     let g:tslime_always_current_session = 1
@@ -365,22 +299,10 @@ if !g:is_windows
     nmap <C-c><C-c> <Plug>NormalModeSendToTmux
     nmap <C-c>r <Plug>SetTmuxVars
 endif
-
-" vim-test
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>L :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
-let test#strategy = "dispatch"
-
-" ctrlp setting
-let g:ctrlp_map = ''
-nore <c-p> :CtrlP<CR>
+" ctrlp
 nore <Leader>b :CtrlPBuffer<CR>
 nore <Leader>; :CtrlPTag<CR>
 nore <Leader>, :CtrlPBufTag<CR>
-nore <Leader>. :CtrlPFunky<CR>
 let g:ctrlp_clear_cache_on_exit = 0
 if has('python')
     let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
@@ -393,19 +315,12 @@ let g:ctrlp_custom_ignore = {
 if executable("ag")
     set grepprg=ag\ --nogroup\ --nocolor
     let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
-                \ --ignore ".git"
-                \ --ignore ".svn"
-                \ --ignore ".DS_Store"
-                \ --ignore "node_modules"
+                \ --ignore ".git" --ignore ".svn"
+                \ --ignore ".DS_Store" --ignore "node_modules"
                 \ --hidden -g "" %s'
 endif
-
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
-
-" Dispatch
-nnoremap <leader>d :Dispatch<space>
-
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
