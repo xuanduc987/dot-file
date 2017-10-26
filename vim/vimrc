@@ -3,7 +3,7 @@ set guioptions=M
 let g:is_windows = has('win32')
 
 if exists("+undofile")
-    if isdirectory($HOME . '/.vim/_undo') == 0
+    if isdirectory($HOME . '/.vim/_undo') == 0 && !g:is_windows
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
     endif
     set undodir=./.vim-undo//,~/.vim/_undo//
@@ -17,9 +17,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'FelikZ/ctrlp-py-matcher'
 Plug 'justinmk/vim-dirvish'
-
-" git
-Plug 'tpope/vim-fugitive'
 
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
@@ -124,6 +121,7 @@ nore <Leader>= <C-w>=
 nmap <leader>4 <F4>
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
 inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
+set pastetoggle=<F4>
 
 " expand current directory
 cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -243,29 +241,18 @@ augroup vimrc
 augroup END
 
 " statusline
-set statusline =%!MyStatusLine()
-
-function! MyStatusLine()
-  let stl = '%m'                            " modified flag
-  let stl .= ' »'
-  let stl .= ' %f'                          " Relative path to file
-  let stl .= ' «'
-  let stl .= ' %h'                          " [help]
-  let stl .= '%r'                           " read only flag
-  let stl .= '%w'                           " preview window flag
-  let stl .= '%y'                           " filetype
-  let stl .= '%='
-  let stl .= '['.&fileencoding.']  '
-  let stl .= '%-8(%l,%c%V%)'                " Line, column-virtual column
-  let stl .= ' %6P'
-
-  if exists('b:git_dir')
-    let stl .= ' ← '
-    let branch = fugitive#head(8)
-    let stl .= (branch == 'master') ? '%#ErrorMsg#master%*' : branch
-  endif
-  return stl
-endfunction
+set statusline=%m                      " modified flag
+set statusline+=\ \                    " separator
+set statusline+=%f                     " Relative path to file
+set statusline+=\ \                    " separator
+set statusline+=%h                     " [help]
+set statusline+=%r                     " read only flag
+set statusline+=%w                     " preview window flag
+set statusline+=%y                     " filetype
+set statusline+=%=
+set statusline+=[%{&fileencoding}]\ \  " file encoding
+set statusline+=%-8(%l,%c%V%)          " Line, column-virtual column
+set statusline+=\ %6P
 
 if !g:is_windows
     function! SudoWrite()
@@ -291,6 +278,7 @@ let g:loaded_netrwPlugin   = 1
 
 " snippet
 let g:minisnip_trigger = '<C-j>'
+
 " Tslime
 if !g:is_windows
     let g:tslime_always_current_session = 1
@@ -299,6 +287,7 @@ if !g:is_windows
     nmap <C-c><C-c> <Plug>NormalModeSendToTmux
     nmap <C-c>r <Plug>SetTmuxVars
 endif
+
 " ctrlp
 nore <Leader>b :CtrlPBuffer<CR>
 nore <Leader>; :CtrlPTag<CR>
@@ -311,6 +300,7 @@ let g:ctrlp_custom_ignore = {
             \ 'dir': '\v[\/]\.(git|hg|svn)$',
             \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
             \ }
+
 " If ag is available use it as filename list generator instead of 'find'
 if executable("ag")
     set grepprg=ag\ --nogroup\ --nocolor
@@ -319,8 +309,10 @@ if executable("ag")
                 \ --ignore ".DS_Store" --ignore "node_modules"
                 \ --hidden -g "" %s'
 endif
+
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
+
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
