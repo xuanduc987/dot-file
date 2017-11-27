@@ -21,6 +21,16 @@ nmap <silent> <leader>L :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
 let test#strategy = "dispatch"
 
+nnoremap <leader>vc :Vcontroller<space>
+nnoremap <leader>vm :Vmodel<space>
+nnoremap <leader>vv :Vview<space>
+nnoremap <leader>sc :Scontroller<space>
+nnoremap <leader>sm :Smodel<space>
+nnoremap <leader>sv :Sview<space>
+nnoremap <leader>ec :Econtroller<space>
+nnoremap <leader>em :Emodel<space>
+nnoremap <leader>ev :Eview<space>
+
 " vim-rails {{{2
 let g:rails_projections = {
     \          "app/decorators/*_decorator.rb": {

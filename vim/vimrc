@@ -147,6 +147,9 @@ nnoremap <leader>y "+y
 xnoremap <leader>p "+p
 nnoremap <leader>p "+p
 
+" Ctrl+Space to omni complete
+inoremap <c-space> <C-X><C-O>
+
 " Magic search
 nnoremap /  /\v
 nnoremap ?  ?\v
@@ -312,6 +315,9 @@ endif
 
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
+
+" VimCompletesMe
+let g:vcm_direction = 'p'
 
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
