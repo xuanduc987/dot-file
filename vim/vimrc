@@ -139,7 +139,7 @@ nnore s :%s//
 xnore s :s//
 
 " easy upper case
-inoremap <c-u> <esc>gUiwea
+inoremap <c-u> <c-o>:normal gUiwea<CR>
 
 " Easy copy-paste
 xnoremap <leader>y "+y
@@ -315,9 +315,6 @@ endif
 
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
-
-" VimCompletesMe
-let g:vcm_direction = 'p'
 
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
