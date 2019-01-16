@@ -14,28 +14,41 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " file management
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'FelikZ/ctrlp-py-matcher'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-dirvish'
 
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
-Plug 'tpope/vim-commentary'
-Plug 'coderifous/textobj-word-column.vim'
+Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 if !g:is_windows
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'jgdavey/tslime.vim'
 endif
-Plug 'joereynolds/vim-minisnip'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+
+Plug 'romainl/vim-qf'
+
+Plug 'tpope/vim-dispatch'
+Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
+
+Plug 'editorconfig/editorconfig-vim'
+Plug 'ludovicchabant/vim-gutentags'
+
 Plug 'ajh17/VimCompletesMe'
 
-Plug 'xuanduc987/matchit.zip'
+Plug 'mattn/emmet-vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'natebosch/vim-lsc'
 
-" colorscheme
-Plug 'xuanduc987/badwolf'
-Plug 'albertorestifo/github.vim'
+Plug 'sheerun/vim-polyglot'
+
+Plug 'cormacrelf/vim-colors-github'
+Plug 'rhysd/vim-color-spring-night'
 
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
@@ -79,8 +92,7 @@ set gdefault " use global flag by default
 
 set belloff=all " no bell
 
-set ambiwidth=double
-set number
+set ambiwidth=single
 set mouse=n " Enable mouse support normal mode only
 
 set ttyfast
@@ -101,12 +113,22 @@ else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
 
+set fillchars=vert:│
+
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.swp,*~,._*
 
 " mapping
 let mapleader = " "
 
 nnoremap <leader>q :q<cr>
+nnoremap <leader>w :update<CR>
+nnoremap <leader>d :Dispatch<space>
+nnoremap <leader>f :grep<space>
+nnoremap <leader>vs :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>xs :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
+
+" calculator
+xnoremap <leader>r c<C-R>=<C-R>"<CR><esc>
 
 " easy move between windows
 nnore <silent> <C-K> :wincmd k<CR>
@@ -139,16 +161,13 @@ nnore s :%s//
 xnore s :s//
 
 " easy upper case
-inoremap <c-u> <c-o>:normal gUiwea<CR>
+inoremap <c-u> <left><c-o>:normal gUiwea<CR><right>
 
 " Easy copy-paste
 xnoremap <leader>y "+y
 nnoremap <leader>y "+y
 xnoremap <leader>p "+p
 nnoremap <leader>p "+p
-
-" Ctrl+Space to omni complete
-inoremap <c-space> <C-X><C-O>
 
 " Magic search
 nnoremap /  /\v
@@ -236,12 +255,19 @@ augroup vimrc
     au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
                 \| exe "normal! g`\"" | endif
 
-    au FileType qf call AdjustWindowHeight(3, 15)
+    au FileType qf call AdjustWindowHeight(3, 25)
+    au FileType *lsp-hover call AdjustWindowHeight(3, 15)
+
     " Auto adjust quickfix window
     function! AdjustWindowHeight(minheight, maxheight)
       exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
     endfunction
 augroup END
+
+" User ag if possible
+if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+endif
 
 " statusline
 set statusline=%m                      " modified flag
@@ -280,7 +306,8 @@ let g:loaded_netrw         = 1
 let g:loaded_netrwPlugin   = 1
 
 " snippet
-let g:minisnip_trigger = '<C-j>'
+imap <C-J> <Plug>snipMateNextOrTrigger
+smap <C-J> <Plug>snipMateNextOrTrigger
 
 " Tslime
 if !g:is_windows
@@ -291,27 +318,23 @@ if !g:is_windows
     nmap <C-c>r <Plug>SetTmuxVars
 endif
 
-" ctrlp
-nore <Leader>b :CtrlPBuffer<CR>
-nore <Leader>; :CtrlPTag<CR>
-nore <Leader>, :CtrlPBufTag<CR>
-let g:ctrlp_clear_cache_on_exit = 0
-if has('python')
-    let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-endif
-let g:ctrlp_custom_ignore = {
-            \ 'dir': '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
-            \ }
+" Fuzzy
+let g:fzf_layout = { 'up': '10' }
+nnore <leader>o :Files<CR>
+nnore <Leader>b :Buffers<CR>
+nnore <Leader>; :Tags<CR>
+nnore <Leader>, :BTags<CR>
 
-" If ag is available use it as filename list generator instead of 'find'
-if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
-                \ --ignore ".git" --ignore ".svn"
-                \ --ignore ".DS_Store" --ignore "node_modules"
-                \ --hidden -g "" %s'
-endif
+" language server
+let g:lsc_auto_map = {'defaults': v:true}
+
+" vim-test
+nnoremap <silent> <leader>tt :TestNearest<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+let test#strategy = "dispatch"
 
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)

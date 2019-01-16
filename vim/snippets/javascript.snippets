@@ -1,16 +1,63 @@
-snippet fun "function (fun)"
+snippet fun
 	function ${1:function_name}(${2}) {
-		${VISUAL}$0
+		${0:${VISUAL}}
 	}
-snippet f "anonymous function" w
-	function(${1}) {
-		${VISUAL}$0
-	}
-snippet af "" w
+snippet af
 	(${1}) => {
 		${0}
 	}
-snippet iife "Immediately-Invoked Function Expression (iife)"
-	(function(${1:window}) {
-		${VISUAL}$0
-	}(${2:$1}));
+snippet caf
+	const ${1:functionName} = (${2:params}) => {
+		${0}
+	};
+
+snippet cdm
+	componentDidMount() {
+		${0}
+	}
+snippet cwu
+	componentWillUnmount() {
+		${0}
+	}
+
+snippet cl
+	// eslint-disable-next-line
+	console.log(${0});
+snippet cw
+	console.warn(${0});
+snippet ce
+	console.error(${0});
+snippet de
+	debugger;${0}
+
+snippet rcc
+	type Props = {
+		${1}
+	};
+
+	class ${2:`expand('%:t:r')`} extends React.Component<Props> {
+		render() {
+			return (
+				<div />
+			);
+		}
+	}
+
+	export default $2;
+snippet con
+	constructor(props: Props) {
+		super(props);
+
+		${0}
+	}
+snippet tb
+	(this: any).${1:handler} = this.$1.bind(this);${0}
+
+snippet tp
+	this.props.${0}
+snippet ts
+	this.state.${0}
+snippet st
+	this.setState({ ${0} });
+snippet flow
+	/* @flow */
