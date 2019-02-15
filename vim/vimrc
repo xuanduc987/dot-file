@@ -14,8 +14,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " file management
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'justinmk/vim-dirvish'
 
 Plug 'bronson/vim-trailing-whitespace'
@@ -109,11 +108,10 @@ set splitright
 set list " Show special characters for inivisible chars
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
     let &listchars = "tab:»-,trail:⋅,extends:»,precedes:«"
+    set fillchars=vert:│
 else
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
-
-set fillchars=vert:│
 
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.swp,*~,._*
 
@@ -232,8 +230,9 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
-nmap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
-nmap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
+nnoremap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
+nnoremap <silent> <leader>z :pclose<CR>
 
 " change cursor shape for urxvt, xterm,...
 if exists('$TMUX')
@@ -254,14 +253,6 @@ augroup vimrc
     " see :help last-position-jump
     au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
                 \| exe "normal! g`\"" | endif
-
-    au FileType qf call AdjustWindowHeight(3, 25)
-    au FileType *lsp-hover call AdjustWindowHeight(3, 15)
-
-    " Auto adjust quickfix window
-    function! AdjustWindowHeight(minheight, maxheight)
-      exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-    endfunction
 augroup END
 
 " User ag if possible
@@ -318,12 +309,27 @@ if !g:is_windows
     nmap <C-c>r <Plug>SetTmuxVars
 endif
 
-" Fuzzy
-let g:fzf_layout = { 'up': '10' }
-nnore <leader>o :Files<CR>
-nnore <Leader>b :Buffers<CR>
-nnore <Leader>; :Tags<CR>
-nnore <Leader>, :BTags<CR>
+" ctrlp
+let g:ctrlp_map = ''
+nnore <Leader>o :CtrlP<CR>
+nnore <Leader>b :CtrlPBuffer<CR>
+nnore <Leader>; :CtrlPTag<CR>
+nnore <Leader>, :CtrlPBufTag<CR>
+
+let g:ctrlp_use_caching = 0
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_custom_ignore = {
+            \ 'dir': '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
+            \ }
+
+" If ag is available use it as filename list generator instead of 'find'
+if executable("ag")
+  let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
+        \ --ignore ".git" --ignore ".svn"
+        \ --ignore ".DS_Store" --ignore "node_modules"
+        \ --hidden -g "" %s'
+endif
 
 " language server
 let g:lsc_auto_map = {'defaults': v:true}
@@ -338,6 +344,11 @@ let test#strategy = "dispatch"
 
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
+
+" Quickfix
+let g:qf_mapping_ack_style = 1
+let g:qf_window_bottom = 0
+let g:qf_loclist_window_bottom = 0
 
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
