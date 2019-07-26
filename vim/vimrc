@@ -24,7 +24,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 if !g:is_windows
     Plug 'christoomey/vim-tmux-navigator'
-    Plug 'jgdavey/tslime.vim'
+    Plug 'benmills/vimux'
 endif
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
@@ -32,19 +32,22 @@ Plug 'garbas/vim-snipmate'
 
 Plug 'romainl/vim-qf'
 
-Plug 'tpope/vim-dispatch'
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
-Plug 'editorconfig/editorconfig-vim'
+Plug 'sgur/vim-editorconfig'
 Plug 'ludovicchabant/vim-gutentags'
-
-Plug 'ajh17/VimCompletesMe'
 
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'natebosch/vim-lsc'
 
-Plug 'sheerun/vim-polyglot'
+Plug 'natebosch/vim-lsc'
+Plug 'lifepillar/vim-mucomplete'
+
+Plug 'pangloss/vim-javascript'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'LnL7/vim-nix'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
@@ -61,6 +64,7 @@ set backspace=indent,eol,start
 set nrformats-=octal
 set incsearch
 set laststatus=2
+set showcmd
 set wildmenu
 set scrolloff=1 sidescrolloff=5
 set display+=lastline
@@ -72,9 +76,7 @@ if !empty(&viminfo)
     set viminfo^=!
 endif
 
-if has('gui_running')
-    set encoding=utf-8
-endif
+set encoding=utf-8
 
 set textwidth=80
 set nowrap
@@ -97,7 +99,7 @@ set mouse=n " Enable mouse support normal mode only
 set ttyfast
 set lazyredraw
 set ttimeout timeout timeoutlen=800 ttimeoutlen=50
-set synmaxcol=200
+set synmaxcol=400
 
 set nobackup noswapfile
 
@@ -120,7 +122,6 @@ let mapleader = " "
 
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :update<CR>
-nnoremap <leader>d :Dispatch<space>
 nnoremap <leader>f :grep<space>
 nnoremap <leader>vs :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
 nnoremap <leader>xs :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
@@ -257,7 +258,7 @@ augroup END
 
 " User ag if possible
 if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
+    set grepprg=ag\ --nogroup\ --nocolor\ --path-to-ignore\ ~/.ignore
 endif
 
 " statusline
@@ -288,7 +289,7 @@ endif
 let g:loaded_logipat       = 1
 let g:loaded_tarPlugin     = 1
 let g:loaded_tar           = 1
-let loaded_gzip            = 1
+let g:loaded_gzip          = 1
 let g:loaded_zipPlugin     = 1
 let g:loaded_zip           = 1
 let g:loaded_vimballPlugin = 1
@@ -299,6 +300,11 @@ let g:loaded_netrwPlugin   = 1
 " snippet
 imap <C-J> <Plug>snipMateNextOrTrigger
 smap <C-J> <Plug>snipMateNextOrTrigger
+" fallback to emmet
+let g:snipMate = {
+      \ 'no_match_completion_feedkeys_chars': "\<c-y>,"
+      \}
+xmap <C-J> <C-Y>,
 
 " Tslime
 if !g:is_windows
@@ -316,8 +322,8 @@ nnore <Leader>b :CtrlPBuffer<CR>
 nnore <Leader>; :CtrlPTag<CR>
 nnore <Leader>, :CtrlPBufTag<CR>
 
-let g:ctrlp_use_caching = 0
-let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_custom_ignore = {
             \ 'dir': '\v[\/]\.(git|hg|svn)$',
             \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
@@ -328,11 +334,47 @@ if executable("ag")
   let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
         \ --ignore ".git" --ignore ".svn"
         \ --ignore ".DS_Store" --ignore "node_modules"
+        \ --path-to-ignore "~/.ignore"
         \ --hidden -g "" %s'
 endif
 
 " language server
+function! s:findRoot(marker, ...) abort
+  let l:path = a:0 > 1 ? a:1 : expand('%')
+  let l:fullPath = fnamemodify(l:path, ':p')
+  let l:dir = l:fullPath
+
+  while 1
+    " go up 1 lvel
+    let l:dir = fnamemodify(l:dir, ':h')
+    if l:dir == '/'
+      return ''
+    endif
+    let l:filename = l:dir.'/'.a:marker
+    if filereadable(l:filename) || isdirectory(l:filename)
+      return l:dir
+    endif
+  endwhile
+endfunction
+
+function! s:getJsLsp() abort
+  let l:pkgRoot = s:findRoot('package.json')
+  if filereadable(l:pkgRoot.'/.flowconfig')
+    " flow prj
+    let l:flowbinRoot = s:findRoot('node_modules/.bin/flow', l:pkgRoot)
+    if !empty(l:flowbinRoot)
+      return l:flowbinRoot.'/node_modules/.bin/flow lsp --from vim'
+    endif
+  endif
+  return 'typescript-language-server --stdio'
+endfunction
 let g:lsc_auto_map = {'defaults': v:true}
+let g:lsc_server_commands = {
+  \ 'javascript': s:getJsLsp(),
+  \ 'javascript.jsx': s:getJsLsp(),
+  \ 'typescript': s:getJsLsp(),
+  \ 'typescript.tsx': s:getJsLsp()
+  \}
 
 " vim-test
 nnoremap <silent> <leader>tt :TestNearest<CR>
@@ -340,10 +382,18 @@ nnoremap <silent> <leader>tf :TestFile<CR>
 nnoremap <silent> <leader>ta :TestSuite<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
 nnoremap <silent> <leader>tg :TestVisit<CR>
-let test#strategy = "dispatch"
+let test#strategy = 'vimux'
+let g:test#javascript#jest#file_pattern = '\v((/__tests__/.*)|((\.|/)(test|spec)))\.[jt]sx?$'
 
 " EasyAlign
 xmap <CR> <Plug>(EasyAlign)
+
+" complete
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 200
+let g:mucomplete#reopen_immediately = 0
+let g:mucomplete#buffer_relative_paths = 1
+set completeopt+=menuone,noselect
 
 " Quickfix
 let g:qf_mapping_ack_style = 1
