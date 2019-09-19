@@ -40,14 +40,11 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
-Plug 'natebosch/vim-lsc'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'lifepillar/vim-mucomplete'
 
-Plug 'pangloss/vim-javascript'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'LnL7/vim-nix'
+Plug 'leafgarland/typescript-vim'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
@@ -117,14 +114,18 @@ endif
 
 set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.swp,*~,._*
 
+" diff
+set diffopt+=algorithm:histogram
+
 " mapping
 let mapleader = " "
 
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :update<CR>
 nnoremap <leader>f :grep<space>
+nnoremap <leader>e :edit <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>s :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
 nnoremap <leader>vs :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <leader>xs :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
 " calculator
 xnoremap <leader>r c<C-R>=<C-R>"<CR><esc>
@@ -296,6 +297,7 @@ let g:loaded_vimballPlugin = 1
 let g:loaded_vimball       = 1
 let g:loaded_netrw         = 1
 let g:loaded_netrwPlugin   = 1
+let g:loaded_2html_plugin  = 1
 
 " snippet
 imap <C-J> <Plug>snipMateNextOrTrigger
@@ -334,7 +336,7 @@ if executable("ag")
   let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
         \ --ignore ".git" --ignore ".svn"
         \ --ignore ".DS_Store" --ignore "node_modules"
-        \ --path-to-ignore "~/.ignore"
+        \ --path-to-ignore ~/.ignore
         \ --hidden -g "" %s'
 endif
 
@@ -368,13 +370,48 @@ function! s:getJsLsp() abort
   endif
   return 'typescript-language-server --stdio'
 endfunction
-let g:lsc_auto_map = {'defaults': v:true}
-let g:lsc_server_commands = {
-  \ 'javascript': s:getJsLsp(),
-  \ 'javascript.jsx': s:getJsLsp(),
-  \ 'typescript': s:getJsLsp(),
-  \ 'typescript.tsx': s:getJsLsp()
-  \}
+
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'typescript-language-server',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+    \ 'whitelist': ['typescript'],
+    \ 'config': { 'filter': { 'name': 'prefix' } },
+    \ })
+
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'javascript-lsp',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
+    \ 'whitelist': ['javascript'],
+    \ 'config': { 'filter': { 'name': 'prefix' } },
+    \ })
+
+function! s:lspSetting() abort
+  nmap <buffer> ga     <plug>(lsp-code-action)
+  nmap <buffer> <c-]>  <plug>(lsp-declaration)
+  nmap <buffer> g<c-]> <plug>(lsp-peek-declaration)
+  nmap <buffer> gd     <plug>(lsp-definition)
+  nmap <buffer> gD     <plug>(lsp-peek-definition)
+  nmap <buffer> go     <plug>(lsp-document-symbol)
+  nmap <buffer> K      <plug>(lsp-hover)
+  nmap <buffer> <c-n>  <plug>(lsp-next-reference)
+  nmap <buffer> <c-p>  <plug>(lsp-previous-reference)
+  nmap <buffer> gr     <plug>(lsp-references)
+  nmap <buffer> gR     <plug>(lsp-rename)
+  nmap <buffer> gS     <plug>(lsp-workspace-symbol)
+
+  setlocal omnifunc=lsp#complete
+endfunction
+
+autocmd FileType javascript,typescript call s:lspSetting()
+
+" vi-mux
+nnoremap <Leader><Leader> :VimuxPromptCommand<CR>
+nnoremap <Leader>rp :VimuxPromptCommand<CR>
+nnoremap <Leader>rl :VimuxRunLastCommand<CR>
+nnoremap <Leader>ri :VimuxInspectRunner<CR>
+nnoremap <Leader>rq :VimuxCloseRunner<CR>
+nnoremap <Leader>rx :VimuxInterruptRunner<CR>
 
 " vim-test
 nnoremap <silent> <leader>tt :TestNearest<CR>
@@ -390,9 +427,15 @@ xmap <CR> <Plug>(EasyAlign)
 
 " complete
 let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 200
+let g:mucomplete#completion_delay = 240
 let g:mucomplete#reopen_immediately = 0
 let g:mucomplete#buffer_relative_paths = 1
+let g:mucomplete#can_complete = {
+      \ 'default': {
+      \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\k\|\.\)$' }
+      \    }
+      \  }
+>
 set completeopt+=menuone,noselect
 
 " Quickfix
