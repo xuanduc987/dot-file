@@ -1,63 +1,59 @@
-snippet fun
-	function ${1:function_name}(${2}) {
-		${0:${VISUAL}}
-	}
-snippet af
-	(${1}) => {
-		${0}
-	}
-snippet caf
-	const ${1:functionName} = (${2:params}) => {
-		${0}
-	};
-
+snippet ir
+	import * as React from 'react';
 snippet cdm
 	componentDidMount() {
-		${0}
+		${1}
+	}
+snippet cdu
+	componentDidUpdate(prevProps, prevState) {
+		${1}
 	}
 snippet cwu
 	componentWillUnmount() {
-		${0}
-	}
-
-snippet cl
-	// eslint-disable-next-line
-	console.log(${0});
-snippet cw
-	console.warn(${0});
-snippet ce
-	console.error(${0});
-snippet de
-	debugger;${0}
-
-snippet rcc
-	type Props = {
 		${1}
-	};
-
-	class ${2:`expand('%:t:r')`} extends React.Component<Props> {
+	}
+snippet scu
+	shouldComponentUpdate(nextProps, nextState) {
+		${1}
+	}
+snippet rfc
+	function ${1:ComponentName}(${2:props}) {
+		return (
+			<div>
+				${0}
+			</div>
+		);
+	}
+snippet rcc
+	class ${1:ClassName} extends React.Component {
 		render() {
 			return (
-				<div />
+				<div>
+					${0}
+				</div>
 			);
 		}
 	}
-
-	export default $2;
-snippet con
-	constructor(props: Props) {
-		super(props);
-
-		${0}
+snippet ctor
+	constructor() {
+		super();
+		${1}
 	}
-snippet tb
-	(this: any).${1:handler} = this.$1.bind(this);${0}
-
-snippet tp
-	this.props.${0}
-snippet ts
-	this.state.${0}
-snippet st
-	this.setState({ ${0} });
-snippet flow
-	/* @flow */
+snippet sst
+	this.setState({
+		${1}: ${2}
+	});
+snippet de
+	debugger;
+snippet cl "console.log"
+	console.log(${0});
+snippet cd "console.debug"
+	console.debug(${0});
+snippet ce "console.error"
+	console.error(${0});
+snippet cw "console.warn"
+	console.warn(${0});
+snippet ci "console.info"
+	console.info(${0});
+snippet ct "console.trace"
+	console.trace(${0:label});
