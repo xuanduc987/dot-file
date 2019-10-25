@@ -1,9 +1,5 @@
-set guioptions=M
-
-let g:is_windows = has('win32')
-
 if exists("+undofile")
-    if isdirectory($HOME . '/.vim/_undo') == 0 && !g:is_windows
+    if isdirectory($HOME . '/.vim/_undo') == 0
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
     endif
     set undodir=./.vim-undo//,~/.vim/_undo//
@@ -13,38 +9,82 @@ endif
 " Plug
 call plug#begin('~/.vim/plugged')
 
-" file management
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'justinmk/vim-dirvish'
-
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-if !g:is_windows
-    Plug 'christoomey/vim-tmux-navigator'
-    Plug 'benmills/vimux'
+let g:ctrlp_map = ''
+nnore <Leader>o :CtrlP<CR>
+nnore <Leader>b :CtrlPBuffer<CR>
+nnore <Leader>; :CtrlPTag<CR>
+nnore <Leader>, :CtrlPBufTag<CR>
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 1
+" If ag is available use it as filename list generator instead of 'find'
+if executable("ag")
+  let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
+        \ --ignore ".git"
+        \ --ignore ".DS_Store" --ignore "node_modules"
+        \ --path-to-ignore ~/.ignore
+        \ --hidden -g "" %s'
 endif
+Plug 'ctrlpvim/ctrlp.vim'
+
+xmap <CR> <Plug>(EasyAlign)
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
+
+imap <C-J> <Plug>snipMateNextOrTrigger
+smap <C-J> <Plug>snipMateNextOrTrigger
+xmap <C-J> <C-Y>,
+" fallback to emmet
+let g:snipMate = { 'no_match_completion_feedkeys_chars': "\<c-y>," }
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 
+let g:qf_mapping_ack_style = 1
+let g:qf_window_bottom = 0
+let g:qf_loclist_window_bottom = 0
 Plug 'romainl/vim-qf'
 
+nnoremap <silent> <leader>tt :TestNearest<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+let test#strategy = 'vimterminal'
+let g:test#javascript#jest#file_pattern = '\v((/__tests__/.*)|((\.|/)(test|spec)))\.[jt]sx?$'
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
+Plug 'justinmk/vim-dirvish'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'sgur/vim-editorconfig'
 Plug 'ludovicchabant/vim-gutentags'
-
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
+
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#completion_delay = 500
+let g:mucomplete#reopen_immediately = 0
+let g:mucomplete#buffer_relative_paths = 1
+let g:mucomplete#can_complete = {
+      \ 'default': {
+      \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\k\|\.\)$' }
+      \    }
+      \  }
 Plug 'lifepillar/vim-mucomplete'
 
 Plug 'leafgarland/typescript-vim'
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+Plug 'pangloss/vim-javascript'
+
+let g:jsx_ext_required = 0
+Plug 'mxw/vim-jsx'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
@@ -55,7 +95,7 @@ endif
 
 call plug#end()
 
-" set
+" set vim options
 set autoindent
 set backspace=indent,eol,start
 set nrformats-=octal
@@ -63,6 +103,7 @@ set incsearch
 set laststatus=2
 set showcmd
 set wildmenu
+set completeopt+=menuone,noselect
 set scrolloff=1 sidescrolloff=5
 set display+=lastline
 set formatoptions+=j " Delete comment character when joining commented lines
@@ -105,16 +146,10 @@ set splitbelow
 set splitright
 
 set list " Show special characters for inivisible chars
-if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
-    let &listchars = "tab:»-,trail:⋅,extends:»,precedes:«"
-    set fillchars=vert:│
-else
-    set listchars=tab:>\ ,trail:-,extends:>,precedes:<
-endif
+set listchars=tab:>\ ,extends:>,precedes:<
 
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem,*.swp,*~,._*
+set wildignore+=.git,,*.swp,*~,._*
 
-" diff
 set diffopt+=algorithm:histogram
 
 " mapping
@@ -142,7 +177,6 @@ nore <Leader>= <C-w>=
 " Toggle paste mode
 nmap <leader>4 <F4>
 nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
-inore <silent> <F4> <ESC>:set invpaste<CR>:set paste?<CR>
 set pastetoggle=<F4>
 
 " expand current directory
@@ -241,7 +275,7 @@ if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
     let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-elseif !g:is_windows
+else
     let &t_SI = "\<Esc>[6 q"
     let &t_SR = "\<Esc>[4 q"
     let &t_EI = "\<Esc>[2 q"
@@ -276,17 +310,13 @@ set statusline+=[%{&fileencoding}]\ \  " file encoding
 set statusline+=%-8(%l,%c%V%)          " Line, column-virtual column
 set statusline+=\ %6P
 
-if !g:is_windows
-    function! SudoWrite()
-        write !sudo tee %
-        edit!
-    endfun
+function! SudoWrite()
+    write !sudo tee %
+    edit!
+endfun
+command! SudoWrite call SudoWrite()
 
-    command! SudoWrite call SudoWrite()
-endif
-
-" plugin settings
-" disable built-ins
+" disable built-in plugins
 let g:loaded_logipat       = 1
 let g:loaded_tarPlugin     = 1
 let g:loaded_tar           = 1
@@ -299,48 +329,7 @@ let g:loaded_netrw         = 1
 let g:loaded_netrwPlugin   = 1
 let g:loaded_2html_plugin  = 1
 
-" snippet
-imap <C-J> <Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
-" fallback to emmet
-let g:snipMate = {
-      \ 'no_match_completion_feedkeys_chars': "\<c-y>,"
-      \}
-xmap <C-J> <C-Y>,
-
-" Tslime
-if !g:is_windows
-    let g:tslime_always_current_session = 1
-    let g:tslime_always_current_window = 1
-    vmap <C-c><C-c> <Plug>SendSelectionToTmux
-    nmap <C-c><C-c> <Plug>NormalModeSendToTmux
-    nmap <C-c>r <Plug>SetTmuxVars
-endif
-
-" ctrlp
-let g:ctrlp_map = ''
-nnore <Leader>o :CtrlP<CR>
-nnore <Leader>b :CtrlPBuffer<CR>
-nnore <Leader>; :CtrlPTag<CR>
-nnore <Leader>, :CtrlPBufTag<CR>
-
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 1
-let g:ctrlp_custom_ignore = {
-            \ 'dir': '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\.pyc$\|\.pyo$\|\.rbc$|\.rbo$\|\.class$\|\.o$\|\~$\',
-            \ }
-
-" If ag is available use it as filename list generator instead of 'find'
-if executable("ag")
-  let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
-        \ --ignore ".git" --ignore ".svn"
-        \ --ignore ".DS_Store" --ignore "node_modules"
-        \ --path-to-ignore ~/.ignore
-        \ --hidden -g "" %s'
-endif
-
-" language server
+" setup lsp
 function! s:findRoot(marker, ...) abort
   let l:path = a:0 > 1 ? a:1 : expand('%')
   let l:fullPath = fnamemodify(l:path, ':p')
@@ -365,7 +354,7 @@ function! s:getJsLsp() abort
     " flow prj
     let l:flowbinRoot = s:findRoot('node_modules/.bin/flow', l:pkgRoot)
     if !empty(l:flowbinRoot)
-      return l:flowbinRoot.'/node_modules/.bin/flow lsp --from vim'
+      return l:flowbinRoot.'/node_modules/.bin/flow lsp --lazy-mode ide --from vim'
     endif
   endif
   return 'typescript-language-server --stdio'
@@ -375,14 +364,14 @@ au User lsp_setup call lsp#register_server({
     \ 'name': 'typescript-language-server',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
     \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-    \ 'whitelist': ['typescript'],
+    \ 'whitelist': ['typescript', 'typescript.tsx'],
     \ 'config': { 'filter': { 'name': 'prefix' } },
     \ })
 
 au User lsp_setup call lsp#register_server({
     \ 'name': 'javascript-lsp',
     \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
-    \ 'whitelist': ['javascript'],
+    \ 'whitelist': ['javascript', 'javascript.jsx'],
     \ 'config': { 'filter': { 'name': 'prefix' } },
     \ })
 
@@ -394,54 +383,18 @@ function! s:lspSetting() abort
   nmap <buffer> gD     <plug>(lsp-peek-definition)
   nmap <buffer> go     <plug>(lsp-document-symbol)
   nmap <buffer> K      <plug>(lsp-hover)
-  nmap <buffer> <c-n>  <plug>(lsp-next-reference)
-  nmap <buffer> <c-p>  <plug>(lsp-previous-reference)
+  nmap <buffer> <c-n>  <plug>(lsp-next-error)
+  nmap <buffer> <c-p>  <plug>(lsp-previous-error)
   nmap <buffer> gr     <plug>(lsp-references)
   nmap <buffer> gR     <plug>(lsp-rename)
   nmap <buffer> gS     <plug>(lsp-workspace-symbol)
+  nmap <buffer> gC     <plug>(lsp-document-diagnostics)
 
   setlocal omnifunc=lsp#complete
 endfunction
 
-autocmd FileType javascript,typescript call s:lspSetting()
-
-" vi-mux
-nnoremap <Leader><Leader> :VimuxPromptCommand<CR>
-nnoremap <Leader>rp :VimuxPromptCommand<CR>
-nnoremap <Leader>rl :VimuxRunLastCommand<CR>
-nnoremap <Leader>ri :VimuxInspectRunner<CR>
-nnoremap <Leader>rq :VimuxCloseRunner<CR>
-nnoremap <Leader>rx :VimuxInterruptRunner<CR>
-
-" vim-test
-nnoremap <silent> <leader>tt :TestNearest<CR>
-nnoremap <silent> <leader>tf :TestFile<CR>
-nnoremap <silent> <leader>ta :TestSuite<CR>
-nnoremap <silent> <leader>tl :TestLast<CR>
-nnoremap <silent> <leader>tg :TestVisit<CR>
-let test#strategy = 'vimux'
-let g:test#javascript#jest#file_pattern = '\v((/__tests__/.*)|((\.|/)(test|spec)))\.[jt]sx?$'
-
-" EasyAlign
-xmap <CR> <Plug>(EasyAlign)
-
-" complete
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 240
-let g:mucomplete#reopen_immediately = 0
-let g:mucomplete#buffer_relative_paths = 1
-let g:mucomplete#can_complete = {
-      \ 'default': {
-      \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\k\|\.\)$' }
-      \    }
-      \  }
->
-set completeopt+=menuone,noselect
-
-" Quickfix
-let g:qf_mapping_ack_style = 1
-let g:qf_window_bottom = 0
-let g:qf_loclist_window_bottom = 0
+autocmd FileType javascript,javascript.jsx,typescript.tsx call s:lspSetting()
+let g:lsp_diagnostics_echo_cursor = 1
 
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
