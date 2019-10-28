@@ -6,6 +6,8 @@ if exists("+undofile")
     set undofile
 endif
 
+let mapleader = " "
+
 " Plug
 call plug#begin('~/.vim/plugged')
 
@@ -153,7 +155,6 @@ set wildignore+=.git,,*.swp,*~,._*
 set diffopt+=algorithm:histogram
 
 " mapping
-let mapleader = " "
 
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :update<CR>
