@@ -150,7 +150,7 @@ set splitright
 set list " Show special characters for inivisible chars
 set listchars=tab:>\ ,extends:>,precedes:<
 
-set wildignore+=.git,,*.swp,*~,._*
+set wildignore+=.git,*.swp,*~,._*
 
 set diffopt+=algorithm:histogram
 
