@@ -62,22 +62,30 @@ Plug 'tpope/vim-surround'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'sgur/vim-editorconfig'
 Plug 'ludovicchabant/vim-gutentags'
+
+nmap <leader>sj <plug>(emmet-split-join-tag)
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#completion_delay = 500
-let g:mucomplete#reopen_immediately = 0
-let g:mucomplete#buffer_relative_paths = 1
-let g:mucomplete#can_complete = {
-      \ 'default': {
-      \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\k\|\.\)$' }
-      \    }
-      \  }
-Plug 'lifepillar/vim-mucomplete'
+nnoremap <leader>d :Dispatch<Space>
+Plug 'tpope/vim-dispatch'
+
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+Plug 'prabirshrestha/asyncomplete-file.vim'
 
 Plug 'leafgarland/typescript-vim'
 
@@ -160,8 +168,8 @@ nnoremap <leader>q :q<cr>
 nnoremap <leader>w :update<CR>
 nnoremap <leader>f :grep<space>
 nnoremap <leader>e :edit <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <leader>s :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
-nnoremap <leader>vs :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>x :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>v :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
 " calculator
 xnoremap <leader>r c<C-R>=<C-R>"<CR><esc>
@@ -393,6 +401,13 @@ function! s:lspSetting() abort
 
   setlocal omnifunc=lsp#complete
 endfunction
+
+augroup LspHighlight
+  autocmd!
+
+  autocmd InsertEnter * highlight link LspErrorHighlight NONE
+  autocmd InsertLeave * highlight link LspErrorHighlight Error
+augroup END
 
 autocmd FileType javascript,javascript.jsx,typescript.tsx call s:lspSetting()
 let g:lsp_diagnostics_echo_cursor = 1
