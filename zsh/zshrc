@@ -1,10 +1,14 @@
 CURR_DIR=`dirname $0`
 
+AGKOZAK_MULTILINE=0
+bindkey -e
+
 source $CURR_DIR/alias.zsh
 source $CURR_DIR/history.zsh
 source $CURR_DIR/directory.zsh
 source $CURR_DIR/completion.zsh
 source $CURR_DIR/key_info.zsh
+
 
 lazy_source () {
     eval "$1 () { [ -f $2 ] && source $2 && $1 \$@ }"
@@ -15,7 +19,7 @@ if ! source "$HOME/.zgen/init.zsh"; then
   echo "Creating zgen save"
 
   zgen load zsh-users/zsh-completions src
-  zgen load zsh-users/zsh-syntax-highlighting
+  # zgen load zsh-users/zsh-syntax-highlighting
   zgen load zsh-users/zsh-history-substring-search
 
   AGKOZAK_MULTILINE=0
