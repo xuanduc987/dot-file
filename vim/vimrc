@@ -93,8 +93,7 @@ let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 Plug 'pangloss/vim-javascript'
 
-let g:jsx_ext_required = 0
-Plug 'mxw/vim-jsx'
+Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
@@ -369,20 +368,23 @@ function! s:getJsLsp() abort
   return 'typescript-language-server --stdio'
 endfunction
 
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'typescript-language-server',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-    \ 'whitelist': ['typescript', 'typescript.tsx'],
-    \ 'config': { 'filter': { 'name': 'prefix' } },
-    \ })
+augroup LspLangSetup
+  au!
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescript.tsx'],
+        \ 'config': { 'filter': { 'name': 'prefix' } },
+        \ })
 
-au User lsp_setup call lsp#register_server({
-    \ 'name': 'javascript-lsp',
-    \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
-    \ 'whitelist': ['javascript', 'javascript.jsx'],
-    \ 'config': { 'filter': { 'name': 'prefix' } },
-    \ })
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'javascript-lsp',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
+        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \ 'config': { 'filter': { 'name': 'prefix' } },
+        \ })
+augroup END
 
 function! s:lspSetting() abort
   nmap <buffer> ga     <plug>(lsp-code-action)
@@ -409,7 +411,7 @@ augroup LspHighlight
   autocmd InsertLeave * highlight link LspErrorHighlight Error
 augroup END
 
-autocmd FileType javascript,javascript.jsx,typescript.tsx call s:lspSetting()
+autocmd FileType javascript,javascript.jsx,typescript,typescript.tsx call s:lspSetting()
 let g:lsp_diagnostics_echo_cursor = 1
 
 " read .vimrc.local

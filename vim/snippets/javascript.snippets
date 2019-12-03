@@ -17,7 +17,7 @@ snippet scu
 		${1}
 	}
 snippet rfc
-	function ${1:ComponentName}(${2:props}) {
+	function ${1:`Filename()`}(${2:props}) {
 		return (
 			<div>
 				${0}
@@ -57,3 +57,24 @@ snippet ci "console.info"
 	console.info(${0});
 snippet ct "console.trace"
 	console.trace(${0:label});
+
+snippet flow
+	/* @flow */
+	${0}
+snippet flowr
+	/* @flow */
+	import * as React from 'react';
+
+	type Props = {};
+
+	function ${1:`Filename()`}(${2:props}: Props) {
+		return (
+			<div>
+				${0}
+			</div>
+		);
+	}
+snippet f
+	function ${1:name}(${2:args}) {
+		${0}
+	}
