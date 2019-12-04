@@ -1,5 +1,8 @@
-the_silver_searcher
-tmux
-vim
-yarn
-z
+ctags                          @5.8_2
+hub                            @2.13.0_0
+the_silver_searcher            @2.2.0_0
+tmux                           @3.0a_0
+vim                            @8.1.1368_0+huge+python37
+watchman                       @4.9.0_1
+yarn                           @1.19.1_0
+z                              @1.11_0
