@@ -31,14 +31,10 @@ Plug 'ctrlpvim/ctrlp.vim'
 xmap <CR> <Plug>(EasyAlign)
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 
-imap <C-J> <Plug>snipMateNextOrTrigger
-smap <C-J> <Plug>snipMateNextOrTrigger
-xmap <C-J> <C-Y>,
-" fallback to emmet
-let g:snipMate = { 'no_match_completion_feedkeys_chars': "\<c-y>," }
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+imap <expr> <C-J> vsnip#available() ? '<Plug>(vsnip-expand-or-jump)' : (pumvisible() ? '<C-Y>' : '' ).'<C-Y>,'
+smap <expr> <C-J> vsnip#available() ? '<Plug>(vsnip-expand-or-jump)' : (pumvisible() ? '<C-Y>' : '' ).'<C-Y>,'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 let g:qf_mapping_ack_style = 1
 let g:qf_window_bottom = 0
@@ -68,15 +64,23 @@ Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
 
 Plug 'prabirshrestha/async.vim'
+let g:lsp_diagnostics_echo_cursor = 1
 Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
-nnoremap <leader>d :Dispatch<Space>
 Plug 'tpope/vim-dispatch'
+nnoremap <leader>d :Dispatch<Space>
+nnoremap <leader>D :FocusDispatch<Space>
 
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+let g:asyncomplete_popup_delay = 120
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<Tab>" : "\<C-P>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
-imap <c-space> <Plug>(asyncomplete_force_refresh)
+inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup(). "\<CR>" : "\<CR>"
+imap <c-@> <Plug>(asyncomplete_force_refresh)
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
@@ -375,14 +379,12 @@ augroup LspLangSetup
         \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
         \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
         \ 'whitelist': ['typescript', 'typescript.tsx'],
-        \ 'config': { 'filter': { 'name': 'prefix' } },
         \ })
 
   au User lsp_setup call lsp#register_server({
         \ 'name': 'javascript-lsp',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
         \ 'whitelist': ['javascript', 'javascript.jsx'],
-        \ 'config': { 'filter': { 'name': 'prefix' } },
         \ })
 augroup END
 
@@ -404,15 +406,18 @@ function! s:lspSetting() abort
   setlocal omnifunc=lsp#complete
 endfunction
 
-augroup LspHighlight
+augroup LspSetting
   autocmd!
+  setlocal signcolumn=yes
+  autocmd User lsp_buffer_enabled call s:lspSetting()
 
   autocmd InsertEnter * highlight link LspErrorHighlight NONE
   autocmd InsertLeave * highlight link LspErrorHighlight Error
 augroup END
 
-autocmd FileType javascript,javascript.jsx,typescript,typescript.tsx call s:lspSetting()
-let g:lsp_diagnostics_echo_cursor = 1
+augroup LspHighlight
+
+augroup END
 
 " read .vimrc.local
 if filereadable(expand("~/.vimrc.local"))
