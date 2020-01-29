@@ -101,6 +101,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
+Plug 'arzg/vim-colors-xcode'
 
 if filereadable(expand("~/.vimplug.local"))
     source ~/.vimplug.local
@@ -403,12 +404,12 @@ function! s:lspSetting() abort
   nmap <buffer> gS     <plug>(lsp-workspace-symbol)
   nmap <buffer> gC     <plug>(lsp-document-diagnostics)
 
+  setlocal signcolumn=yes
   setlocal omnifunc=lsp#complete
 endfunction
 
 augroup LspSetting
   autocmd!
-  setlocal signcolumn=yes
   autocmd User lsp_buffer_enabled call s:lspSetting()
 
   autocmd InsertEnter * highlight link LspErrorHighlight NONE
