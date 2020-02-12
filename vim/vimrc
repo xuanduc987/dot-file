@@ -68,6 +68,10 @@ let g:lsp_diagnostics_echo_cursor = 1
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
+let g:slime_target = "vimterminal"
+let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
+Plug 'jpalardy/vim-slime'
+
 Plug 'tpope/vim-dispatch'
 nnoremap <leader>d :Dispatch<Space>
 nnoremap <leader>D :FocusDispatch<Space>
