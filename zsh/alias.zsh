@@ -28,7 +28,17 @@ alias grb='git rebase'
 alias gm='git merge'
 alias gll='git pull'
 
+# tmux
+alias ta='tmux -u attach -t'
+alias tad='tmux -u attach -d -t'
+alias ts='tmux -u new-session -s'
+alias tl='tmux list-sessions'
+alias tksv='tmux kill-server'
+alias tkss='tmux kill-session -t'
+
 ###
+
+alias v=vim
 
 alias ls="ls --color=tty"
 
