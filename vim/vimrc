@@ -39,6 +39,9 @@ Plug 'hrsh7th/vim-vsnip-integ'
 let g:qf_mapping_ack_style = 1
 let g:qf_window_bottom = 0
 let g:qf_loclist_window_bottom = 0
+nmap <leader>c <Plug>(qf_qf_toggle)
+nmap <leader>l <Plug>(qf_loc_toggle)
+nmap <silent> <leader>z :pclose<CR>
 Plug 'romainl/vim-qf'
 
 nnoremap <silent> <leader>tt :TestNearest<CR>
@@ -61,7 +64,7 @@ Plug 'ludovicchabant/vim-gutentags'
 
 nmap <leader>sj <plug>(emmet-split-join-tag)
 Plug 'mattn/emmet-vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'cohama/lexima.vim'
 
 Plug 'prabirshrestha/async.vim'
 let g:lsp_diagnostics_echo_cursor = 1
@@ -72,19 +75,19 @@ let g:slime_target = "vimterminal"
 let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
 Plug 'jpalardy/vim-slime'
 
-Plug 'tpope/vim-dispatch'
 nnoremap <leader>d :Dispatch<Space>
 nnoremap <leader>D :FocusDispatch<Space>
+Plug 'tpope/vim-dispatch'
 
-let g:asyncomplete_popup_delay = 120
+let g:asyncomplete_popup_delay = 256
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<Tab>" : "\<C-P>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup(). "\<CR>" : "\<CR>"
-imap <c-@> <Plug>(asyncomplete_force_refresh)
+inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup(). "\<CR>" : "\<CR>"
+imap <C-K> <Plug>(asyncomplete_force_refresh)
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
@@ -100,8 +103,8 @@ Plug 'leafgarland/typescript-vim'
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
 Plug 'pangloss/vim-javascript'
-
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'jparise/vim-graphql'
 
 Plug 'cormacrelf/vim-colors-github'
 Plug 'rhysd/vim-color-spring-night'
@@ -129,7 +132,7 @@ setglobal tags-=./tags tags-=./tags; tags^=./tags;
 set autoread
 set history=1000
 if !empty(&viminfo)
-    set viminfo^=!
+    set viminfo='50,<20,s2,h
 endif
 
 set encoding=utf-8
@@ -167,8 +170,6 @@ set list " Show special characters for inivisible chars
 set listchars=tab:>\ ,extends:>,precedes:<
 
 set wildignore+=.git,*.swp,*~,._*
-
-set diffopt+=algorithm:histogram
 
 " mapping
 
@@ -224,24 +225,17 @@ nnoremap <leader>p "+p
 nnoremap /  /\v
 nnoremap ?  ?\v
 
-" copy from unimpaired
+" modified from unimpaired
 function! s:MapNextFamily(map,cmd)
-  let map = '<Plug>unimpaired'.toupper(a:map)
   let cmd = '".(v:count ? v:count : "")."'.a:cmd
   let end = '"<CR>'.(a:cmd == 'l' || a:cmd == 'c' ? 'zv' : '')
-  execute 'nnoremap <silent> '.map.'Previous :<C-U>exe "'.cmd.'previous'.end
-  execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.cmd.'next'.end
-  execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.cmd.'first'.end
-  execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.cmd.'last'.end
-  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
-  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
-  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
-  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
+  execute 'nnoremap <silent> ['.a:map.' :<C-U>exe "'.cmd.'previous'.end
+  execute 'nnoremap <silent> ]'.a:map.' :<C-U>exe "'.cmd.'next'.end
+  execute 'nnoremap <silent> ['.toupper(a:map).' :<C-U>exe "'.cmd.'first'.end
+  execute 'nnoremap <silent> ]'.toupper(a:map).' :<C-U>exe "'.cmd.'last'.end
   if exists(':'.a:cmd.'nfile')
-    execute 'nnoremap <silent> '.map.'PFile :<C-U>exe "'.cmd.'pfile'.end
-    execute 'nnoremap <silent> '.map.'NFile :<C-U>exe "'.cmd.'nfile'.end
-    execute 'nmap <silent> [<C-'.a:map.'> '.map.'PFile'
-    execute 'nmap <silent> ]<C-'.a:map.'> '.map.'NFile'
+    execute 'nnoremap <silent> [<C-'.a:map.'> :<C-U>exe "'.cmd.'pfile'.end
+    execute 'nnoremap <silent> ]<C-'.a:map.'> :<C-U>exe "'.cmd.'nfile'.end
   endif
 endfunction
 
@@ -254,38 +248,6 @@ call s:MapNextFamily('t','t')
 " insert blank line
 nnoremap [<space>     :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
 nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
-
-" toogle quickfix/location list
-function! GetBufferList()
-  redir =>buflist
-  silent! ls!
-  redir END
-  return buflist
-endfunction
-
-function! ToggleList(bufname, pfx)
-  let buflist = GetBufferList()
-  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-    if bufwinnr(bufnum) != -1
-      exec(a:pfx.'close')
-      return
-    endif
-  endfor
-  if a:pfx == 'l' && len(getloclist(0)) == 0
-      echohl ErrorMsg
-      echo "Location List is Empty."
-      return
-  endif
-  let winnr = winnr()
-  exec(a:pfx.'open')
-  if winnr() != winnr
-    wincmd p
-  endif
-endfunction
-
-nnoremap <silent> <leader>c :call ToggleList("Quickfix List", 'c')<CR>
-nnoremap <silent> <leader>l :call ToggleList("Location List", 'l')<CR>
-nnoremap <silent> <leader>z :pclose<CR>
 
 " change cursor shape for urxvt, xterm,...
 if exists('$TMUX')
@@ -395,8 +357,6 @@ augroup END
 
 function! s:lspSetting() abort
   nmap <buffer> ga     <plug>(lsp-code-action)
-  nmap <buffer> <c-]>  <plug>(lsp-declaration)
-  nmap <buffer> g<c-]> <plug>(lsp-peek-declaration)
   nmap <buffer> gd     <plug>(lsp-definition)
   nmap <buffer> gD     <plug>(lsp-peek-definition)
   nmap <buffer> go     <plug>(lsp-document-symbol)
