@@ -18,23 +18,36 @@ nnore <Leader>; :CtrlPTag<CR>
 nnore <Leader>, :CtrlPBufTag<CR>
 let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit = 1
-" If ag is available use it as filename list generator instead of 'find'
-if executable("ag")
-  let g:ctrlp_user_command = 'ag -i --nocolor --nogroup
-        \ --ignore ".git"
-        \ --ignore ".DS_Store" --ignore "node_modules"
-        \ --path-to-ignore ~/.ignore
-        \ --hidden -g "" %s'
+" If rg is available use it as filename list generator instead of 'find'
+if executable("rg")
+  let g:ctrlp_user_command = 'rg -i --hidden --files %s'
 endif
 Plug 'ctrlpvim/ctrlp.vim'
 
 xmap <CR> <Plug>(EasyAlign)
 Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 
-imap <expr> <C-J> vsnip#available() ? '<Plug>(vsnip-expand-or-jump)' : (pumvisible() ? '<C-Y>' : '' ).'<C-Y>,'
-smap <expr> <C-J> vsnip#available() ? '<Plug>(vsnip-expand-or-jump)' : (pumvisible() ? '<C-Y>' : '' ).'<C-Y>,'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+
+Plug 'mattn/emmet-vim'
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsEditSplit           = 'vertical'
+let g:UltiSnipsExpandTrigger       = "<nul>"
+let g:UltiSnipsListSnippets        = "<nul>"
+let g:ulti_expand_or_jump_res = 0 "default value, just set once
+function! UltiExpandAndEmmet()
+  call UltiSnips#ExpandSnippetOrJump()
+  if !g:ulti_expand_or_jump_res | call feedkeys("\<C-Y>,") | endif
+  return ""
+endfunction
+inoremap <c-j> <C-R>=UltiExpandAndEmmet()<CR>
+xnoremap <silent> <c-j> :call UltiSnips#SaveLastVisualSelection()<cr>gvs
+augroup ultisnip
+  autocmd!
+  autocmd FileType typescriptreact UltiSnipsAddFiletypes javascript_react
+  autocmd BufNewFile,BufRead *.stories.tsx UltiSnipsAddFiletypes typescript_storybook
+augroup END
 
 let g:qf_mapping_ack_style = 1
 let g:qf_window_bottom = 0
@@ -49,25 +62,29 @@ nnoremap <silent> <leader>tf :TestFile<CR>
 nnoremap <silent> <leader>ta :TestSuite<CR>
 nnoremap <silent> <leader>tl :TestLast<CR>
 nnoremap <silent> <leader>tg :TestVisit<CR>
-let test#strategy = 'vimterminal'
+let test#strategy = 'dispatch'
 let g:test#javascript#jest#file_pattern = '\v((/__tests__/.*)|((\.|/)(test|spec)))\.[jt]sx?$'
 Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
 
 Plug 'justinmk/vim-dirvish'
 Plug 'bronson/vim-trailing-whitespace'
+let g:tcomment_textobject_inlinecomment = ''
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'sgur/vim-editorconfig'
-Plug 'ludovicchabant/vim-gutentags'
 
-nmap <leader>sj <plug>(emmet-split-join-tag)
-Plug 'mattn/emmet-vim'
+
 Plug 'cohama/lexima.vim'
+let g:closetag_xhtml_filenames = '*.jsx,*.tsx'
+let g:closetag_filetypes = 'html,typescriptreact'
+Plug 'alvan/vim-closetag'
 
-Plug 'prabirshrestha/async.vim'
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_signs_error = {'text': '×'}
+let g:lsp_signs_warning = {'text': '!'}
+let g:lsp_signs_hint = {'text': 'i'}
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
@@ -87,23 +104,35 @@ endfunction
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<Tab>" : "\<C-P>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup(). "\<CR>" : "\<CR>"
-imap <C-K> <Plug>(asyncomplete_force_refresh)
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
 Plug 'prabirshrestha/asyncomplete-file.vim'
-
-Plug 'leafgarland/typescript-vim'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+augroup RegisterAsyncompleteSource
+  autocmd!
+  function! s:register_asyncomplete() abort
+    call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+          \ 'name': 'file',
+          \ 'allowlist': ['*'],
+          \ 'priority': 10,
+          \ 'completor': function('asyncomplete#sources#file#completor')
+          \ }))
+    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'whitelist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \ }))
+  endfunction
+  autocmd User asyncomplete_setup call s:register_asyncomplete()
+augroup END
+Plug 'kana/vim-textobj-user'
+Plug 'bps/vim-textobj-python'
+Plug 'idbrii/textobj-word-column.vim'
 
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_flow = 1
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'typescriptreact'] }
 Plug 'jparise/vim-graphql'
 
 Plug 'cormacrelf/vim-colors-github'
@@ -115,6 +144,8 @@ if filereadable(expand("~/.vimplug.local"))
 endif
 
 call plug#end()
+
+call lexima#add_rule({'char': '<CR>', 'at': '>\%#<', 'input_after': '<CR>'})
 
 " set vim options
 set autoindent
@@ -157,6 +188,7 @@ set mouse=n " Enable mouse support normal mode only
 
 set ttyfast
 set lazyredraw
+set updatetime=1000
 set ttimeout timeout timeoutlen=800 ttimeoutlen=50
 set synmaxcol=400
 
@@ -246,9 +278,19 @@ call s:MapNextFamily('q','c')
 call s:MapNextFamily('t','t')
 
 " insert blank line
-nnoremap [<space>     :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
-nnoremap ]<space>     :<c-u>put =repeat(nr2char(10), v:count1)<cr>
+nnoremap [<space> :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap ]<space> :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
+" change cursor shape for urxvt, xterm,...
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+else
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
 " change cursor shape for urxvt, xterm,...
 if exists('$TMUX')
     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
@@ -270,9 +312,9 @@ augroup vimrc
                 \| exe "normal! g`\"" | endif
 augroup END
 
-" User ag if possible
-if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor\ --path-to-ignore\ ~/.ignore
+" User rg if possible
+if executable("rg")
+    set grepprg=rg\ -n
 endif
 
 " statusline
@@ -339,21 +381,13 @@ function! s:getJsLsp() abort
   return 'typescript-language-server --stdio'
 endfunction
 
-augroup LspLangSetup
-  au!
-  au User lsp_setup call lsp#register_server({
-        \ 'name': 'typescript-language-server',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-        \ 'whitelist': ['typescript', 'typescript.tsx'],
-        \ })
-
-  au User lsp_setup call lsp#register_server({
+function! s:setup_lsp_servers() abort
+  call lsp#register_server({
         \ 'name': 'javascript-lsp',
         \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
-        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \ 'allowlist': ['javascript', 'javascript.jsx', 'typescript', 'typescriptreact'],
         \ })
-augroup END
+endfunction
 
 function! s:lspSetting() abort
   nmap <buffer> ga     <plug>(lsp-code-action)
@@ -361,27 +395,26 @@ function! s:lspSetting() abort
   nmap <buffer> gD     <plug>(lsp-peek-definition)
   nmap <buffer> go     <plug>(lsp-document-symbol)
   nmap <buffer> K      <plug>(lsp-hover)
-  nmap <buffer> <c-n>  <plug>(lsp-next-error)
-  nmap <buffer> <c-p>  <plug>(lsp-previous-error)
+  nmap <buffer> <c-n>  <plug>(lsp-next-diagnostic)
+  nmap <buffer> <c-p>  <plug>(lsp-previous-diagnostic)
   nmap <buffer> gr     <plug>(lsp-references)
   nmap <buffer> gR     <plug>(lsp-rename)
   nmap <buffer> gS     <plug>(lsp-workspace-symbol)
   nmap <buffer> gC     <plug>(lsp-document-diagnostics)
+  nmap <buffer> gm     <plug>(lsp-document-format)
 
   setlocal signcolumn=yes
   setlocal omnifunc=lsp#complete
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 endfunction
 
 augroup LspSetting
   autocmd!
+  autocmd User lsp_setup call s:setup_lsp_servers()
   autocmd User lsp_buffer_enabled call s:lspSetting()
 
   autocmd InsertEnter * highlight link LspErrorHighlight NONE
   autocmd InsertLeave * highlight link LspErrorHighlight Error
-augroup END
-
-augroup LspHighlight
-
 augroup END
 
 " read .vimrc.local
