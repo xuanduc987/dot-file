@@ -1,3 +1,4 @@
+" curl -fLo ~/.vim/autoload/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/autoload/jetpack.vim
 if exists("+undofile")
     if isdirectory($HOME . '/.vim/_undo') == 0
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
@@ -5,147 +6,64 @@ if exists("+undofile")
     set undodir=./.vim-undo//,~/.vim/_undo//
     set undofile
 endif
+set nocompatible
 
 let mapleader = " "
 
-" Plug
-call plug#begin('~/.vim/plugged')
+" Jetpack
+let g:jetpack#optimization = 2
+call jetpack#begin()
 
-let g:ctrlp_map = ''
-nnore <Leader>o :CtrlP<CR>
-nnore <Leader>b :CtrlPBuffer<CR>
-nnore <Leader>; :CtrlPTag<CR>
-nnore <Leader>, :CtrlPBufTag<CR>
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 1
-" If rg is available use it as filename list generator instead of 'find'
-if executable("rg")
-  let g:ctrlp_user_command = 'rg -i --hidden --files %s'
-endif
-Plug 'ctrlpvim/ctrlp.vim'
+Jetpack 'mattn/ctrlp-matchfuzzy'
+Jetpack 'ctrlpvim/ctrlp.vim'
 
 xmap <CR> <Plug>(EasyAlign)
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
+Jetpack 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 
-Plug 'thomasfaingnaert/vim-lsp-snippets'
-Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+Jetpack 'kevinoid/vim-jsonc'
 
-Plug 'mattn/emmet-vim'
-Plug 'SirVer/ultisnips'
-let g:UltiSnipsEditSplit           = 'vertical'
-let g:UltiSnipsExpandTrigger       = "<nul>"
-let g:UltiSnipsListSnippets        = "<nul>"
-let g:ulti_expand_or_jump_res = 0 "default value, just set once
-function! UltiExpandAndEmmet()
-  call UltiSnips#ExpandSnippetOrJump()
-  if !g:ulti_expand_or_jump_res | call feedkeys("\<C-Y>,") | endif
-  return ""
-endfunction
-inoremap <c-j> <C-R>=UltiExpandAndEmmet()<CR>
-xnoremap <silent> <c-j> :call UltiSnips#SaveLastVisualSelection()<cr>gvs
-augroup ultisnip
-  autocmd!
-  autocmd FileType typescriptreact UltiSnipsAddFiletypes javascript_react
-  autocmd BufNewFile,BufRead *.stories.tsx UltiSnipsAddFiletypes typescript_storybook
-augroup END
+Jetpack 'lambdalisue/gina.vim'
 
-let g:qf_mapping_ack_style = 1
-let g:qf_window_bottom = 0
-let g:qf_loclist_window_bottom = 0
-nmap <leader>c <Plug>(qf_qf_toggle)
-nmap <leader>l <Plug>(qf_loc_toggle)
-nmap <silent> <leader>z :pclose<CR>
-Plug 'romainl/vim-qf'
+Jetpack 'machakann/vim-swap'
+Jetpack 'machakann/vim-sandwich'
 
-nnoremap <silent> <leader>tt :TestNearest<CR>
-nnoremap <silent> <leader>tf :TestFile<CR>
-nnoremap <silent> <leader>ta :TestSuite<CR>
-nnoremap <silent> <leader>tl :TestLast<CR>
-nnoremap <silent> <leader>tg :TestVisit<CR>
-let test#strategy = 'dispatch'
-let g:test#javascript#jest#file_pattern = '\v((/__tests__/.*)|((\.|/)(test|spec)))\.[jt]sx?$'
-Plug 'janko-m/vim-test', { 'on': ['TestFile', 'TestLast', 'TestNearest', 'TestSuite', 'TestVisit'] }
+Jetpack 'romainl/vim-qf'
+Jetpack 'xuanduc987/prettier_qf'
 
-Plug 'justinmk/vim-dirvish'
-Plug 'bronson/vim-trailing-whitespace'
-let g:tcomment_textobject_inlinecomment = ''
-Plug 'tomtom/tcomment_vim'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'sgur/vim-editorconfig'
+Jetpack 'janko-m/vim-test'
 
+nmap <BS> <Plug>(dirvish_up)
+Jetpack 'justinmk/vim-dirvish'
+Jetpack 'bronson/vim-trailing-whitespace'
+Jetpack 'tomtom/tcomment_vim'
+Jetpack 'christoomey/vim-tmux-navigator'
+Jetpack 'sgur/vim-editorconfig'
+Jetpack 'jiangmiao/auto-pairs'
 
-Plug 'cohama/lexima.vim'
-let g:closetag_xhtml_filenames = '*.jsx,*.tsx'
-let g:closetag_filetypes = 'html,typescriptreact'
-Plug 'alvan/vim-closetag'
+Jetpack 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_signs_error = {'text': '×'}
-let g:lsp_signs_warning = {'text': '!'}
-let g:lsp_signs_hint = {'text': 'i'}
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
+Jetpack 'jpalardy/vim-slime'
 
-let g:slime_target = "vimterminal"
-let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
-Plug 'jpalardy/vim-slime'
+Jetpack 'tpope/vim-dispatch'
+let g:dispatch_compilers = {
+      \ 'yarn': '',
+      \ 'npx': '',
+      \ 'eslint_d': 'eslint',
+      \ 'tsc': 'typescript',
+      \}
+nnoremap <leader>r :Dispatch<space>
+let g:dispatch_no_tmux_make = 1
 
-nnoremap <leader>d :Dispatch<Space>
-nnoremap <leader>D :FocusDispatch<Space>
-Plug 'tpope/vim-dispatch'
+Jetpack 'maxmellon/vim-jsx-prettier', { 'for': ['javascript', 'typescriptreact'] }
+Jetpack 'jparise/vim-graphql'
+Jetpack 'HerringtonDarkholme/yats.vim'
 
-let g:asyncomplete_popup_delay = 256
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<Tab>" : "\<C-P>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>    pumvisible() ? asyncomplete#close_popup(). "\<CR>" : "\<CR>"
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-augroup RegisterAsyncompleteSource
-  autocmd!
-  function! s:register_asyncomplete() abort
-    call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-          \ 'name': 'file',
-          \ 'allowlist': ['*'],
-          \ 'priority': 10,
-          \ 'completor': function('asyncomplete#sources#file#completor')
-          \ }))
-    call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-        \ 'name': 'ultisnips',
-        \ 'whitelist': ['*'],
-        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-        \ }))
-  endfunction
-  autocmd User asyncomplete_setup call s:register_asyncomplete()
-augroup END
-Plug 'kana/vim-textobj-user'
-Plug 'bps/vim-textobj-python'
-Plug 'idbrii/textobj-word-column.vim'
+Jetpack 'YorickPeterse/vim-paper'
+Jetpack 'https://gitlab.com/yorickpeterse/nvim-grey.git'
+Jetpack 'cormacrelf/vim-colors-github'
+Jetpack 'rhysd/vim-color-spring-night'
 
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_flow = 1
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'typescriptreact'] }
-Plug 'jparise/vim-graphql'
-
-Plug 'cormacrelf/vim-colors-github'
-Plug 'rhysd/vim-color-spring-night'
-Plug 'arzg/vim-colors-xcode'
-
-if filereadable(expand("~/.vimplug.local"))
-    source ~/.vimplug.local
-endif
-
-call plug#end()
-
-call lexima#add_rule({'char': '<CR>', 'at': '>\%#<', 'input_after': '<CR>'})
+call jetpack#end()
 
 " set vim options
 set autoindent
@@ -161,10 +79,12 @@ set display+=lastline
 set formatoptions+=j " Delete comment character when joining commented lines
 setglobal tags-=./tags tags-=./tags; tags^=./tags;
 set autoread
-set history=1000
+set history=100
 if !empty(&viminfo)
-    set viminfo='50,<20,s2,h
+    set viminfo='10,<20,s1,h
 endif
+
+set hidden
 
 set encoding=utf-8
 
@@ -188,9 +108,9 @@ set mouse=n " Enable mouse support normal mode only
 
 set ttyfast
 set lazyredraw
-set updatetime=1000
-set ttimeout timeout timeoutlen=800 ttimeoutlen=50
-set synmaxcol=400
+set updatetime=1000 " for cursor hold event
+set timeout timeoutlen=800 ttimeoutlen=50
+set synmaxcol=200
 
 set nobackup noswapfile
 
@@ -200,8 +120,21 @@ set splitright
 
 set list " Show special characters for inivisible chars
 set listchars=tab:>\ ,extends:>,precedes:<
+set fillchars=diff:╱,stl:-,vert:│
 
 set wildignore+=.git,*.swp,*~,._*
+
+set shell=/bin/sh
+
+set termguicolors
+
+" Change the cursor in different modes
+let &t_SI = "\e[5 q"
+let &t_SR = "\e[3 q"
+let &t_EI = "\e[1 q"
+
+set t_ut=
+
 
 " mapping
 
@@ -212,8 +145,17 @@ nnoremap <leader>e :edit <C-R>=fnameescape(expand('%:h')).'/'<cr>
 nnoremap <leader>x :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
 nnoremap <leader>v :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
 
+nnoremap + <C-A>
+nnoremap - <C-X>
+nnoremap g+ g<C-A>
+nnoremap g- g<C-X>
+xnoremap + <C-A>
+xnoremap - <C-X>
+xnoremap g+ g<C-A>
+xnoremap g- g<C-X>
+
 " calculator
-xnoremap <leader>r c<C-R>=<C-R>"<CR><esc>
+xnoremap <leader>= c<C-R>=<C-R>"<CR><esc>
 
 " easy move between windows
 nnore <silent> <C-K> :wincmd k<CR>
@@ -222,7 +164,7 @@ nnore <silent> <C-H> :wincmd h<CR>
 nnore <silent> <C-L> :wincmd l<CR>
 
 " Adjust viewports to the same size
-nore <Leader>= <C-w>=
+nnoremap <Leader>= <C-w>=
 
 " Toggle paste mode
 nmap <leader>4 <F4>
@@ -241,8 +183,10 @@ nnore <leader><CR> :noh<CR>
 cnoremap <C-P> <Up>
 
 " replace last search
-nnore s :%s//
-xnore s :s//
+nnoremap <leader>s :%s//
+xnoremap <leader>s :s//
+
+noremap s <nop>
 
 " easy upper case
 inoremap <c-u> <left><c-o>:normal gUiwea<CR><right>
@@ -257,50 +201,17 @@ nnoremap <leader>p "+p
 nnoremap /  /\v
 nnoremap ?  ?\v
 
-" modified from unimpaired
-function! s:MapNextFamily(map,cmd)
-  let cmd = '".(v:count ? v:count : "")."'.a:cmd
-  let end = '"<CR>'.(a:cmd == 'l' || a:cmd == 'c' ? 'zv' : '')
-  execute 'nnoremap <silent> ['.a:map.' :<C-U>exe "'.cmd.'previous'.end
-  execute 'nnoremap <silent> ]'.a:map.' :<C-U>exe "'.cmd.'next'.end
-  execute 'nnoremap <silent> ['.toupper(a:map).' :<C-U>exe "'.cmd.'first'.end
-  execute 'nnoremap <silent> ]'.toupper(a:map).' :<C-U>exe "'.cmd.'last'.end
-  if exists(':'.a:cmd.'nfile')
-    execute 'nnoremap <silent> [<C-'.a:map.'> :<C-U>exe "'.cmd.'pfile'.end
-    execute 'nnoremap <silent> ]<C-'.a:map.'> :<C-U>exe "'.cmd.'nfile'.end
-  endif
-endfunction
-
-call s:MapNextFamily('a','')
-call s:MapNextFamily('b','b')
-call s:MapNextFamily('l','l')
-call s:MapNextFamily('q','c')
-call s:MapNextFamily('t','t')
-
+nnoremap [a :<C-U>previous<CR>
+nnoremap ]a :<C-U>next<CR>
+nnoremap [b :<C-U>bprevious<CR>
+nnoremap ]b :<C-U>bnext<CR>
+nnoremap [q :<C-U>cprevious<CR>
+nnoremap ]q :<C-U>cnext<CR>
+nnoremap [l :<C-U>lprevious<CR>
+nnoremap ]l :<C-U>lnext<CR>
 " insert blank line
 nnoremap [<space> :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
-nnoremap ]<space> :<c-u>put =repeat(nr2char(10), v:count1)<cr>
-
-" change cursor shape for urxvt, xterm,...
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-else
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
-endif
-" change cursor shape for urxvt, xterm,...
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>[6 q\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>[4 q\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
-else
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[4 q"
-    let &t_EI = "\<Esc>[2 q"
-endif
+nnoremap ]<space> :<c-u>put =repeat(nr2char(10), v:count1)<cr>']
 
 " autocmd
 augroup vimrc
@@ -314,7 +225,8 @@ augroup END
 
 " User rg if possible
 if executable("rg")
-    set grepprg=rg\ -n
+    set grepprg=rg\ --vimgrep
+    set grepformat=%f:%l:%c:%m,%f:%l%m,%f\ \ %l%m
 endif
 
 " statusline
@@ -326,7 +238,12 @@ set statusline+=%h                     " [help]
 set statusline+=%r                     " read only flag
 set statusline+=%w                     " preview window flag
 set statusline+=%y                     " filetype
-set statusline+=%=
+" function! SyntaxItem()
+"   return synIDattr(synID(line("."),col("."),1),"name")
+" endfunction
+" set statusline+=%{SyntaxItem()}
+set statusline+=%=                     " indent to the right
+set statusline+=%{coc#status()}\ \ 
 set statusline+=[%{&fileencoding}]\ \  " file encoding
 set statusline+=%-8(%l,%c%V%)          " Line, column-virtual column
 set statusline+=\ %6P
@@ -337,87 +254,150 @@ function! SudoWrite()
 endfun
 command! SudoWrite call SudoWrite()
 
-" disable built-in plugins
-let g:loaded_logipat       = 1
-let g:loaded_tarPlugin     = 1
-let g:loaded_tar           = 1
-let g:loaded_gzip          = 1
-let g:loaded_zipPlugin     = 1
-let g:loaded_zip           = 1
-let g:loaded_vimballPlugin = 1
-let g:loaded_vimball       = 1
-let g:loaded_netrw         = 1
-let g:loaded_netrwPlugin   = 1
-let g:loaded_2html_plugin  = 1
-
-" setup lsp
-function! s:findRoot(marker, ...) abort
-  let l:path = a:0 > 1 ? a:1 : expand('%')
-  let l:fullPath = fnamemodify(l:path, ':p')
-  let l:dir = l:fullPath
-
-  while 1
-    " go up 1 lvel
-    let l:dir = fnamemodify(l:dir, ':h')
-    if l:dir == '/'
-      return ''
-    endif
-    let l:filename = l:dir.'/'.a:marker
-    if filereadable(l:filename) || isdirectory(l:filename)
-      return l:dir
-    endif
-  endwhile
+" CoC
+function! CopyHover()
+  let l:hover = join(CocAction('getHover'))
+  if empty(l:hover) | echoerr "No Hover!" | return | endif
+  let @+ = l:hover
+  let @* = l:hover
+  echom "Hover copied!"
 endfunction
 
-function! s:getJsLsp() abort
-  let l:pkgRoot = s:findRoot('package.json')
-  if filereadable(l:pkgRoot.'/.flowconfig')
-    " flow prj
-    let l:flowbinRoot = s:findRoot('node_modules/.bin/flow', l:pkgRoot)
-    if !empty(l:flowbinRoot)
-      return l:flowbinRoot.'/node_modules/.bin/flow lsp --lazy-mode ide --from vim'
-    endif
-  endif
-  return 'typescript-language-server --stdio'
-endfunction
-
-function! s:setup_lsp_servers() abort
-  call lsp#register_server({
-        \ 'name': 'javascript-lsp',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, s:getJsLsp()]},
-        \ 'allowlist': ['javascript', 'javascript.jsx', 'typescript', 'typescriptreact'],
-        \ })
-endfunction
-
-function! s:lspSetting() abort
-  nmap <buffer> ga     <plug>(lsp-code-action)
-  nmap <buffer> gd     <plug>(lsp-definition)
-  nmap <buffer> gD     <plug>(lsp-peek-definition)
-  nmap <buffer> go     <plug>(lsp-document-symbol)
-  nmap <buffer> K      <plug>(lsp-hover)
-  nmap <buffer> <c-n>  <plug>(lsp-next-diagnostic)
-  nmap <buffer> <c-p>  <plug>(lsp-previous-diagnostic)
-  nmap <buffer> gr     <plug>(lsp-references)
-  nmap <buffer> gR     <plug>(lsp-rename)
-  nmap <buffer> gS     <plug>(lsp-workspace-symbol)
-  nmap <buffer> gC     <plug>(lsp-document-diagnostics)
-  nmap <buffer> gm     <plug>(lsp-document-format)
-
-  setlocal signcolumn=yes
-  setlocal omnifunc=lsp#complete
-  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-endfunction
-
-augroup LspSetting
-  autocmd!
-  autocmd User lsp_setup call s:setup_lsp_servers()
-  autocmd User lsp_buffer_enabled call s:lspSetting()
-
-  autocmd InsertEnter * highlight link LspErrorHighlight NONE
-  autocmd InsertLeave * highlight link LspErrorHighlight Error
-augroup END
-
-" read .vimrc.local
-if filereadable(expand("~/.vimrc.local"))
-    source ~/.vimrc.local
+let g:coc_status_error_sign = "✗"
+let g:coc_status_warning_sign = "!"
+nnoremap <silent> <leader>k :call CopyHover()<CR>
+nnoremap <silent> K         :call CocActionAsync('doHover')<CR>
+nnoremap <silent> <C-T>     :CocCommand<CR>
+nnoremap <silent> gC        :CocDiagnostics<CR>
+nnoremap <silent> <leader>i :call CocActionAsync('runCommand', 'editor.action.organizeImport')<CR>
+xmap ga <Plug>(coc-codeaction-selected)
+nmap gA <plug>(coc-codeaction)
+nmap ga <plug>(coc-fix-current)
+nmap gd <plug>(coc-definition)
+nmap gD <plug>(coc-type-definition)
+nmap ]d <plug>(coc-diagnostic-next)
+nmap <C-N> <plug>(coc-diagnostic-next)
+nmap [d <plug>(coc-diagnostic-prev)
+nmap <C-P> <plug>(coc-diagnostic-prev)
+nmap gr <plug>(coc-references)
+nmap gR <plug>(coc-rename)
+nmap g= <plug>(coc-format)
+xmap g= <plug>(coc-format-selected)
+imap <C-E> <C-R>=coc#refresh()<CR>
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
+set signcolumn=yes
+
+function! Tabtab()
+  if pumvisible()
+    return coc#_select_confirm()
+  endif
+  if coc#expandableOrJumpable()
+    return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  endif
+  return <SID>check_back_space() ? "\<TAB>" : coc#refresh()
+endfunction
+
+inoremap <silent> <TAB> <C-R>=Tabtab()<CR>
+xmap <Tab> <Plug>(coc-snippets-select)
+let g:coc_snippet_next = '<C-J>'
+let g:coc_snippet_prev = '<C-K>'
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Gina
+nnoremap <silent> <Leader>gs :Gina status --opener=tabnew --group=status<CR>
+call gina#custom#mapping#nmap('status', 'cc', ':<C-u>Gina commit -v --group=status<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1, 'nowait': 1})
+nnoremap <silent> <Leader>gb :Gina blame<CR>
+call gina#custom#mapping#nmap('blame', 's', ':<C-u>Gina show<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1, 'nowait': 1})
+call gina#custom#mapping#nmap('blame', 'e', '<Plug>(gina-blame-echo)', {'noremap': 0, 'buffer': 1, 'nowait': 1})
+call gina#custom#mapping#nmap('branch', 'o', '<Plug>(gina-branch-new)', {'noremap': 0, 'buffer': 1, 'nowait': 1})
+nnoremap <silent> <Leader>go :Gina browse :<CR>
+xnoremap <silent> <Leader>go :Gina browse :<CR>
+nnoremap <silent> <Leader>gO :Gina browse --exact :<CR>
+xnoremap <silent> <Leader>gO :Gina browse --exact :<CR>
+
+
+" CtrlP
+let g:ctrlp_match_func = {'match': 'ctrlp_matchfuzzy#matcher'}
+let g:ctrlp_map = ''
+nnore <Leader>o :CtrlP<CR>
+nnore <Leader>b :CtrlPBuffer<CR>
+nnore <Leader>; :CtrlPTag<CR>
+nnore <Leader>, :CtrlPBufTag<CR>
+let g:ctrlp_root_markers = ['package.json', '.git', 'Gemfile']
+let g:ctrlp_use_caching = 0
+let g:ctrlp_clear_cache_on_exit = 1
+" If rg is available use it as filename list generator instead of 'find'
+if executable("rg")
+  let g:ctrlp_user_command = 'rg -i --hidden --files %s'
+endif
+
+" vim-sandwich
+let g:sandwich#magicchar#f#patterns = [
+\  {
+\    'header' : '\<\%(\h\k*\.\)*\h\k*',
+\    'bra'    : '(',
+\    'ket'    : ')',
+\    'footer' : '',
+\  },
+\]
+
+" vim-qf
+let g:qf_shorten_path = 0
+let g:qf_auto_open_quickfix = 0
+nmap <leader>c <Plug>(qf_qf_toggle)
+nmap <leader>l <Plug>(qf_loc_toggle)
+nmap <silent> <leader>z :pclose<CR>
+
+" vim-test
+let test#strategy = 'dispatch'
+let g:test#javascript#mocha#executable = 'yarn mocha'
+nnoremap <silent> <leader>tt :TestNearest<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+function! Test()
+  if test#exists()
+    call test#run('nearest', [])
+  else
+    call test#run_last([])
+  endif
+endfunction
+nnoremap <silent> <leader><leader> :call Test()<CR>
+
+" vim-slime
+let g:slime_target = "vimterminal"
+let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
+
+colorscheme grey
+
+" color override
+
+hi! CocUnderline cterm=undercurl gui=undercurl guisp=#fd8489
+hi! link CocHoverRange NONE
+hi! link CocErrorFloat   DiagnosticFloatingError
+hi! link CocErrorSign    DiagnosticError
+hi! link CocWarningFloat DiagnosticFloatingWarn
+hi! link CocWarningSign  DiagnosticWarn
+hi! link CocHintFloat    DiagnosticFloatingHint
+hi! link CocHintSign     DiagnosticHint
+hi! link CocInfoFloat    DiagnosticFloatingInfo
+hi! link CocInfoSign     DiagnosticInfo
+
+" prettier_qf
+hi! def link qfError   DiagnosticError
+hi! def link qfWarning DiagnosticWarn
+hi! def link qfInfo    DiagnosticInfo
+hi! def link qfHint    DiagnosticHint
+
