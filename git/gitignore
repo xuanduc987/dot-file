@@ -6,3 +6,15 @@ gems.tags
 .rake_tasks
 .tern-project
 .projections.json
+
+.importjs.js
+
+.env.
+
+.vim-lsp-settings
+
+.direnv
+
+.tool-versions
+
+.vim

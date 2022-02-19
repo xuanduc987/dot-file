@@ -7,6 +7,7 @@
   default = simple
 [rebase]
   autosquash = true
+  autoStash = true
 [alias]
   d = diff
   co = checkout
@@ -16,6 +17,8 @@
   b = branch
   s = status
   lg = log --graph --oneline
+  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)%09%(color:red)%(authorname)%09%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+  llg = log --graph --oneline @{u}..
 [color]
   ui = true
   pager = true
@@ -32,6 +35,7 @@
 [merge]
   conflictstyle = diff3
   tool = vimdiff
+  ff = true
 [interactive]
   singleKey = true
 [user]
@@ -39,3 +43,10 @@
   email = git@ducnx.com
 [svn]
   rmdir = true
+[mergetool]
+  keepBackup = false
+[pull]
+  ff = only
+[status]
+  short = true
+  branch = true
