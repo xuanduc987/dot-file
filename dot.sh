@@ -9,10 +9,7 @@ mkdir -p ~/.vim
 rm -r ~/.vim/ftplugin
 rm -r ~/.vim/UltiSnips
 ln -s "${BASEDIR}/vim/ftplugin" ~/.vim/ftplugin
-ln -s "${BASEDIR}/vim/UltiSnips" ~/.vim/UltiSnips
 cp "${BASEDIR}/vim/autoload/*.*" ~/.vim/autoload/
-cp "${BASEDIR}/vim/vimrc.lang" ~/.vimrc.lang
-cp "${BASEDIR}/vim/vimrc.lang.plug" ~/.vimrc.lang.plug
 
 # git
 rm ~/.gitconfig
