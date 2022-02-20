@@ -1,0 +1,64 @@
+#!/bin/sh
+# shellcheck disable=SC2312,SC2292
+
+highlights=$(mktemp)
+vim --not-a-term "${highlights}" \
+  +'set termguicolors'\
+  +'redir @a'\
+  +'silent highlight'\
+  +'redir END'\
+  +'put a'\
+  +'x!' >/dev/null
+
+_extract() {
+  grep -Eo "^$1 .*$2=(#\w+)" | sed -E 's/.*=//'
+}
+
+while read -r line
+do
+  [ -z "${fg}" ] && fg=$(echo "${line}" | _extract 'Normal' 'guifg')
+  [ -z "${fg}" ] || echo foreground "${fg}"
+
+  [ -z "${bg}" ] && bg=$(echo "${line}" | _extract 'Normal' 'guibg')
+  [ -z "${bg}" ] || echo background "${bg}"
+
+  [ -z "${cursor}" ] && cursor=$(echo "${line}" | _extract 'Cursor' 'guibg')
+  [ -z "${cursor}" ] || echo cursor "${cursor}"
+
+  [ -n "${fg}" ] && [ -n "${bg}" ] && [ -n "${cursor}" ] && break
+done < "${highlights}"
+
+echo
+
+vim_fun="function! XXX()
+  let ansi_colors = get(g:, 'terminal_ansi_colors', [])
+  let colors = {}
+  for i in range(0, len(ansi_colors) - 1)
+    let colors['terminal_color_'.i] = ansi_colors[i]
+  endfor
+  if !len(colors)
+    let colors = g:->copy()->filter('v:key =~# \\\"terminal_color_\\\"')
+  endif
+  for [k, v] in items(colors)
+    echo k.' '.v
+  endfor
+endfunction
+"
+# https://stackoverflow.com/a/1252191/1634212
+escaped_vim_fun=$(echo "${vim_fun}" | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g')
+cmd="exe \"${escaped_vim_fun}\" | silent call XXX()"
+
+term_colors=$(mktemp)
+vim --not-a-term "${term_colors}" \
+  +'set termguicolors'\
+  +'redir @a'\
+  +"${cmd}"\
+  +'redir END'\
+  +'put a'\
+  +'x!' >/dev/null
+
+while read -r line
+do
+  color=$(echo "${line}" | sed 's/_//g;s/terminal//')
+  [ -z "${color}" ] || echo "${color}"
+done < "${term_colors}"
