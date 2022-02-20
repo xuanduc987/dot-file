@@ -1,4 +1,5 @@
-" curl -fLo ~/.vim/autoload/jetpack.vim --create-dirs https://raw.githubusercontent.com/tani/vim-jetpack/master/autoload/jetpack.vim
+" mkdir -p ~/.vim/pack/jetpack/opt
+" git clone --depth 1 https://github.com/tani/vim-jetpack ~/.vim/pack/jetpack/src/vim-jetpack && ln -s ~/.vim/pack/jetpack/{src,opt}/vim-jetpack
 if exists("+undofile")
     if isdirectory($HOME . '/.vim/_undo') == 0
         :silent !mkdir -p ~/.vim/_undo > /dev/null 2>&1
@@ -12,7 +13,10 @@ let mapleader = " "
 
 " Jetpack
 let g:jetpack#optimization = 2
+packadd! vim-jetpack
 call jetpack#begin()
+
+Jetpack 'tani/vim-jetpack', { 'opt': 1 }
 
 Jetpack 'mattn/ctrlp-matchfuzzy'
 Jetpack 'ctrlpvim/ctrlp.vim'
@@ -51,10 +55,12 @@ let g:dispatch_compilers = {
       \ 'eslint_d': 'eslint',
       \ 'tsc': 'typescript',
       \}
-nnoremap <leader>r :Dispatch<space>
+nnoremap <leader>d :Dispatch<space>
+nnoremap <leader>r :Dispatch<CR>
 let g:dispatch_no_tmux_make = 1
+let g:dispatch_no_tmux_start = 1
 
-Jetpack 'maxmellon/vim-jsx-prettier', { 'for': ['javascript', 'typescriptreact'] }
+Jetpack 'maxmellon/vim-jsx-pretty', { 'for': ['javascript', 'typescriptreact'] }
 Jetpack 'jparise/vim-graphql'
 Jetpack 'HerringtonDarkholme/yats.vim'
 
