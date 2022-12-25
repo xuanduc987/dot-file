@@ -1,0 +1,427 @@
+if has('vim_starting')
+  set encoding=utf-8
+endif
+
+set nocompatible
+
+" disable built-in plugins
+let g:loaded_2html_plugin      = 1
+let g:loaded_getscript         = 1
+let g:loaded_getscriptPlugin   = 1
+let g:loaded_gzip              = 1
+let g:loaded_logipat           = 1
+let g:loaded_logiPat           = 1
+let g:loaded_matchparen        = 1
+let g:loaded_matchit           = 1
+let g:loaded_netrw             = 1
+let g:loaded_netrwFileHandlers = 1
+let g:loaded_netrwPlugin       = 1
+let g:loaded_netrwSettings     = 1
+let g:loaded_rrhelper          = 1
+let g:loaded_spellfile_plugin  = 1
+let g:loaded_sql_completion    = 1
+let g:loaded_tar               = 1
+let g:loaded_tarPlugin         = 1
+let g:loaded_vimball           = 1
+let g:loaded_vimballPlugin     = 1
+let g:loaded_zip               = 1
+let g:loaded_zipPlugin         = 1
+let g:vimsyn_embed             = 1
+
+let g:vimrc = {}
+let g:vimrc.pkg = {}
+let g:vimrc.pkg.plugins = expand('~/.config/vim-jetpack')
+let g:vimrc.pkg.jetpack = expand(g:vimrc.pkg.plugins .. '/pack/jetpack/src/github.com/tani/vim-jetpack')
+let g:vimrc.undodir = expand(has('nvim') ? '~/.local/share/nvim/_undo' : '~/.vim/_undo')
+
+if !isdirectory(g:vimrc.pkg.jetpack)
+  call system(printf('git clone --depth 1 https://github.com/tani/vim-jetpack %s', shellescape(g:vimrc.pkg.jetpack)))
+endif
+
+let &runtimepath = &runtimepath . ',' . g:vimrc.pkg.jetpack
+runtime plugin/jetpack.vim
+
+" Jetpack
+call jetpack#begin(g:vimrc.pkg.plugins)
+
+Jetpack 'tani/vim-jetpack'
+
+Jetpack 'mattn/ctrlp-matchfuzzy'
+Jetpack 'ctrlpvim/ctrlp.vim'
+
+xmap <CR> <Plug>(EasyAlign)
+Jetpack 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
+
+Jetpack 'kevinoid/vim-jsonc'
+Jetpack 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+
+Jetpack 'lambdalisue/gina.vim'
+
+Jetpack 'machakann/vim-swap'
+Jetpack 'machakann/vim-sandwich'
+
+Jetpack 'romainl/vim-qf'
+
+Jetpack 'vim-test/vim-test'
+
+nmap _ <Plug>(dirvish_up)
+Jetpack 'justinmk/vim-dirvish'
+Jetpack 'bronson/vim-trailing-whitespace'
+Jetpack 'tomtom/tcomment_vim'
+Jetpack 'sgur/vim-editorconfig'
+Jetpack 'jiangmiao/auto-pairs'
+
+Jetpack 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+
+Jetpack 'jpalardy/vim-slime'
+
+Jetpack 'tpope/vim-dispatch'
+
+Jetpack 'rhysd/vim-color-spring-night'
+Jetpack 'lifepillar/vim-solarized8'
+
+call jetpack#end()
+
+set showcmd
+set laststatus=2
+set scrolloff=2 sidescrolloff=3
+set autoread
+set belloff=all " no bell
+set lazyredraw
+set nobackup noswapfile
+set undofile
+set updatetime=1000 " for cursor hold event
+set timeout timeoutlen=800 ttimeoutlen=50
+set synmaxcol=200
+set shell=/bin/sh
+
+
+if !isdirectory(g:vimrc.undodir)
+  call mkdir(g:vimrc.undodir, "", 0700)
+endif
+set undodir=g:vimrc.undodir
+
+set mouse=n
+set hidden
+set termguicolors
+set t_ut=
+set splitbelow splitright " Natural split
+set nowrap
+set colorcolumn=+1 " Color column textwidth + 1
+set wildmenu
+set wildmode=full
+set wildignore+=.git,*.swp,*~,._*
+set list " Show special characters for inivisible chars
+set listchars=tab:>\ ,extends:>,precedes:<
+set fillchars=diff:╱,stl:-,vert:│
+set ambiwidth=single
+set virtualedit=all
+
+set autoindent
+set backspace=indent,eol,start
+set nrformats-=octal
+set tabstop=2 softtabstop=2 shiftwidth=2
+set expandtab
+set smarttab
+set formatoptions+=croqj
+set completeopt=menuone,noselect,noinsert
+
+set incsearch
+set hlsearch
+set ignorecase " searches are case insensitive...
+set smartcase " ... unless they contain at least one capital letter
+set gdefault " use global flag by default
+
+" Change the cursor in different modes
+let &t_SI = "\e[5 q"
+let &t_SR = "\e[3 q"
+let &t_EI = "\e[1 q"
+
+let mapleader = " "
+
+nnoremap <leader>q :q<cr>
+nnoremap <leader>w :update<CR>
+nnoremap <leader>f :grep<space>
+nnoremap <leader>e :edit <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>x :split <C-R>=fnameescape(expand('%:h')).'/'<cr>
+nnoremap <leader>v :vsplit <C-R>=fnameescape(expand('%:h')).'/'<cr>
+
+nnoremap + <C-A>
+nnoremap - <C-X>
+nnoremap g+ g<C-A>
+nnoremap g- g<C-X>
+xnoremap + <C-A>
+xnoremap - <C-X>
+xnoremap g+ g<C-A>
+xnoremap g- g<C-X>
+
+" calculator
+xnoremap <leader>= c<C-R>=<C-R>"<CR><esc>
+
+" easy move between windows
+nnore <silent> <C-K> :wincmd k<CR>
+nnore <silent> <C-J> :wincmd j<CR>
+nnore <silent> <C-H> :wincmd h<CR>
+nnore <silent> <C-L> :wincmd l<CR>
+
+" Adjust viewports to the same size
+nnoremap <Leader>= <C-w>=
+
+" Toggle paste mode
+nmap <leader>4 <F4>
+nnore <silent> <F4> :set invpaste<CR>:set paste?<CR>
+set pastetoggle=<F4>
+
+" expand current directory
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+" expand home directory
+cnoremap $$ <C-R>=fnameescape(expand('~')).'/'<cr>
+
+" clear highlight
+nnore <leader><CR> :noh<CR>
+
+" In command-line mode, C-p use history to complete
+cnoremap <C-P> <Up>
+
+" readline mapping
+cnoremap <c-a> <home>
+cnoremap <c-b> <left>
+cnoremap <c-f> <right>
+
+" replace last search
+nnoremap <leader>s :%s//
+xnoremap <leader>s :s//
+
+noremap s <nop>
+
+" easy upper case
+inoremap <c-u> <left><c-o>:normal gUiwea<CR><right>
+
+" Easy copy-paste
+xnoremap <leader>y "+y
+nnoremap <leader>y "+y
+xnoremap <leader>p "+p
+nnoremap <leader>p "+p
+
+" Magic search
+nnoremap /  /\v
+nnoremap ?  ?\v
+
+nnoremap [a :<C-U>previous<CR>
+nnoremap ]a :<C-U>next<CR>
+nnoremap [b :<C-U>bprevious<CR>
+nnoremap ]b :<C-U>bnext<CR>
+nnoremap [q :<C-U>cprevious<CR>
+nnoremap ]q :<C-U>cnext<CR>
+nnoremap [l :<C-U>lprevious<CR>
+nnoremap ]l :<C-U>lnext<CR>
+" insert blank line
+nnoremap [<space> :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap ]<space> :<c-u>put =repeat(nr2char(10), v:count1)<cr>']
+
+" autocmd
+augroup vimrc
+    autocmd!
+
+    " Remember last location in file, but not for commit messages.
+    " see :help last-position-jump
+    au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
+                \| exe "normal! g`\"" | endif
+
+    autocmd FileType gina-commit setlocal spell spellcapcheck=
+    autocmd FileType dirvish nmap <buffer> - <Plug>(dirvish_up)
+augroup END
+
+" User rg if possible
+if executable("rg")
+    set grepprg=rg\ --vimgrep
+    set grepformat=%f:%l:%c:%m,%f:%l%m,%f\ \ %l%m
+endif
+
+" statusline
+set statusline=%m                      " modified flag
+set statusline+=\ \                    " separator
+set statusline+=%f                     " Relative path to file
+set statusline+=\ \                    " separator
+set statusline+=%h                     " [help]
+set statusline+=%r                     " read only flag
+set statusline+=%w                     " preview window flag
+set statusline+=%y                     " filetype
+" function! SyntaxItem()
+"   return synIDattr(synID(line("."),col("."),1),"name")
+" endfunction
+" set statusline+=%{SyntaxItem()}
+set statusline+=%=                     " indent to the right
+set statusline+=%{coc#status()}\ \ 
+set statusline+=[%{&fileencoding}]\ \  " file encoding
+set statusline+=%-8(%l,%c%V%)          " Line, column-virtual column
+set statusline+=\ %6P
+
+function! SudoWrite()
+    write !sudo tee %
+    edit!
+endfun
+command! SudoWrite call SudoWrite()
+
+command BufOnly silent! execute "update | %bd | e# | bd#"
+
+" CoC
+let g:coc_global_extensions = ['coc-tsserver', 'coc-deno', 'coc-tsdetect', 'coc-yaml', 'coc-json', 'coc-solargraph', 'coc-go', 'coc-snippets']
+
+function! CopyHover()
+  let l:hover = join(CocAction('getHover'))
+  if empty(l:hover) | echoerr "No Hover!" | return | endif
+  let @+ = l:hover
+  let @* = l:hover
+  echom "Hover copied!"
+endfunction
+
+let g:coc_status_error_sign = "✗"
+let g:coc_status_warning_sign = "!"
+nnoremap <silent> <leader>k :call CopyHover()<CR>
+nnoremap <silent> K         :call CocActionAsync('doHover')<CR>
+nnoremap <silent> <C-T>     :CocCommand<CR>
+nnoremap <silent> gC        :CocDiagnostics<CR>
+nnoremap <silent> <leader>i :call CocActionAsync('runCommand', 'editor.action.organizeImport')<CR>
+nnoremap <silent> gS        :CocList --normal services<CR>
+xmap ga <Plug>(coc-codeaction-selected)
+nmap gA <plug>(coc-codeaction)
+nmap gl <plug>(coc-codelens-action)
+nmap ga <plug>(coc-fix-current)
+nmap gd <plug>(coc-definition)
+nmap gD <plug>(coc-type-definition)
+nmap ]d <plug>(coc-diagnostic-next)
+nmap <C-N> <plug>(coc-diagnostic-next)
+nmap [d <plug>(coc-diagnostic-prev)
+nmap <C-P> <plug>(coc-diagnostic-prev)
+nmap gr <plug>(coc-references)
+nmap gR <plug>(coc-rename)
+nmap g= <plug>(coc-format)
+xmap g= <plug>(coc-format-selected)
+imap <C-E> <C-R>=coc#refresh()<CR>
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+set signcolumn=yes
+
+function! Tabtab()
+  if coc#pum#visible()
+    return coc#pum#confirm()
+  endif
+  if coc#expandableOrJumpable()
+    return "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>"
+  endif
+  return <SID>check_back_space() ? "\<TAB>" : coc#refresh()
+endfunction
+
+inoremap <silent><expr> <TAB> Tabtab()
+xmap <Tab> <Plug>(coc-snippets-select)
+let g:coc_snippet_next = '<C-J>'
+let g:coc_snippet_prev = '<C-K>'
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Gina
+nnoremap <silent> <Leader>gs :Gina status --opener=tabnew --group=status<CR>
+call gina#custom#mapping#nmap('status', 'cc', ':<C-u>Gina commit -v --group=status<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1, 'nowait': 1})
+nnoremap <silent> <Leader>gb :Gina blame<CR>
+call gina#custom#mapping#nmap('blame', 's', ':<C-u>Gina show<CR>', {'noremap': 1, 'silent': 1, 'buffer': 1, 'nowait': 1})
+call gina#custom#mapping#nmap('blame', 'e', '<Plug>(gina-blame-echo)', {'noremap': 0, 'buffer': 1, 'nowait': 1})
+call gina#custom#mapping#nmap('branch', 'o', '<Plug>(gina-branch-new)', {'noremap': 0, 'buffer': 1, 'nowait': 1})
+nnoremap <silent> <Leader>go :Gina browse :<CR>
+xnoremap <silent> <Leader>go :Gina browse :<CR>
+nnoremap <silent> <Leader>gO :Gina browse --exact :<CR>
+xnoremap <silent> <Leader>gO :Gina browse --exact :<CR>
+
+" Dispatch
+let g:dispatch_compilers = {
+      \ 'yarn': '',
+      \ 'npx': '',
+      \ 'eslint_d': 'eslint',
+      \ 'tsc': 'typescript',
+      \}
+nnoremap <leader>d :Dispatch<space>
+nnoremap <leader>r :Dispatch<CR>
+let g:dispatch_no_tmux_make = 1
+let g:dispatch_no_tmux_start = 1
+
+
+" CtrlP
+if has('patch-8.2.1665') || has('nvim-0.7.0')
+  let g:ctrlp_match_func = {'match': 'ctrlp_matchfuzzy#matcher'}
+endif
+
+let g:ctrlp_map = ''
+nnore <Leader>o :CtrlP<CR>
+nnore <Leader>O :CtrlPCurWD<CR>
+nnore <Leader>b :CtrlPBuffer<CR>
+nnore <Leader>; :CtrlPTag<CR>
+nnore <Leader>, :CtrlPBufTag<CR>
+let g:ctrlp_root_markers = ['package.json', '.git', 'Gemfile']
+let g:ctrlp_use_caching = 0
+let g:ctrlp_clear_cache_on_exit = 1
+" If rg is available use it as filename list generator instead of 'find'
+if executable("rg")
+  let g:ctrlp_user_command = 'rg -i --hidden --files %s'
+endif
+
+" vim-sandwich
+let g:sandwich#magicchar#f#patterns = [
+\  {
+\    'header' : '\<\%(\h\k*\.\)*\h\k*',
+\    'bra'    : '(',
+\    'ket'    : ')',
+\    'footer' : '',
+\  },
+\]
+let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
+" add spaces inside bracket
+let g:sandwich#recipes += [
+      \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1, 'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+      \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1, 'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'], 'action': ['delete'], 'input': ['{']},
+      \ ]
+
+" vim-qf
+let g:qf_shorten_path = 0
+let g:qf_auto_open_quickfix = 0
+nmap <leader>c <Plug>(qf_qf_toggle)
+nmap <leader>l <Plug>(qf_loc_toggle)
+nmap <silent> <leader>z :pclose<CR>
+
+" vim-test
+let test#strategy = 'dispatch'
+let g:test#javascript#mocha#executable = 'yarn mocha'
+nnoremap <silent> <leader>tt :TestNearest<CR>
+nnoremap <silent> <leader>tf :TestFile<CR>
+nnoremap <silent> <leader>ta :TestSuite<CR>
+nnoremap <silent> <leader>tl :TestLast<CR>
+nnoremap <silent> <leader>tg :TestVisit<CR>
+function! Test()
+  if test#exists()
+    call test#run('nearest', [])
+  elseif exists('g:test#last_command')
+    call test#run_last([])
+  else
+    call test#run('file', [])
+  endif
+endfunction
+nnoremap <silent> <leader><leader> :call Test()<CR>
+
+" vim-slime
+if has('nvim')
+  let g:slime_target = "tmux"
+else
+  let g:slime_target = "vimterminal"
+  let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
+endif
+
+" set background=light
+autocmd vimenter * ++nested colorscheme spring-night

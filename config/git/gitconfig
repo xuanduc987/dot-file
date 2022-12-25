@@ -1,0 +1,44 @@
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+  autocrlf = input
+[push]
+  config = default
+  default = simple
+[rebase]
+  autosquash = true
+  autoStash = true
+[alias]
+  d = diff
+  co = checkout
+  wip = commit -am wip
+  b = branch
+  s = status
+  l = log --graph --oneline --max-count=15
+[color]
+  ui = true
+  pager = true
+  branch = auto
+  diff = auto
+  status = auto
+  interactive = auto
+  grep = auto
+[diff]
+  tool = vimdiff
+  algorithm = histogram
+[github]
+  user = xuanduc987
+[interactive]
+  singleKey = true
+[user]
+  name = Duc Nghiem-Xuan
+  email = git@ducnx.com
+[mergetool]
+  keepBackup = false
+[pull]
+  ff = only
+[status]
+  short = true
+  branch = true
+[init]
+  defaultBranch = main

@@ -1,0 +1,10 @@
+tags
+!tags/
+gems.tags
+.rake_tasks
+
+.env.
+
+.direnv
+
+.vim
