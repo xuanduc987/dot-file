@@ -30,7 +30,7 @@
       let kitty = if pkgs.stdenv.hostPlatform.isAarch64 then "/opt/homebrew/bin/kitty" else "/usr/local/bin/kitty";
       in
       ''
-        cmd - return : ${kitty} --single-instance
+        cmd - return : ${kitty} --single-instance --working-directory $HOME
 
         # focus window
         cmd + ctrl - h : yabai -m window --focus west
