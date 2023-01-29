@@ -17,4 +17,10 @@ rm ~/.gitignore
 ln -s "${dir}/config/git/gitconfig" ~/.gitconfig
 ln -s "${dir}/config/git/gitignore" ~/.gitignore
 
+# kitty
+echo "linking kitty config..."
+mkdir -p ~/.config/kitty
+rm ~/.config/kitty/kitty.conf
+ln -s "${dir}/config/kitty/kitty.conf" ~/.config/kitty/kitty.conf
+
 darwin-rebuild switch --flake "$dir"
