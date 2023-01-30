@@ -39,16 +39,16 @@
         cmd + ctrl - l : yabai -m window --focus east
 
         # swap managed window
-        ctrl + alt - h : yabai -m window --swap west
-        ctrl + alt - j : yabai -m window --swap south
-        ctrl + alt - k : yabai -m window --swap north
-        ctrl + alt - l : yabai -m window --swap east
+        cmd + alt - h : yabai -m window --swap west
+        cmd + alt - j : yabai -m window --swap south
+        cmd + alt - k : yabai -m window --swap north
+        cmd + alt - l : yabai -m window --swap east
 
         # move managed window
-        ctrl + shift - h : yabai -m window --warp west
-        ctrl + shift - j : yabai -m window --warp south
-        ctrl + shift - k : yabai -m window --warp north
-        ctrl + shift - l : yabai -m window --warp east
+        cmd + ctrl + shift - h : yabai -m window --warp west
+        cmd + ctrl + shift - j : yabai -m window --warp south
+        cmd + ctrl + shift - k : yabai -m window --warp north
+        cmd + ctrl + shift - l : yabai -m window --warp east
 
         # stacking windows
         alt - s : yabai -m window --stack next
