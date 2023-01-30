@@ -69,6 +69,7 @@
       "mpv"
       "raycast"
       "sensiblesidebuttons"
+      "shottr"
 
       "font-juliamono"
     ];
