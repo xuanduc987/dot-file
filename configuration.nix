@@ -11,14 +11,18 @@
   nix.gc = {
     automatic = true;
     interval = { Hour = 20; Minute = 10; Weekday = 7; };
-    user = "d.xuan.nghiem";
+    options = "--delete-older-than 30d";
   };
 
   services.nix-daemon.enable = true;
 
   environment.variables.EDITOR = "vim";
 
-  nix.extraOptions = "extra-experimental-features = nix-command flakes";
+  nix.extraOptions = ''
+    keep-outputs = true
+    keep-derivations = true
+    extra-experimental-features = nix-command flakes
+  '';
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

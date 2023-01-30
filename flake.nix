@@ -7,15 +7,18 @@
   };
 
   outputs = { self, darwin, nixpkgs, ... }:
-    let commonConfiguration = {
-      modules = [
-        ./configuration.nix
-        ./system.nix
-        ./services.nix
-        ./systemPackages.nix
-      ];
-      specialArgs = { inherit nixpkgs; };
-    };
+    let
+      commonConfiguration = {
+        modules = [
+          ./configuration.nix
+          ./system.nix
+          ./services.nix
+          ./systemPackages.nix
+
+          ./nix-direnv.nix
+        ];
+        specialArgs = { inherit nixpkgs; };
+      };
     in
     {
       darwinConfigurations = {

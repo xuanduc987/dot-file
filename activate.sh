@@ -23,4 +23,9 @@ mkdir -p ~/.config/kitty
 rm ~/.config/kitty/kitty.conf
 ln -s "${dir}/config/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 
+# direnv
+echo "linking direnv config..."
+rm ~/.direnvrc
+ln -s "${dir}/config/direnv/direnvrc" ~/.direnvrc
+
 darwin-rebuild switch --flake "$dir"
