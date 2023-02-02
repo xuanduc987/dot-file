@@ -9,6 +9,8 @@ ln -s "${dir}/config/vim/vimrc" ~/.vimrc
 mkdir -p ~/.vim
 rm ~/.vim/coc-settings.json
 ln -s "${dir}/config/vim/coc-settings.json" ~/.vim/coc-settings.json
+rm ~/.vim/compiler
+ln -s "${dir}/config/vim/compiler" ~/.vim/compiler
 
 # git
 echo "linking git config..."
