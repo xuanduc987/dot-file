@@ -14,7 +14,12 @@ CompilerSet makeprg=rails\ test
 
 CompilerSet errorformat=
   \%EFailure:,
-  \%C%m\ [%f:%l]:
+  \%EError:,
+  \%Z%.%\\+\ %f:%l,
+  \%Z%.%\\+\ %f:%l:%m,
+  \%Z%m\ [%f:%l]:,
+  \%-C%m,
+  \%C
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

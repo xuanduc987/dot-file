@@ -15,4 +15,6 @@ _:
 
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 25;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
+
+  security.pam.enableSudoTouchIdAuth = true;
 }
