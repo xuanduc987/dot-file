@@ -13,6 +13,10 @@
   homebrew = {
     enable = true;
 
+    taps = [
+      "homebrew/cask-fonts"
+    ];
+
     brews = [
       "watchman"
     ];
