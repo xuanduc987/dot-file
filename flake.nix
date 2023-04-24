@@ -4,15 +4,21 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, ... }:
+  outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
-      commonConfiguration = user: {
+      commonConfiguration = user: system: {
+        inherit system;
+
         modules = [
+          {
+            nixpkgs.overlays = [ (final: prev: { git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless; }) ];
+          }
+
           ./configuration.nix
           ./system.nix
           ./services.nix
@@ -30,8 +36,9 @@
     in
     {
       darwinConfigurations = {
-        "Duc-MB" = darwin.lib.darwinSystem (commonConfiguration "d.xuan.nghiem" // { system = "x86_64-darwin"; });
-        "mb-air" = darwin.lib.darwinSystem (commonConfiguration "duc" // { system = "aarch64-darwin"; });
+        "Duc-MB" = darwin.lib.darwinSystem (commonConfiguration "d.xuan.nghiem" "x86_64-darwin");
+        "mb-air" = darwin.lib.darwinSystem (commonConfiguration "duc" "aarch64-darwin");
       };
     };
 }
+
