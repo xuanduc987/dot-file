@@ -2,6 +2,8 @@
   editor = vim
   excludesfile = ~/.gitignore
   autocrlf = input
+[rerere]
+  enabled = true
 [push]
   config = default
   default = simple
