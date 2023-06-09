@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   home.stateVersion = "22.11";
@@ -8,6 +8,7 @@
 
   home.packages = with pkgs; [
     terraform
+    aws-vault
 
     git
     git-absorb

@@ -24,12 +24,14 @@
     casks = [
       "alt-tab"
       "anki"
-      "itsycal"
       "kitty"
       "mpv"
       "raycast"
       "sensiblesidebuttons"
       "shottr"
+
+      "swiftbar"
+      "itsycal"
 
       "font-juliamono"
     ];

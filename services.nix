@@ -20,7 +20,7 @@
       window_shadow = "float";
     };
     extraConfig = ''
-      yabai -m rule --add app="(System Preferences|Activity Monitor|System Settings|mpv|Chrome|Telegram|XD)" manage=off
+      yabai -m rule --add app="(System Preferences|Activity Monitor|System Settings|mpv|Chrome|Telegram|XD|Spotify|TeamViewer|Sequel Ace)" manage=off
     '';
   };
 

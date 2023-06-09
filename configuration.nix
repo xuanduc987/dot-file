@@ -1,7 +1,6 @@
-{ config, lib, pkgs, nixpkgs, ... }:
+{ pkgs, nixpkgs, ... }:
 {
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [ (final: prev: { nodejs = prev.nodejs-14_x; }) ];
 
   nix.registry.nixpkgs.flake = nixpkgs;
 
