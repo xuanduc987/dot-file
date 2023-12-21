@@ -43,6 +43,7 @@
     {
       darwinConfigurations = {
         "Duc-MB" = darwin.lib.darwinSystem (commonConfiguration "d.xuan.nghiem" "x86_64-darwin");
+        "Ducs-Mac-mini" = darwin.lib.darwinSystem (commonConfiguration "duc" "x86_64-darwin");
         "mb-air" = darwin.lib.darwinSystem (commonConfiguration "duc" "aarch64-darwin");
       };
     };
