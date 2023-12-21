@@ -21,6 +21,8 @@
     };
     extraConfig = ''
       yabai -m rule --add app="(System Preferences|Activity Monitor|System Settings|mpv|Chrome|Telegram|XD|Spotify|TeamViewer|Sequel Ace)" manage=off
+      yabai -m rule --add app="Thunderbird" title=".+ Reminders?" manage=off
+      yabai -m rule --add app="Stata.*" title="Graph.*" manage=off
     '';
   };
 
@@ -57,7 +59,7 @@
         alt + shift - n : yabai -m window --focus stack.next || yabai -m window --focus next || yabai -m window --focus first
 
         # float / unfloat window and center on screen
-        alt - t : yabai -m window --toggle float; yabai -m window --grid 4:4:1:1:2:2
+        alt - t : yabai -m window --toggle float; yabai -m window --grid 10:8:1:1:6:8
       '';
   };
 }

@@ -34,6 +34,7 @@
       "itsycal"
 
       "font-juliamono"
+      "font-commit-mono"
     ];
   };
 

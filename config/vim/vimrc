@@ -52,8 +52,9 @@ Jetpack 'ctrlpvim/ctrlp.vim'
 xmap <CR> <Plug>(EasyAlign)
 Jetpack 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)'] }
 
-Jetpack 'kevinoid/vim-jsonc'
-Jetpack 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+" Jetpack 'kevinoid/vim-jsonc'
+" Jetpack 'jparise/vim-graphql', { 'for': ['graphql', 'javascript', 'typescript'] }
+Jetpack 'sheerun/vim-polyglot'
 
 Jetpack 'lambdalisue/gina.vim'
 
@@ -76,6 +77,7 @@ Jetpack 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-l
 Jetpack 'jpalardy/vim-slime'
 
 Jetpack 'tpope/vim-dispatch'
+Jetpack 'tpope/vim-abolish'
 
 Jetpack 'rhysd/vim-color-spring-night'
 Jetpack 'lifepillar/vim-solarized8'

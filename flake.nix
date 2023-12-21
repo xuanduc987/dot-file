@@ -5,7 +5,7 @@
 
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -16,7 +16,12 @@
 
         modules = [
           {
-            nixpkgs.overlays = [ (final: prev: { git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless; }) ];
+            nixpkgs.overlays = [
+              (final: prev: {
+                git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
+                ffsend = nixpkgs-unstable.legacyPackages.${system}.ffsend;
+              })
+            ];
           }
 
           ./configuration.nix
@@ -29,6 +34,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.${user} = import ./home.nix;
+            users.users."${user}".home = "/Users/${user}";
           }
         ];
         specialArgs = { inherit nixpkgs; };

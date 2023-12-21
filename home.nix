@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.stateVersion = "22.11";
+  home.stateVersion = "23.05";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -23,6 +23,8 @@
     nixpkgs-fmt
 
     unrar
+
+    bun
 
     nodejs
     nodePackages.yarn
@@ -79,6 +81,7 @@
       v = "vim";
     };
     functions = {
+      git-prune-merged-branches = ''git branch --merged main | grep -v "^\\* main" | xargs -n 1 -r git branch -d'';
       rj = ''cd (ghq list --full-path | fzf -1 -q "$argv[1]" )'';
       pr = ''
         switch $argv[1]
