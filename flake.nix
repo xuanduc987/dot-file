@@ -11,7 +11,7 @@
 
   outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
-      commonConfiguration = user: system: {
+      commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
 
         modules = [
@@ -19,10 +19,11 @@
             nixpkgs.overlays = [
               (final: prev: {
                 git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
-                ffsend = nixpkgs-unstable.legacyPackages.${system}.ffsend;
               })
             ];
           }
+
+          ./nix/services/wsdd.nix
 
           ./configuration.nix
           ./system.nix
@@ -36,15 +37,29 @@
             home-manager.users.${user} = import ./home.nix;
             users.users."${user}".home = "/Users/${user}";
           }
-        ];
+        ] ++ modules;
         specialArgs = { inherit nixpkgs; };
       };
     in
     {
       darwinConfigurations = {
-        "Duc-MB" = darwin.lib.darwinSystem (commonConfiguration "d.xuan.nghiem" "x86_64-darwin");
-        "Ducs-Mac-mini" = darwin.lib.darwinSystem (commonConfiguration "duc" "x86_64-darwin");
-        "mb-air" = darwin.lib.darwinSystem (commonConfiguration "duc" "aarch64-darwin");
+        "Duc-MB" = darwin.lib.darwinSystem
+          (commonConfiguration {
+            user = "d.xuan.nghiem";
+            system = "x86_64-darwin";
+          });
+        "Ducs-Mac-mini" = darwin.lib.darwinSystem
+          (commonConfiguration
+            {
+              user = "duc";
+              system = "x86_64-darwin";
+              modules = [
+                {
+                  services.wsdd.enable = true;
+                }
+              ];
+            });
+        "mb-air" = darwin.lib.darwinSystem (commonConfiguration { user = "duc"; system = "aarch64-darwin"; });
       };
     };
 }
