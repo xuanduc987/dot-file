@@ -56,11 +56,17 @@
               modules = [
                 {
                   services.wsdd.enable = true;
+                  homebrew = {
+                    enable = true;
+                    casks = [ "jellyfin" ];
+                  };
                 }
               ];
             });
-        "mb-air" = darwin.lib.darwinSystem (commonConfiguration { user = "duc"; system = "aarch64-darwin"; });
+        "mb-air" = darwin.lib.darwinSystem
+          (commonConfiguration { user = "duc"; system = "aarch64-darwin"; });
       };
     };
 }
+
 

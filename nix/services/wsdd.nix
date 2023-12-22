@@ -15,6 +15,7 @@ in
 
     launchd.user.agents.wsdd = {
       command = "${pkgs.wsdd}/bin/wsdd";
+      serviceConfig.RunAtLoad = true;
       serviceConfig.KeepAlive = true;
     };
   };
