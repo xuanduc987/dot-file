@@ -48,13 +48,14 @@
               user = "duc";
               system = "x86_64-darwin";
               modules = [
-                {
+                ({ pkgs, ... }: {
                   services.wsdd.enable = true;
                   homebrew = {
                     enable = true;
                     casks = [ "jellyfin" ];
                   };
-                }
+                  environment.systemPackages = with pkgs; [ tmux aria2 ];
+                })
               ];
             });
         "mb-air" = darwin.lib.darwinSystem
