@@ -99,9 +99,9 @@ set shell=/bin/sh
 
 
 if !isdirectory(g:vimrc.undodir)
-  call mkdir(g:vimrc.undodir, "", 0700)
+  call mkdir(g:vimrc.undodir, "", 0o700)
 endif
-set undodir=g:vimrc.undodir
+let &undodir=g:vimrc.undodir
 
 set mouse=n
 set hidden
