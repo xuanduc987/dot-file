@@ -1,0 +1,98 @@
+{
+  "coc.preferences.enableMessageDialog": true,
+  "coc.preferences.useQuickfixForLocations": true,
+  "coc.preferences.willSaveHandlerTimeout": 2000,
+  "coc.source.around.enable": false,
+  "coc.source.buffer.enable": false,
+  //
+  "suggest.maxCompleteItemCount": 50,
+  "suggest.insertMode": "insert",
+  "suggest.autoTrigger": "always",
+  "suggest.minTriggerInputLength": 3,
+  "suggest.triggerCompletionWait": 50,
+  //
+  "codeLens.enable": true,
+  "codeLens.position": "top",
+  //
+  "diagnostic.errorSign": "✗",
+  "diagnostic.warningSign": "!",
+  "diagnostic.infoSign": "i",
+  "diagnostic.hintSign": "?",
+  "diagnostic.enableMessage": "jump",
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextLimitInOneLine": 1,
+  //
+  "snippets.loadFromExtensions": false,
+  "snippets.textmateSnippetsRoots" : ["~/.local/share/snippets"],
+  "snippets.ultisnips.enable": false,
+  //
+  "languageserver": {
+    "efm": {
+      "command": "efm-langserver",
+      "formatterPriority": 50,
+      "filetypes": ["*"]
+    },
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": ["server", "-m", "stream"],
+      "filetypes": ["graphql", "typescript", "typescriptreact"]
+    },
+    "nix-nil": {
+      "command": "nil",
+      "filetypes": [ "nix" ],
+      "rootPatterns": [ "flake.nix" ],
+      "formatterPriority": 100,
+      "settings": {
+        "nil": {
+          "formatting": { "command": [ "nixpkgs-fmt" ] }
+        }
+      }
+    },
+    "sorbet": {
+      "enable": false,
+      "command": "bundle",
+      "args": ["exec", "srb", "tc", "--typed", "true", "--enable-all-experimental-lsp-features", "--lsp"],
+      "filetypes": ["ruby"],
+      "rootPatterns": ["sorbet/config"],
+      "initializationOptions": {},
+      "settings": {}
+    },
+    "ruby-lsp": {
+      "enable": false,
+      "command": "bundle",
+      "args": ["exec", "ruby-lsp"],
+      "initializationOptions": {
+        "enabledFeatures": [
+          "codeActions",
+          "diagnostics",
+          "documentHighlights",
+          "documentLink",
+          "documentSymbols",
+          "foldingRanges",
+          "formatting",
+          "hover",
+          "inlayHint",
+          "onTypeFormatting",
+          "selectionRanges"
+        ]
+      },
+      "filetypes": ["ruby"]
+    }
+  },
+  //
+  "[javascript][typescript][typescriptreact][json][nix]": {
+    "coc.preferences.formatOnSave": true
+  },
+  //
+  "tsserver.useLocalTsdk": true,
+  "tsserver.experimental.enableProjectDiagnostics": true,
+  "typescript.format.enable": false,
+  "javascript.format.enable": false,
+  "typescript.suggest.completeFunctionCalls": false,
+  "javascript.suggest.completeFunctionCalls": false,
+  //
+  "solargraph.enable": false,
+  "solargraph.useBundler": true,
+  "solargraph.diagnostics": true,
+  "solargraph.checkGemVersion": false
+}
