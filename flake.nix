@@ -1,28 +1,22 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.05-darwin";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # yabai and skhd failed to build on 23.11
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    # home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
+  outputs = { darwin, nixpkgs, home-manager, ... }:
     let
       commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
 
         modules = [
-          {
-            nixpkgs.overlays = [
-              (final: prev: {
-                git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
-              })
-            ];
-          }
-
           ./nix/services/wsdd.nix
 
           ./configuration.nix
