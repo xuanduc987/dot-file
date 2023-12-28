@@ -1,5 +1,6 @@
 {
   inputs = {
+    old-nixpkgs.url = "github:NixOS/nixpkgs/23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/23.11";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -7,7 +8,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { darwin, nixpkgs, home-manager, ... }:
+  outputs = { darwin, nixpkgs, old-nixpkgs, home-manager, ... }:
     let
       commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
@@ -16,6 +17,8 @@
           {
             nixpkgs.overlays = [
               (final: prev: {
+                grafana = old-nixpkgs.legacyPackages.${system}.grafana;
+
                 yabai = prev.yabai.overrideAttrs (_:_: {
                   version = "6.0.2";
                   src = final.fetchFromGitHub {
