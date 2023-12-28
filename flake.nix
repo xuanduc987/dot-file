@@ -1,13 +1,9 @@
 {
   inputs = {
-    # yabai and skhd failed to build on 23.11
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
+    nixpkgs.url = "github:NixOS/nixpkgs/23.11";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    # home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
@@ -17,6 +13,26 @@
         inherit system;
 
         modules = [
+          {
+            nixpkgs.overlays = [
+              (final: prev: {
+                yabai = prev.yabai.overrideAttrs (_:_: {
+                  version = "6.0.2";
+                  src = final.fetchFromGitHub {
+                    owner = "koekeishiya";
+                    repo = "yabai";
+                    rev = "v6.0.2";
+                    hash = "sha256-VI7Gu5Y50Ed65ZUrseMXwmW/iovlRbAJGlPD7Ooajqw=";
+                  };
+                  env = {
+                    # silence service.h error
+                    NIX_CFLAGS_COMPILE = "-Wno-implicit-function-declaration";
+                  };
+                });
+              })
+            ];
+          }
+
           ./nix/services/wsdd.nix
 
           ./configuration.nix
