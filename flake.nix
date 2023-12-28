@@ -48,6 +48,7 @@
               user = "duc";
               system = "x86_64-darwin";
               modules = [
+                ./nix/mini/monitor.nix
                 ({ pkgs, ... }: {
                   services.wsdd.enable = true;
                   homebrew = {
