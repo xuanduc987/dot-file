@@ -68,7 +68,6 @@
               system = "x86_64-darwin";
               modules = [
                 ./nix/mini/monitor.nix
-                ./nix/mini/adguardhome.nix
 
                 ({ pkgs, ... }: {
                   services.wsdd.enable = true;
