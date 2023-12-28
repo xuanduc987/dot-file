@@ -1,12 +1,13 @@
-{ config, lib, pkgs, nixpkgs, ... }:
+{ pkgs, ... }:
 {
   # for build vim on mac
   nixpkgs.config.vim = { darwin = true; gui = false; };
   nixpkgs.config.netbeans = false;
 
   environment.systemPackages = with pkgs; [
+    mosh
+    watchman
     python3
-
     vim_configurable
   ];
 
@@ -17,9 +18,7 @@
       "homebrew/cask-fonts"
     ];
 
-    brews = [
-      "watchman"
-    ];
+    brews = [ ];
 
     casks = [
       "alt-tab"
