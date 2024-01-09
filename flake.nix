@@ -2,18 +2,25 @@
   inputs = {
     old-nixpkgs.url = "github:NixOS/nixpkgs/23.05";
     nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { darwin, nixpkgs, old-nixpkgs, home-manager, ... }:
+  outputs = { darwin, nixpkgs, nixpkgs-unstable, old-nixpkgs, home-manager, ... }:
     let
       commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
 
         modules = [
+          {
+            services.tailscale = {
+              package = nixpkgs-unstable.legacyPackages.${system}.tailscale;
+            };
+          }
+
           {
             nixpkgs.overlays = [
               (final: prev: {

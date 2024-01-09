@@ -1,6 +1,10 @@
 { pkgs, ... }: {
   services.lorri.enable = true;
 
+  services.tailscale = {
+    enable = true;
+  };
+
   services.yabai = {
     enable = true;
     config = {
