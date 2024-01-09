@@ -68,14 +68,19 @@
               system = "x86_64-darwin";
               modules = [
                 ./nix/mini/monitor.nix
+                ./nix/mini/bazarr.nix
 
                 ({ pkgs, ... }: {
                   services.wsdd.enable = true;
                   homebrew = {
                     enable = true;
-                    casks = [ "jellyfin" ];
+                    casks = [ "jellyfin" "docker" "radarr" "prowlarr" "sonarr" ];
                   };
-                  environment.systemPackages = with pkgs; [ tmux aria2 ];
+                  environment.systemPackages = with pkgs; [
+                    tmux
+                    aria2
+                    caddy
+                  ];
                 })
               ];
             });
