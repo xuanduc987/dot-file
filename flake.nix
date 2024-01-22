@@ -81,7 +81,7 @@
                   services.wsdd.enable = true;
                   homebrew = {
                     enable = true;
-                    casks = [ "jellyfin" "docker" "radarr" "prowlarr" "sonarr" ];
+                    casks = [ "jellyfin" "orbstack" "radarr" "prowlarr" "sonarr" ];
                   };
                   environment.systemPackages = with pkgs; [
                     tmux
