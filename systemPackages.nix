@@ -1,14 +1,10 @@
 { pkgs, ... }:
 {
-  # for build vim on mac
-  nixpkgs.config.vim = { darwin = true; gui = false; };
-  nixpkgs.config.netbeans = false;
-
   environment.systemPackages = with pkgs; [
     mosh
     watchman
     python3
-    vim_configurable
+    vim-darwin
   ];
 
   homebrew = {
