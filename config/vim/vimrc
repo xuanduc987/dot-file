@@ -81,6 +81,8 @@ Jetpack 'tpope/vim-abolish'
 
 Jetpack 'rhysd/vim-color-spring-night'
 Jetpack 'lifepillar/vim-solarized8'
+Jetpack 'jaredgorski/SpaceCamp'
+Jetpack 'agude/vim-eldar'
 
 call jetpack#end()
 
@@ -426,4 +428,4 @@ else
 endif
 
 " set background=light
-autocmd vimenter * ++nested colorscheme spring-night
+autocmd vimenter * ++nested colorscheme spacecamp
