@@ -14,14 +14,19 @@
 
   launchd.daemons.grafana =
     {
-      command = lib.concatStringsSep " \\\n  " [
-        "${pkgs.grafana}/bin/grafana server"
-        "--homepath=${pkgs.grafana}/share/grafana/"
-        "cfg:default.paths.logs=/var/lib/grafana/log/grafana"
-        "cfg:default.paths.data=/var/lib/grafana/data"
-        "cfg:default.paths.plugins=/var/lib/grafana/data/plugins"
-      ];
       serviceConfig = {
+        ProgramArguments = [
+          "/bin/sh"
+          "-c"
+          "/bin/wait4path /nix/store &amp;&amp; ${pkgs.writeScript "start_grafana_daemons" (lib.concatStringsSep " \\\n  " [
+            "${pkgs.grafana}/bin/grafana server"
+            "--homepath=${pkgs.grafana}/share/grafana/"
+            "cfg:default.paths.logs=/var/lib/grafana/log/grafana"
+            "cfg:default.paths.data=/var/lib/grafana/data"
+            "cfg:default.paths.plugins=/var/lib/grafana/data/plugins"
+          ])}"
+        ];
+
         RunAtLoad = true;
         GroupName = "grafana";
         UserName = "grafana";
@@ -50,11 +55,15 @@
       ];
     in
     {
-      script = ''
-        mkdir -p /var/lib/prometheus
-        exec ${command}
-      '';
       serviceConfig = {
+        ProgramArguments = [
+          "/bin/sh"
+          "-c"
+          "/bin/wait4path /nix/store &amp;&amp; ${pkgs.writeScript "start_prometheus_daemons" ''
+            mkdir -p /var/lib/prometheus
+            exec ${command}
+          ''}"
+        ];
         RunAtLoad = true;
         StandardOutPath = "/var/log/prometheus-stdout.log";
         StandardErrorPath = "/var/log/prometheus-stderr.log";
@@ -62,11 +71,15 @@
     };
   launchd.daemons.prometheus-node-exporter =
     {
-      command = lib.concatStringsSep " \\\n  " [
-        "${pkgs.prometheus-node-exporter}/bin/node_exporter"
-        "--web.listen-address=127.0.0.1:9100"
-      ];
       serviceConfig = {
+        ProgramArguments = [
+          "/bin/sh"
+          "-c"
+          "/bin/wait4path /nix/store &amp;&amp; ${pkgs.writeScript "start_node_exporter_daemons" (lib.concatStringsSep " \\\n  " [
+            "${pkgs.prometheus-node-exporter}/bin/node_exporter"
+            "--web.listen-address=127.0.0.1:9100"
+          ])}"
+        ];
         RunAtLoad = true;
         StandardOutPath = "/var/log/prometheus-node-exporter-stdout.log";
         StandardErrorPath = "/var/log/prometheus-node-exporter-stderr.log";
