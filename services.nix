@@ -24,7 +24,7 @@
       window_shadow = "float";
     };
     extraConfig = ''
-      yabai -m rule --add app="(System Preferences|Activity Monitor|System Settings|mpv|Chrome|Telegram|XD|Spotify|TeamViewer|Sequel Ace)" manage=off
+      yabai -m rule --add app="(System Preferences|Screen Sharing|Activity Monitor|System Settings|mpv|Chrome|Telegram|XD|Spotify|TeamViewer|Sequel Ace)" manage=off
       yabai -m rule --add app="Thunderbird" title=".+ Reminders?" manage=off
       yabai -m rule --add app="Stata.*" title="Graph.*" manage=off
     '';

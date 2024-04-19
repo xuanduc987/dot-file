@@ -10,9 +10,6 @@ _:
   system.defaults.dock.orientation = "left";
   system.defaults.dock.tilesize = 36;
 
-
-  system.defaults.".GlobalPreferences"."com.apple.mouse.scaling" = 2.0;
-
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 25;
   system.defaults.NSGlobalDomain.KeyRepeat = 2;
 

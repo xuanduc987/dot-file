@@ -1,15 +1,15 @@
 {
   inputs = {
-    old-nixpkgs.url = "github:NixOS/nixpkgs/23.05";
-    nixpkgs.url = "github:NixOS/nixpkgs/23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    git-branchless.url = "github:xuanduc987/git-branchless";
   };
 
-  outputs = { darwin, nixpkgs, nixpkgs-unstable, old-nixpkgs, home-manager, ... }:
+  outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, git-branchless, ... }:
     let
       commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
@@ -23,23 +23,7 @@
 
           {
             nixpkgs.overlays = [
-              (final: prev: {
-                grafana = old-nixpkgs.legacyPackages.${system}.grafana;
-
-                yabai = prev.yabai.overrideAttrs (_:_: {
-                  version = "6.0.2";
-                  src = final.fetchFromGitHub {
-                    owner = "koekeishiya";
-                    repo = "yabai";
-                    rev = "v6.0.2";
-                    hash = "sha256-VI7Gu5Y50Ed65ZUrseMXwmW/iovlRbAJGlPD7Ooajqw=";
-                  };
-                  env = {
-                    # silence service.h error
-                    NIX_CFLAGS_COMPILE = "-Wno-implicit-function-declaration";
-                  };
-                });
-              })
+              git-branchless.overlays.default
             ];
           }
 
@@ -67,6 +51,22 @@
           (commonConfiguration {
             user = "d.xuan.nghiem";
             system = "x86_64-darwin";
+
+            modules = [
+              {
+                system.defaults.".GlobalPreferences"."com.apple.mouse.scaling" = 7.0;
+
+                homebrew = {
+                  enable = true;
+                  casks = [
+                    "seafile-client"
+                    "obsidian"
+                    "karabiner-elements"
+                    "orbstack"
+                  ];
+                };
+              }
+            ];
           });
         "Ducs-Mac-mini" = darwin.lib.darwinSystem
           (commonConfiguration
