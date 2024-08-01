@@ -1,15 +1,14 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-23.11-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    git-branchless.url = "github:xuanduc987/git-branchless";
   };
 
-  outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, git-branchless, ... }:
+  outputs = { darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
       commonConfiguration = { user, system, modules ? [ ] }: {
         inherit system;
@@ -23,7 +22,9 @@
 
           {
             nixpkgs.overlays = [
-              git-branchless.overlays.default
+              (final: prev: {
+                git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
+              })
             ];
           }
 
@@ -53,8 +54,12 @@
             system = "x86_64-darwin";
 
             modules = [
-              {
+              ({ pkgs,... }: {
                 system.defaults.".GlobalPreferences"."com.apple.mouse.scaling" = 7.0;
+
+                environment.systemPackages = with pkgs; [
+                  neovim
+                ];
 
                 homebrew = {
                   enable = true;
@@ -63,9 +68,10 @@
                     "obsidian"
                     "karabiner-elements"
                     "orbstack"
+                    "netnewswire"
                   ];
                 };
-              }
+              })
             ];
           });
         "Ducs-Mac-mini" = darwin.lib.darwinSystem

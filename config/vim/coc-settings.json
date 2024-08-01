@@ -32,11 +32,11 @@
       "formatterPriority": 50,
       "filetypes": ["*"]
     },
-    "graphql": {
-      "command": "graphql-lsp",
-      "args": ["server", "-m", "stream"],
-      "filetypes": ["graphql", "typescript", "typescriptreact"]
-    },
+    // "graphql": {
+    //   "command": "graphql-lsp",
+    //   "args": ["server", "-m", "stream"],
+    //   "filetypes": ["graphql", "typescript", "typescriptreact"]
+    // },
     "nix-nil": {
       "command": "nil",
       "filetypes": [ "nix" ],
@@ -81,7 +81,7 @@
   },
   //
   "[javascript][typescript][typescriptreact][json][nix]": {
-    "coc.preferences.formatOnSave": true
+    "coc.preferences.formatOnSave": false
   },
   //
   "tsserver.useLocalTsdk": true,

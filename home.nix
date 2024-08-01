@@ -78,7 +78,7 @@
 
       rf = "ghq get -p";
 
-      v = "vim";
+      v = "nvim";
     };
     functions = {
       git-prune-merged-branches = ''git branch --merged main | grep -v "^\\* main" | xargs -n 1 -r git branch -d'';

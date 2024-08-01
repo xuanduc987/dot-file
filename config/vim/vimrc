@@ -79,6 +79,7 @@ Jetpack 'jpalardy/vim-slime'
 Jetpack 'tpope/vim-dispatch'
 Jetpack 'tpope/vim-abolish'
 
+Jetpack 'mcchrish/zenbones.nvim'
 Jetpack 'rhysd/vim-color-spring-night'
 Jetpack 'lifepillar/vim-solarized8'
 Jetpack 'jaredgorski/SpaceCamp'
@@ -270,7 +271,7 @@ command! SudoWrite call SudoWrite()
 command BufOnly silent! execute "update | %bd | e# | bd#"
 
 " CoC
-let g:coc_global_extensions = ['coc-tsserver', 'coc-deno', 'coc-tsdetect', 'coc-yaml', 'coc-json', 'coc-solargraph', 'coc-go', 'coc-snippets']
+let g:coc_global_extensions = ['coc-tsserver', 'coc-yaml', 'coc-json', 'coc-solargraph', 'coc-go', 'coc-snippets']
 
 function! CopyHover()
   let l:hover = join(CocAction('getHover'))
@@ -427,5 +428,5 @@ else
   let g:slime_vimterminal_config = { "vertical": v:true, "term_finish": "close" }
 endif
 
-" set background=light
-autocmd vimenter * ++nested colorscheme spacecamp
+set background=light
+autocmd vimenter * ++nested colorscheme rosebones

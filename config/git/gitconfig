@@ -44,3 +44,5 @@
   branch = true
 [init]
   defaultBranch = main
+[maintenance]
+	repo = /Users/d.xuan.nghiem/ghq/github.com/sonyged/logic
