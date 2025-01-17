@@ -6,12 +6,13 @@
 nix-darwin.lib.darwinSystem rec {
   system = "x86_64-darwin";
   modules = [
-    ./configuration.nix
+    {
+      _module.args = {
+        pkgs-unstable = import nixpkgs-unstable {inherit system;};
+      };
+    }
+    ../mac_common
     ./packages.nix
-    ./programs.nix
     ./homebrew.nix
   ];
-  specialArgs = {
-    pkgs-unstable = import nixpkgs-unstable {inherit system;};
-  };
 }

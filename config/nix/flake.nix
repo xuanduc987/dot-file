@@ -11,6 +11,7 @@
   outputs = inputs: {
     darwinConfigurations = {
       JPCC02X86ASJHD2 = import ./hosts/sony_mac inputs;
+      Ducs-Mac-mini = import ./hosts/duc_mac_mini inputs;
     };
   };
 }
