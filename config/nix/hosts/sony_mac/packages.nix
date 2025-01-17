@@ -1,21 +1,9 @@
-{
-  pkgs-unstable,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   sorbet = pkgs.callPackage ../../packages/sorbet {};
 in {
   environment. systemPackages = with pkgs; [
-    pkgs-unstable.neovim
-    pkgs-unstable.jujutsu
-
-    git
     gitAndTools.gh
     ghq
-
-    # language server for nix
-    nixd
-    alejandra # nix formatter
 
     sorbet
     ruby-lsp
@@ -28,10 +16,5 @@ in {
 
     nodejs
     pnpm
-    fzf
-    ripgrep
   ];
-
-  environment.variables.EDITOR = "nvim";
-  environment.variables.PAGER = "less -FRX";
 }

@@ -1,13 +1,6 @@
 {
   homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-      cleanup = "uninstall";
-    };
     brews = ["watchman"];
-    taps = ["homebrew/cask-fonts"];
     casks = [
       "anki"
       "netnewswire"
@@ -16,7 +9,6 @@
 
       "google-chrome"
 
-      "ghostty"
       "kitty"
       "raycast"
       "rectangle"
@@ -30,8 +22,6 @@
       "orbstack"
       "sequel-ace"
       "zotero"
-
-      "font-commit-mono"
     ];
   };
 }
