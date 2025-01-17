@@ -30,6 +30,7 @@
 
       "font-juliamono"
       "font-commit-mono"
+      "font-commit-mono-nerd-font"
     ];
   };
 
@@ -38,5 +39,7 @@
     useBabelfish = true;
     babelfishPackage = pkgs.babelfish;
   };
+
+  programs.zsh.enable = true;
 }
 

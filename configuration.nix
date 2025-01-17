@@ -1,8 +1,13 @@
-{ pkgs, nixpkgs, ... }:
+{ pkgs, nixpkgs, lib, ... }:
 {
   nixpkgs.config.allowUnfree = true;
 
-  nix.registry.nixpkgs.flake = nixpkgs;
+  nix.registry.nixpkgs-unstable.to = {
+    type = "github";
+    owner = "NixOS";
+    repo = "nixpkgs";
+    ref = "nixpkgs-unstable";
+  };
 
   nix.package = pkgs.nix;
   nix.configureBuildUsers = true;
@@ -16,6 +21,7 @@
   services.nix-daemon.enable = true;
 
   environment.variables.EDITOR = "vim";
+  environment.variables.PAGER = "less -FRX";
 
   nix.extraOptions = ''
     keep-outputs = true
@@ -25,5 +31,5 @@
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
-  system.stateVersion = 4;
+  system.stateVersion = 5;
 }
