@@ -25,4 +25,7 @@ mkdir -p ~/.config/kitty
 rm ~/.config/kitty/kitty.conf
 ln -s "${dir}/config/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 
+# fish
+ln -s "${dir}/config/fish/functions/rj.fish" ~/.config/fish/functions/rj.fish
+
 darwin-rebuild switch --flake "$dir"

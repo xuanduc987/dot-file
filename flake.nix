@@ -23,7 +23,9 @@
           {
             nixpkgs.overlays = [
               (final: prev: {
-                git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
+                neovim = nixpkgs-unstable.legacyPackages.${system}.neovim;
+                jujutsu = nixpkgs-unstable.legacyPackages.${system}.jujutsu;
+                # git-branchless = nixpkgs-unstable.legacyPackages.${system}.git-branchless;
               })
             ];
           }
@@ -48,13 +50,13 @@
     in
     {
       darwinConfigurations = {
-        "Duc-MB" = darwin.lib.darwinSystem
+        "JPCC02X86ASJHD2" = darwin.lib.darwinSystem
           (commonConfiguration {
             user = "d.xuan.nghiem";
             system = "x86_64-darwin";
 
             modules = [
-              ({ pkgs,... }: {
+              ({ pkgs, ... }: {
                 system.defaults.".GlobalPreferences"."com.apple.mouse.scaling" = 7.0;
 
                 environment.systemPackages = with pkgs; [
@@ -69,6 +71,7 @@
                     "karabiner-elements"
                     "orbstack"
                     "netnewswire"
+                    "rectangle"
                   ];
                 };
               })

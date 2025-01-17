@@ -16,6 +16,7 @@
     git-machete
     gitAndTools.gh
     ghq
+    jujutsu
 
     efm-langserver
     # language server for nix
@@ -30,7 +31,7 @@
     nodePackages.yarn
     nodePackages.prettier
     nodePackages.eslint_d
-    nodePackages.pnpm
+    pnpm
 
     awscli2
     fd
@@ -39,6 +40,7 @@
     ripgrep
     tokei
 
+    graphviz
     gnuplot
     yt-dlp
     irssi
@@ -100,7 +102,7 @@
           case ""
             set -l issue_number (gh issue list --assignee "@me" | fzf -q "$argv[2]" | awk '{print $1}')
             if test -n "$issue_number"
-              git checkout -b "issue-$issue_number"
+              git checkout -b "duc/issue-$issue_number"
             end
           case '*'
             gh issue $argv
@@ -113,6 +115,12 @@
       set -gx FZF_DEFAULT_COMMAND 'fd --type file'
       set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
       set -gx FZF_ALT_C_COMMAND 'fd --type directory'
+
+
+      # Ghostty Shell Integration
+      if set -q GHOSTTY_RESOURCES_DIR
+          source "$GHOSTTY_RESOURCES_DIR/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish"
+      end
 
       fish_add_path $HOME/bin
     '';
