@@ -17,7 +17,7 @@ nix-darwin.lib.darwinSystem rec {
     ({pkgs, ...}: {
       services.wsdd.enable = true;
       homebrew = {
-        casks = ["jellyfin" "radarr" "prowlarr" "sonarr"];
+        casks = ["jellyfin" "radarr" "prowlarr" "sonarr" "lidarr"];
       };
       environment.systemPackages = with pkgs; [
         caddy
