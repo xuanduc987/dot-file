@@ -12,6 +12,9 @@ ln -s "${dir}/config/vim/coc-settings.json" ~/.vim/coc-settings.json
 rm ~/.vim/compiler
 ln -s "${dir}/config/vim/compiler" ~/.vim/compiler
 
+# neovim
+ln -s "${dir}/config/nvim" ~/.config/nvim
+
 # git
 echo "linking git config..."
 rm ~/.gitconfig

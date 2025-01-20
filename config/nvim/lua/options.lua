@@ -12,6 +12,8 @@ vim.opt.shell = "/bin/sh"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+vim.opt.completeopt = "menuone,noselect,noinsert"
+
 vim.opt.signcolumn = "yes"
 
 vim.opt.updatetime = 250

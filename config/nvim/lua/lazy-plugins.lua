@@ -22,7 +22,19 @@ require("lazy").setup({
     "ibhagwan/fzf-lua",
     config = function()
       require("fzf-lua").setup({})
-      require("fzf-lua").register_ui_select()
+      require("fzf-lua").register_ui_select(function(fzf_opts, _)
+        if
+          fzf_opts.kind == "codeaction" and not vim.tbl_isempty(vim.lsp.get_clients({ bufnr = 0, name = "vtsls" }))
+        then
+          return vim.tbl_deep_extend("force", fzf_opts, {
+            winopts = {
+              preview = { hidden = "hidden" },
+            },
+          })
+        else
+          return fzf_opts
+        end
+      end)
 
       vim.keymap.set("n", "<leader>o", "<cmd>lua require('fzf-lua').files()<CR>")
       vim.keymap.set("n", "<leader>b", "<cmd>lua require('fzf-lua').buffers()<CR>")
@@ -56,85 +68,52 @@ require("lazy").setup({
   },
 
   {
-    "stevearc/overseer.nvim",
+    "vim-test/vim-test",
     config = function()
-      require("overseer").setup()
-      vim.keymap.set("n", "<C-T>", "<cmd>OverseerRun<CR>")
+      vim.g["test#strategy"] = "dispatch"
+      vim.keymap.set("n", "<leader>tt", "<cmd>TestNearest<CR>")
+      vim.keymap.set("n", "<leader>tf", "<cmd>TestFile<CR>")
+      vim.keymap.set("n", "<leader>ta", "<cmd>TestSuite<CR>")
+      vim.keymap.set("n", "<leader>tl", "<cmd>TestLast<CR>")
+      vim.keymap.set("n", "<leader>tg", "<cmd>TestVisit<CR>")
+    end,
+  },
+  {
+    "tpope/vim-dispatch",
+    config = function()
+      vim.g.dispatch_compilers = { yarn = "", npx = "" }
+      vim.g.dispatch_no_tmux_make = 1
+      vim.g.dispatch_no_tmux_start = 1
+      vim.keymap.set("n", "<leader>d", ":Dispatch<space>")
+      vim.keymap.set("n", "<leader>r", "<cmd>Dispatch<CR>")
     end,
   },
 
   {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      -- adapters
-      { "zidhuss/neotest-minitest", dev = true },
-    },
-    config = function()
-      local neotest = require("neotest")
-      neotest.setup({
-        icons = {
-          running_animated = { "◰", "◳", "◲", "◱" },
-          passed = "✓",
-          running = "⯈",
-          failed = "✗",
-          skipped = "-",
-          unknown = "?",
-          non_collapsible = "─",
-          collapsed = "─",
-          expanded = "╮",
-          child_prefix = "├",
-          final_child_prefix = "╰",
-          child_indent = "│",
-          final_child_indent = " ",
-          watching = "⏿",
-        },
-        adapters = {
-          require("neotest-minitest")({
-            additional_base_test_classes = { "GraphqlIntegrationTest", "StudyGraphqlIntegrationTest" },
-          }),
-        },
-      })
-      vim.keymap.set("n", "<leader>tt", neotest.run.run)
-      vim.keymap.set("n", "<leader>tw", neotest.watch.toggle)
-      vim.keymap.set("n", "<leader>tf", function()
-        neotest.run.run(vim.fn.expand("%"))
-      end)
-      vim.keymap.set("n", "<Leader>ts", neotest.summary.toggle)
-      vim.keymap.set("n", "<leader>to", function()
-        neotest.output.open({ enter = true, auto_close = true })
-      end, { desc = "Show Output" })
-      vim.keymap.set("n", "<leader>tO", function()
-        neotest.output_panel.toggle()
-      end, { desc = "Toggle Output Panel" })
-    end,
+    "dmmulroy/tsc.nvim",
+    opts = {},
+    ft = { "typescript", "typescriptreact" },
   },
 
   { -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for Neovim
-      { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-      "williamboman/mason-lspconfig.nvim",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-
-      { "catlee/pull_diags.nvim", event = "LspAttach", opts = {} }, -- pull diagnostics support for neovim < 0.10
-
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { "j-hui/fidget.nvim", opts = {} },
 
-      { "folke/neodev.nvim", opts = {} },
+      {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {},
+      },
 
-      "yioneko/nvim-vtsls",
-      -- {
-      --   "pmizio/typescript-tools.nvim",
-      --   dependencies = { "nvim-lua/plenary.nvim" },
-      --   opts = {},
-      -- },
+      {
+        "yioneko/nvim-vtsls",
+        ft = { "typescript", "typescriptreact" },
+      },
+
+      "b0o/schemastore.nvim",
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -146,79 +125,92 @@ require("lazy").setup({
 
           map(
             "gd",
-            '<cmd>lua require("fzf-lua").lsp_definitions({ jump_to_single_result = true })<cr>',
+            -- '<cmd>lua require("fzf-lua").lsp_definitions({ jump_to_single_result = true })<cr>',
+            vim.lsp.buf.definition,
             "[G]oto [D]efinition"
           )
           map(
             "gr",
-            '<cmd>lua require("fzf-lua").lsp_references({ jump_to_single_result = true })<cr>',
+            -- '<cmd>lua require("fzf-lua").lsp_references({ jump_to_single_result = true })<cr>',
+            vim.lsp.buf.references,
             "[G]oto [R]eferences"
           )
           map(
             "gI",
-            '<cmd>lua require("fzf-lua").lsp_implementations({ jump_to_single_result = true })<cr>',
+            -- '<cmd>lua require("fzf-lua").lsp_implementations({ jump_to_single_result = true })<cr>',
+            vim.lsp.buf.implementation,
             "[G]oto [I]mplementation"
           )
           map(
-            "<leader>d",
-            '<cmd>lua require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })<cr>',
-            "Type [D]efinition"
+            "<leader>gt",
+            -- '<cmd>lua require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })<cr>',
+            vim.lsp.buf.type_definition,
+            "[G]oto [T]ype Definition"
           )
           map("gR", vim.lsp.buf.rename, "[R]e[n]ame")
           map("ga", vim.lsp.buf.code_action, "[C]ode [A]ction")
+          vim.keymap.set(
+            "x",
+            "ga",
+            vim.lsp.buf.code_action,
+            { buffer = event.buf, desc = "LSP: " .. "[C]ode [A]ction" }
+          )
           map("K", vim.lsp.buf.hover, "Hover Documentation")
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
         end,
       })
 
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+      -- capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       local servers = {
+        efm = {},
+        jsonls = {
+          settings = {
+            json = {
+              schemas = require("schemastore").json.schemas(),
+            },
+          },
+        },
+        html = {},
+        cssls = {},
+        yamlls = {},
+        ruby_lsp = {},
+        sorbet = {},
+        vtsls = {
+          settings = {
+            vtsls = {
+              autoUseWorkspaceTsdk = true,
+            },
+          },
+        },
+        nixd = {
+          settings = {
+            nixd = {
+              formatting = { command = { "alejandra", "-qq" } },
+            },
+          },
+        },
         lua_ls = {
           settings = {
             Lua = {
-              completion = {
-                callSnippet = "Replace",
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
+              completion = { callSnippet = "Replace" },
+              diagnostics = { disable = { "missing-fields" } },
             },
           },
         },
       }
 
-      -- Ensure the servers and tools above are installed
-      require("mason").setup()
-
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        "stylua", -- Used to format Lua code
-
-        "efm",
-        "vtsls",
-      })
-      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-      require("mason-lspconfig").setup({
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
-          end,
-        },
-      })
+      local lspconfig = require("lspconfig")
+      for server, config in pairs(servers) do
+        config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
+      end
     end,
   },
 
   { -- Autoformat
     "stevearc/conform.nvim",
+    -- branch = "nvim-0.9",
     lazy = false,
     keys = {
       {
@@ -247,9 +239,39 @@ require("lazy").setup({
       },
     },
   },
+  {
+    "saghen/blink.cmp",
+    version = "*",
+
+    dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = {
+        preset = "default",
+        ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<Tab>"] = { "select_and_accept", "fallback" },
+        ["<C-j>"] = { "snippet_forward", "fallback" },
+        ["<C-k>"] = { "snippet_backward", "fallback" },
+      },
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = "mono",
+      },
+      snippets = { preset = "luasnip" },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+        -- Disable cmdline completions
+        cmdline = {},
+      },
+      signature = { enabled = true },
+    },
+  },
 
   { -- Autocompletion
     "hrsh7th/nvim-cmp",
+    enabled = false,
     event = "InsertEnter",
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -272,6 +294,13 @@ require("lazy").setup({
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp-signature-help",
     },
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
     config = function()
       -- See `:help cmp`
       local cmp = require("cmp")
@@ -320,14 +349,25 @@ require("lazy").setup({
     end,
   },
 
+  -- {
+  --   "mcchrish/zenbones.nvim",
+  --   dependencies = { "rktjmp/lush.nvim" },
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   init = function()
+  --     vim.api.nvim_create_autocmd("VimEnter", {
+  --       nested = true,
+  --       command = "set background=dark | colorscheme rosebones",
+  --     })
+  --   end,
+  -- },
+
   {
-    "mcchrish/zenbones.nvim",
-    dependencies = { "rktjmp/lush.nvim" },
+    "https://gitlab.com/protesilaos/tempus-themes-vim.git",
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       vim.api.nvim_create_autocmd("VimEnter", {
         nested = true,
-        command = "set background=dark | colorscheme rosebones",
+        command = "colorscheme tempus_day",
       })
     end,
   },
@@ -335,14 +375,8 @@ require("lazy").setup({
   { -- Collection of various small independent plugins/modules
     "echasnovski/mini.nvim",
     config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
+      -- a/i textobjects
       require("mini.ai").setup({ n_lines = 500 })
-
       require("mini.align").setup({
         mappings = {
           start = "<Plug>(minialign-start)",
@@ -351,11 +385,14 @@ require("lazy").setup({
       })
       vim.keymap.set("x", "<CR>", "<Plug>(minialign-start-with-preview)")
 
-      require("mini.pairs").setup({})
-      require("mini.surround").setup()
+      require("mini.pairs").setup()
+      require("mini.icons").setup()
+      require("mini.surround").setup({
+        respect_selection_type = true,
+      })
 
       local statusline = require("mini.statusline")
-      statusline.setup({ use_icons = false })
+      statusline.setup()
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
@@ -405,10 +442,5 @@ require("lazy").setup({
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
-  },
-}, {
-  dev = {
-    path = "~/ghq/github.com/zidhuss",
-    fallback = false,
   },
 })
