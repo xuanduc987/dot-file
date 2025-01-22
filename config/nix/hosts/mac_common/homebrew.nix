@@ -9,7 +9,7 @@
     taps = ["homebrew/cask-fonts"];
     casks = [
       "ghostty"
-      "font-commit-mono"
+      "font-maple-mono-nf-cn"
     ];
   };
 }

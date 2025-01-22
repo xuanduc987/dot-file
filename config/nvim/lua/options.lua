@@ -43,3 +43,5 @@ if vim.fn.executable("rg") == 1 then
   vim.opt.grepprg = "rg --vimgrep"
   vim.opt.grepformat = "%f:%l:%c:%m,%f:%l%m,%f  %l%m"
 end
+
+vim.opt.winborder = "rounded"

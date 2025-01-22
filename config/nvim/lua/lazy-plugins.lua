@@ -7,44 +7,22 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  "farmergreg/vim-lastplace",
+  {
+    "farmergreg/vim-lastplace",
+    event = "BufReadPost",
+  },
 
   {
     "jpalardy/vim-slime",
+    keys = { { "<C-c><C-c>" }, { "<C-c>v" } },
     init = function()
       vim.g.slime_target = "neovim"
     end,
   },
 
-  { "numToStr/Comment.nvim", opts = {} },
-
-  {
-    "ibhagwan/fzf-lua",
-    config = function()
-      require("fzf-lua").setup({})
-      require("fzf-lua").register_ui_select(function(fzf_opts, _)
-        if
-          fzf_opts.kind == "codeaction" and not vim.tbl_isempty(vim.lsp.get_clients({ bufnr = 0, name = "vtsls" }))
-        then
-          return vim.tbl_deep_extend("force", fzf_opts, {
-            winopts = {
-              preview = { hidden = "hidden" },
-            },
-          })
-        else
-          return fzf_opts
-        end
-      end)
-
-      vim.keymap.set("n", "<leader>o", "<cmd>lua require('fzf-lua').files()<CR>")
-      vim.keymap.set("n", "<leader>b", "<cmd>lua require('fzf-lua').buffers()<CR>")
-    end,
-  },
-
-  "bronson/vim-trailing-whitespace",
-
   {
     "romainl/vim-qf",
+    event = "BufReadPost",
     config = function()
       vim.g.qf_shorten_path = 0
       vim.g.qf_auto_open_quickfix = 0
@@ -55,37 +33,29 @@ require("lazy").setup({
   },
 
   {
-    "tpope/vim-fugitive",
-    dependencies = { "tpope/vim-rhubarb" },
-    config = function()
-      vim.keymap.set("n", "<leader>gs", ":tab Git<CR>")
-    end,
-  },
-
-  {
-    "stevearc/dressing.nvim",
-    opts = {},
-  },
-
-  {
     "vim-test/vim-test",
+    keys = {
+      { "<leader>tt", "<cmd>TestNearest<CR>" },
+      { "<leader>tf", "<cmd>TestFile<CR>" },
+      { "<leader>ta", "<cmd>TestSuite<CR>" },
+      { "<leader>tl", "<cmd>TestLast<CR>" },
+      { "<leader>tg", "<cmd>TestVisit<CR>" },
+    },
     config = function()
       vim.g["test#strategy"] = "dispatch"
-      vim.keymap.set("n", "<leader>tt", "<cmd>TestNearest<CR>")
-      vim.keymap.set("n", "<leader>tf", "<cmd>TestFile<CR>")
-      vim.keymap.set("n", "<leader>ta", "<cmd>TestSuite<CR>")
-      vim.keymap.set("n", "<leader>tl", "<cmd>TestLast<CR>")
-      vim.keymap.set("n", "<leader>tg", "<cmd>TestVisit<CR>")
     end,
   },
   {
     "tpope/vim-dispatch",
+    cmd = { "Make", "Dispatch", "ForcusDispatch", "AbortDispatch" },
+    keys = {
+      { "<leader>d", ":Dispatch<space>" },
+      { "<leader>r", "<cmd>Dispatch<CR>" },
+    },
     config = function()
       vim.g.dispatch_compilers = { yarn = "", npx = "" }
       vim.g.dispatch_no_tmux_make = 1
       vim.g.dispatch_no_tmux_start = 1
-      vim.keymap.set("n", "<leader>d", ":Dispatch<space>")
-      vim.keymap.set("n", "<leader>r", "<cmd>Dispatch<CR>")
     end,
   },
 
@@ -97,6 +67,7 @@ require("lazy").setup({
 
   { -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
+    event = "BufReadPost",
     dependencies = {
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -113,7 +84,10 @@ require("lazy").setup({
         ft = { "typescript", "typescriptreact" },
       },
 
-      "b0o/schemastore.nvim",
+      {
+        "b0o/schemastore.nvim",
+        ft = { "json" },
+      },
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -123,30 +97,10 @@ require("lazy").setup({
             vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
           end
 
-          map(
-            "gd",
-            -- '<cmd>lua require("fzf-lua").lsp_definitions({ jump_to_single_result = true })<cr>',
-            vim.lsp.buf.definition,
-            "[G]oto [D]efinition"
-          )
-          map(
-            "gr",
-            -- '<cmd>lua require("fzf-lua").lsp_references({ jump_to_single_result = true })<cr>',
-            vim.lsp.buf.references,
-            "[G]oto [R]eferences"
-          )
-          map(
-            "gI",
-            -- '<cmd>lua require("fzf-lua").lsp_implementations({ jump_to_single_result = true })<cr>',
-            vim.lsp.buf.implementation,
-            "[G]oto [I]mplementation"
-          )
-          map(
-            "<leader>gt",
-            -- '<cmd>lua require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })<cr>',
-            vim.lsp.buf.type_definition,
-            "[G]oto [T]ype Definition"
-          )
+          map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+          map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
+          map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+          map("<leader>gt", vim.lsp.buf.type_definition, "[G]oto [T]ype Definition")
           map("gR", vim.lsp.buf.rename, "[R]e[n]ame")
           map("ga", vim.lsp.buf.code_action, "[C]ode [A]ction")
           vim.keymap.set(
@@ -159,8 +113,6 @@ require("lazy").setup({
           map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
         end,
       })
-
-      -- capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       local servers = {
         efm = {},
@@ -180,6 +132,8 @@ require("lazy").setup({
           settings = {
             vtsls = {
               autoUseWorkspaceTsdk = true,
+              ["javascript.suggest.completeFunctionCalls"] = false,
+              ["typescript.suggest.completeFunctionCalls"] = false,
             },
           },
         },
@@ -210,8 +164,7 @@ require("lazy").setup({
 
   { -- Autoformat
     "stevearc/conform.nvim",
-    -- branch = "nvim-0.9",
-    lazy = false,
+    event = { "BufWritePre" },
     keys = {
       {
         "g=",
@@ -242,12 +195,15 @@ require("lazy").setup({
   {
     "saghen/blink.cmp",
     version = "*",
-
-    dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+    event = "InsertEnter",
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
+      -- Disable cmdline
+      cmdline = {
+        enabled = false,
+      },
       keymap = {
         preset = "default",
         ["<C-e>"] = { "show", "show_documentation", "hide_documentation" },
@@ -259,121 +215,41 @@ require("lazy").setup({
         use_nvim_cmp_as_default = true,
         nerd_font_variant = "mono",
       },
-      snippets = { preset = "luasnip" },
+      snippets = { preset = "mini_snippets" },
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
-        -- Disable cmdline completions
-        cmdline = {},
       },
       signature = { enabled = true },
     },
   },
 
-  { -- Autocompletion
-    "hrsh7th/nvim-cmp",
-    enabled = false,
-    event = "InsertEnter",
-    dependencies = {
-      -- Snippet Engine & its associated nvim-cmp source
-      {
-        "L3MON4D3/LuaSnip",
-        build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
-          if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-            return
-          end
-          return "make install_jsregexp"
-        end)(),
-      },
-      "saadparwaiz1/cmp_luasnip",
-
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
-    },
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = "lazydev",
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-    config = function()
-      -- See `:help cmp`
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-      luasnip.config.setup({})
-
-      cmp.setup({
-        snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        completion = { completeopt = "menu,menuone,noinsert" },
-
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-p>"] = cmp.mapping.select_prev_item(),
-          -- Scroll the documentation window [b]ack / [f]orward
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-
-          ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-
-          ["<C-Space>"] = cmp.mapping.complete({}),
-          ["<C-e>"] = cmp.mapping.complete({}),
-
-          ["<C-j>"] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { "i", "s" }),
-          ["<C-k>"] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { "i", "s" }),
-        }),
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path" },
-          { name = "buffer" },
-          { name = "nvim_lsp_signature_help" },
-        },
-      })
-    end,
-  },
-
   -- {
-  --   "mcchrish/zenbones.nvim",
-  --   dependencies = { "rktjmp/lush.nvim" },
+  --   "https://gitlab.com/protesilaos/tempus-themes-vim.git",
   --   priority = 1000, -- Make sure to load this before all the other start plugins.
   --   init = function()
   --     vim.api.nvim_create_autocmd("VimEnter", {
   --       nested = true,
-  --       command = "set background=dark | colorscheme rosebones",
+  --       command = "colorscheme tempus_day",
   --     })
   --   end,
   -- },
 
   {
-    "https://gitlab.com/protesilaos/tempus-themes-vim.git",
+    "rebelot/kanagawa.nvim",
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
+      vim.o.background = "dark"
       vim.api.nvim_create_autocmd("VimEnter", {
         nested = true,
-        command = "colorscheme tempus_day",
+        command = "colorscheme kanagawa",
       })
     end,
   },
 
   { -- Collection of various small independent plugins/modules
     "echasnovski/mini.nvim",
+    event = { "VeryLazy" },
+
     config = function()
       -- a/i textobjects
       require("mini.ai").setup({ n_lines = 500 })
@@ -401,19 +277,29 @@ require("lazy").setup({
       statusline.section_location = function()
         return "%2l:%-2v"
       end
+
+      require("mini.pick").setup()
+      vim.keymap.set("n", "<leader>o", "<cmd>Pick files<CR>")
+      vim.keymap.set("n", "<leader>b", "<cmd>Pick buffers<CR>")
+
+      require("mini.trailspace").setup()
+      vim.api.nvim_create_user_command("FixWhitespace", MiniTrailspace.trim, {})
+
+      require("mini.snippets").setup()
+      require("mini.git").setup()
     end,
   },
 
   {
     "justinmk/vim-dirvish",
-    config = function()
-      vim.keymap.set("n", "-", "<Plug>(dirvish_up)")
-    end,
+    lazy = false,
+    keys = { "-", "<Plug>(dirvish_up)" },
   },
 
   { -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    event = "BufReadPost",
     opts = {
       ensure_installed = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
       -- Autoinstall languages that are not installed
@@ -442,5 +328,24 @@ require("lazy").setup({
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
+  },
+}, {
+  defaults = { lazy = true },
+  install = { colorscheme = { "kanagawa" } },
+  checker = { enabled = true },
+  ui = { border = "rounded" },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        -- "matchit",
+        -- "matchparen",
+        "netrwPlugin",
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
   },
 })

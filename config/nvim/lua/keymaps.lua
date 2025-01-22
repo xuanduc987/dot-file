@@ -1,9 +1,6 @@
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-
 vim.keymap.set("n", "gC", vim.diagnostic.setqflist)
 
 vim.keymap.set("n", "<leader>q", "<cmd>q<cr>")
@@ -53,14 +50,19 @@ vim.keymap.set("n", "<leader>p", '"+p')
 vim.keymap.set("n", "/", "/\\v")
 vim.keymap.set("n", "?", "?\\v")
 
-vim.keymap.set("n", "[a", "<cmd>previous<CR>")
-vim.keymap.set("n", "]a", "<cmd>next<CR>")
-vim.keymap.set("n", "[b", "<cmd>bprevious<CR>")
-vim.keymap.set("n", "]b", "<cmd>bnext<CR>")
-vim.keymap.set("n", "[q", "<cmd>cprevious<CR>")
-vim.keymap.set("n", "]q", "<cmd>cnext<CR>")
-vim.keymap.set("n", "[l", "<cmd>lprevious<CR>")
-vim.keymap.set("n", "]l", "<cmd>lnext<CR>")
--- insert blank line
-vim.keymap.set("n", "[<space>", ":<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[")
-vim.keymap.set("n", "]<space>", ":<c-u>put =repeat(nr2char(10), v:count1)<cr>']")
+if not vim.fn.has("nvim-0.11") then
+  vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
+  vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+
+  vim.keymap.set("n", "[a", "<cmd>previous<CR>")
+  vim.keymap.set("n", "]a", "<cmd>next<CR>")
+  vim.keymap.set("n", "[b", "<cmd>bprevious<CR>")
+  vim.keymap.set("n", "]b", "<cmd>bnext<CR>")
+  vim.keymap.set("n", "[q", "<cmd>cprevious<CR>")
+  vim.keymap.set("n", "]q", "<cmd>cnext<CR>")
+  vim.keymap.set("n", "[l", "<cmd>lprevious<CR>")
+  vim.keymap.set("n", "]l", "<cmd>lnext<CR>")
+  -- insert blank line
+  vim.keymap.set("n", "[<space>", ":<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[")
+  vim.keymap.set("n", "]<space>", ":<c-u>put =repeat(nr2char(10), v:count1)<cr>']")
+end

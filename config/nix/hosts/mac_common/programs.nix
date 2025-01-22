@@ -11,11 +11,16 @@
     fish = {
       enable = true;
       useBabelfish = true;
-      shellAliases = {
-        rf = "ghq get -p";
-        v = "nvim";
-      };
       shellInit = ''
+        # fish alias is slow, use function instead
+        function rf
+          ghq get -p $argv
+        end
+
+        function v
+          nvim $argv
+        end
+
         # disable greeting
         set -g fish_greeting
 

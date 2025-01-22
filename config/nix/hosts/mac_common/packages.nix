@@ -7,6 +7,7 @@
     pkgs-unstable.neovim
     pkgs-unstable.jujutsu
 
+    difftastic
     git
 
     # language server for nix

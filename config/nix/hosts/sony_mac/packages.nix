@@ -5,6 +5,11 @@ in {
     gitAndTools.gh
     ghq
 
+    python3
+
+    awscli2
+    aws-vault
+
     sorbet
     ruby-lsp
     vtsls

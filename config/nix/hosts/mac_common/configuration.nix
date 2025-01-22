@@ -9,6 +9,13 @@
     options = "--delete-older-than 30d";
   };
 
+  nix.registry.nixpkgs-unstable.to = {
+    type = "github";
+    owner = "NixOS";
+    repo = "nixpkgs";
+    ref = "nixpkgs-unstable";
+  };
+
   nix.settings = {
     experimental-features = "nix-command flakes";
     trusted-users = [

@@ -8,8 +8,8 @@
       "teamviewer"
 
       "google-chrome"
+      "firefox"
 
-      "kitty"
       "raycast"
       "rectangle"
       "sensiblesidebuttons"
