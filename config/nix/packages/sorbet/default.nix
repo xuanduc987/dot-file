@@ -17,7 +17,7 @@ bundlerApp {
           # Append the OS-specific version suffix
           version = attrs.version + "-universal-darwin";
           # Update the SHA256 accordingly
-          source = attrs.source // {sha256 = "sha256-v/WNjiFXBneD0Plm6w9igOL28XR4vCHG9zACCa+DMM4=";};
+          source = attrs.source // {sha256 = "sha256-RDA7+70aDlshqw9FWGrqqnVuo2SB6ks8JbRP2e8XHaE=";};
         }
         else attrs;
     };

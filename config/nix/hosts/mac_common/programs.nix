@@ -1,12 +1,9 @@
 {pkgs, ...}: {
-  disabledModules = ["programs/direnv.nix"];
-  imports = [../../modules/direnv.nix];
   environment.systemPackages = with pkgs; [fzf fd];
   programs = {
     direnv = {
       enable = true;
       silent = true;
-      enableZshIntegration = true;
     };
     fish = {
       enable = true;

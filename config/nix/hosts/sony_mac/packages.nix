@@ -1,9 +1,18 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  pkgs-unstable,
+  ...
+}: let
   sorbet = pkgs.callPackage ../../packages/sorbet {};
 in {
-  environment. systemPackages = with pkgs; [
+  fonts.packages = with pkgs-unstable; [
+    maple-mono.NF-CN-unhinted
+  ];
+  environment.systemPackages = with pkgs; [
     gitAndTools.gh
     ghq
+
+    nix-search-cli
 
     python3
 

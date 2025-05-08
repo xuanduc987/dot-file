@@ -1,11 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    sorbet (0.5.11699)
-      sorbet-static (= 0.5.11699)
-    sorbet-static (0.5.11699-aarch64-linux)
-    sorbet-static (0.5.11699-universal-darwin)
-    sorbet-static (0.5.11699-x86_64-linux)
+    sorbet (0.5.12201)
+      sorbet-static (= 0.5.12201)
+    sorbet-static (0.5.12201-aarch64-linux)
+    sorbet-static (0.5.12201-universal-darwin)
+    sorbet-static (0.5.12201-x86_64-linux)
 
 PLATFORMS
   aarch64-linux

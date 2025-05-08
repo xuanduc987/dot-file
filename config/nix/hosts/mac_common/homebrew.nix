@@ -6,10 +6,8 @@
       upgrade = true;
       cleanup = "uninstall";
     };
-    taps = ["homebrew/cask-fonts"];
     casks = [
       "ghostty"
-      "font-maple-mono-nf-cn"
     ];
   };
 }

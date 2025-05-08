@@ -16,7 +16,7 @@ vim.opt.completeopt = "menuone,noselect,noinsert"
 
 vim.opt.signcolumn = "yes"
 
-vim.opt.updatetime = 250
+vim.opt.updatetime = 1000
 vim.opt.timeoutlen = 400
 
 vim.opt.splitright = true

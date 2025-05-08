@@ -1,6 +1,6 @@
 {
   homebrew = {
-    brews = ["watchman"];
+    brews = ["watchman" "mergiraf"];
     casks = [
       "anki"
       "netnewswire"
@@ -10,11 +10,10 @@
       "google-chrome"
       "firefox"
 
+      "stats"
       "raycast"
-      "rectangle"
       "sensiblesidebuttons"
       "shottr"
-      "alt-tab"
       "swiftbar"
       "itsycal"
       "seafile-client"
@@ -22,6 +21,8 @@
       "orbstack"
       "sequel-ace"
       "zotero"
+
+      "musicbrainz-picard"
     ];
   };
 }

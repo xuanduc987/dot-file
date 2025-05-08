@@ -132,9 +132,9 @@ require("lazy").setup({
           settings = {
             vtsls = {
               autoUseWorkspaceTsdk = true,
-              ["javascript.suggest.completeFunctionCalls"] = false,
-              ["typescript.suggest.completeFunctionCalls"] = false,
             },
+            javascript = { suggest = { completeFunctionCalls = false } },
+            typescript = { suggest = { completeFunctionCalls = false } },
           },
         },
         nixd = {
@@ -154,10 +154,10 @@ require("lazy").setup({
         },
       }
 
-      local lspconfig = require("lspconfig")
       for server, config in pairs(servers) do
         config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
+        vim.lsp.config(server, config)
+        vim.lsp.enable(server)
       end
     end,
   },
@@ -220,6 +220,11 @@ require("lazy").setup({
         default = { "lsp", "path", "snippets", "buffer" },
       },
       signature = { enabled = true },
+      completion = {
+        accept = {
+          auto_brackets = { enabled = false },
+        },
+      },
     },
   },
 
@@ -286,6 +291,17 @@ require("lazy").setup({
       vim.api.nvim_create_user_command("FixWhitespace", MiniTrailspace.trim, {})
 
       require("mini.snippets").setup()
+      local make_stop = function()
+        local au_opts = { pattern = "*:n", once = true }
+        au_opts.callback = function()
+          while MiniSnippets.session.get() do
+            MiniSnippets.session.stop()
+          end
+        end
+        vim.api.nvim_create_autocmd("ModeChanged", au_opts)
+      end
+      local opts = { pattern = "MiniSnippetsSessionStart", callback = make_stop }
+      vim.api.nvim_create_autocmd("User", opts)
       require("mini.git").setup()
     end,
   },
@@ -332,14 +348,13 @@ require("lazy").setup({
 }, {
   defaults = { lazy = true },
   install = { colorscheme = { "kanagawa" } },
-  checker = { enabled = true },
   ui = { border = "rounded" },
   performance = {
     rtp = {
       disabled_plugins = {
         -- "matchit",
         -- "matchparen",
-        "netrwPlugin",
+        -- "netrwPlugin",
         "gzip",
         "tarPlugin",
         "tohtml",
